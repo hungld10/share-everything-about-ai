@@ -1,42 +1,72 @@
-# 🧠 Share Everything About AI
+# 🤖 Share Everything About AI
 
-A curated collection of knowledge, frameworks, and systems about AI.
+Kho lưu trữ tổng hợp tất cả những gì liên quan đến AI mà tôi học được, thử nghiệm và hệ thống hoá.
 
----
-
-## 📚 Contents
-
-### 🧩 Skill System
-
-* 👉 [Skill System Guide](./docs/skill-system/skill-system.md)
+Mục tiêu:
+- Biến kiến thức AI thành hệ thống có thể tái sử dụng
+- Chuẩn hoá cách làm việc với AI (skills, workflows, system)
+- Xây dựng "AI Knowledge OS" cho cá nhân và team
 
 ---
 
-## 🎯 Purpose
+## 📚 Nội dung chính
 
-This repository is used to:
+### 🧠 AI System & Framework
+- [Skill System](./docs/skill-system/skill-system.md)
+- AI Workflow Design
+- Prompt vs Skill vs Agent
 
-* Capture AI knowledge and frameworks
-* Build reusable systems (skills, agents, workflows)
-* Share practical insights from real-world usage
+### 🛠️ Engineering & Build
+- Agent Architecture
+- RAG System
+- Automation / Workflow
+
+### 📊 Use Case & Application
+- AI cho doanh nghiệp
+- AI training
+- AI productivity
+
+---
+
+## 🚀 Triết lý
+
+> Không chỉ dùng AI để trả lời  
+> Mà dùng AI như một hệ thống có thể vận hành
 
 ---
 
-## 🚀 Coming Next
+## 🧩 Cách sử dụng repo
 
-* AI Agent Design
-* RAG System
-* AI for Business
-* Automation Workflows
+1. Đọc các tài liệu trong `docs/`
+2. Áp dụng vào workflow cá nhân / team
+3. Tạo thêm skill riêng
+4. Cải tiến liên tục
+
+---
+
+## 🧠 Key Concept
+
+- Prompt → dùng 1 lần  
+- Skill → dùng lại nhiều lần  
+- System → mở rộng được  
 
 ---
 
-## 📌 Notes
+## 📌 Định hướng phát triển
 
-All materials are structured for:
-
-* Practical application
-* System thinking
-* Reusability
+- [ ] Xây dựng AI Skill Library
+- [ ] Chuẩn hoá Agent System
+- [ ] Tạo template cho team
+- [ ] Viết case study thực tế
 
 ---
+
+## 👤 Author
+
+Hung Le  
+
+---
+
+## ⭐ Nếu thấy hữu ích
+
+Hãy star repo để theo dõi thêm các cập nhật 🚀
