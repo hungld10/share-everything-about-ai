@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Agent Skills — Hướng dẫn trực quan cho người mới</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --text: #1a1a18;
+  --text2: #5f5e5a;
+  --text3: #888780;
+  --border: rgba(0,0,0,0.08);
+  --accent: #534AB7;
+  --accent-light: #EEEDFE;
+  --accent2: #1D9E75;
+  --accent2-light: #E1F5EE;
+  --blue: #378ADD;
+  --blue-light: #E6F1FB;
+  --coral: #D85A30;
+  --coral-light: #FAECE7;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --pink: #D4537E;
+  --pink-light: #FBEAF0;
+  --red: #E24B4A;
+  --red-light: #FCEBEB;
+  --green: #639922;
+  --green-light: #EAF3DE;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #26215C 0%, #534AB7 50%, #1D9E75 100%);
+  color: white;
+  padding: 80px 24px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(255,255,255,0.04) 0%, transparent 50%);
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero .subtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  opacity: 0.85;
+  max-width: 640px;
+  margin: 0 auto 32px;
+  position: relative;
+  font-weight: 400;
+}
+.hero .stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.hero .stat {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 16px 24px;
+  min-width: 160px;
+}
+.hero .stat .num {
+  font-size: 28px;
+  font-weight: 800;
+  display: block;
+}
+.hero .stat .label {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Section */
+section {
+  padding: 64px 0;
+}
+section + section {
+  border-top: 1px solid var(--border);
+}
+
+h2 {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+h2 .emoji { margin-right: 8px; }
+.section-desc {
+  font-size: 17px;
+  color: var(--text2);
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  color: var(--text);
+}
+
+p { margin-bottom: 16px; }
+p + p { margin-top: -4px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-accent {
+  border-left: 4px solid var(--accent);
+}
+
+/* Highlight box */
+.highlight {
+  background: var(--accent-light);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  border: 1px solid rgba(83,74,183,0.12);
+}
+.highlight.green {
+  background: var(--accent2-light);
+  border-color: rgba(29,158,117,0.12);
+}
+.highlight.coral {
+  background: var(--coral-light);
+  border-color: rgba(216,90,48,0.12);
+}
+.highlight.blue {
+  background: var(--blue-light);
+  border-color: rgba(55,138,221,0.12);
+}
+.highlight strong { color: var(--accent); }
+.highlight.green strong { color: var(--accent2); }
+.highlight.coral strong { color: var(--coral); }
+
+/* Code */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  background: #f0efe8;
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: #3C3489;
+}
+pre {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 12px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+.code-comment { color: #6c7086; }
+.code-key { color: #cba6f7; }
+.code-str { color: #a6e3a1; }
+.code-punct { color: #89b4fa; }
+
+/* Diagram container */
+.diagram-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 24px 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.diagram-wrap svg {
+  max-width: 100%;
+  height: auto;
+}
+.diagram-caption {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Category grid */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.cat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.cat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.cat-card .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.cat-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.cat-card p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin: 0;
+}
+.cat-card .example {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+/* Comparison table */
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 24px 0;
+  font-size: 14px;
+}
+.compare-table th {
+  background: #f5f4ee;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.compare-table td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+}
+.compare-table tr:nth-child(even) td {
+  background: #fafaf8;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-yes { background: var(--green-light); color: var(--green); }
+.badge-no { background: var(--red-light); color: var(--red); }
+.badge-partial { background: var(--amber-light); color: var(--amber); }
+
+/* Tips */
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.tip-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.tip-card .tip-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.tip-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tip-card p {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Good vs Bad */
+.good-bad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+@media (max-width: 560px) {
+  .good-bad { grid-template-columns: 1fr; }
+}
+.good-bad .good, .good-bad .bad {
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 14px;
+}
+.good-bad .good {
+  background: var(--green-light);
+  border: 1px solid rgba(99,153,34,0.15);
+}
+.good-bad .bad {
+  background: var(--red-light);
+  border: 1px solid rgba(226,75,74,0.15);
+}
+.good-bad .label {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.good .label { color: var(--green); }
+.bad .label { color: var(--red); }
+
+/* Stepper */
+.stepper {
+  display: flex;
+  gap: 0;
+  margin: 24px 0;
+  align-items: stretch;
+}
+.step {
+  flex: 1;
+  position: relative;
+  padding: 20px 16px 20px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.step:first-child { border-radius: 12px 0 0 12px; }
+.step:last-child { border-radius: 0 12px 12px 0; }
+.step + .step { border-left: none; }
+.step .step-num {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.step h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.step p { font-size: 12.5px; color: var(--text2); line-height: 1.45; margin: 0; }
+.step .arrow-right {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: var(--text3);
+  font-size: 18px;
+}
+
+/* Resources */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.resource-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: block;
+}
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.resource-card .r-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.resource-card .r-url {
+  font-size: 12px;
+  color: var(--accent);
+  word-break: break-all;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text3);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .stepper { flex-direction: column; }
+  .step { border-radius: 0 !important; }
+  .step:first-child { border-radius: 12px 12px 0 0 !important; }
+  .step:last-child { border-radius: 0 0 12px 12px !important; }
+  .step + .step { border-left: 1px solid var(--border); border-top: none; }
+  .step .arrow-right { display: none; }
+  .hero .stats { gap: 12px; }
+  .hero .stat { min-width: 120px; padding: 12px 16px; }
+  .hero .stat .num { font-size: 22px; }
+  .cat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+  <h1>Claude Code Agent Skills</h1>
+  <p class="subtitle">Hướng dẫn trực quan cho người mới — từ khái niệm đến thực hành, có sơ đồ minh hoạ và ví dụ thực tế</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="num">277K+</span>
+      <span class="label">Lượt cài đặt<br>frontend-design</span>
+    </div>
+    <div class="stat">
+      <span class="num">60K+</span>
+      <span class="label">Skills cộng đồng<br>trên GitHub</span>
+    </div>
+    <div class="stat">
+      <span class="num">9</span>
+      <span class="label">Danh mục<br>nội bộ Anthropic</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ==================== SECTION 1: WHAT IS SKILL? ==================== -->
+<section>
+  <h2>Skill là gì? (Không phải file markdown!)</h2>
+  <p class="section-desc">Hiểu sai lầm phổ biến nhất trước tiên: Skill KHÔNG phải là file markdown chứa mấy dòng hướng dẫn. Skill là một <strong>thư mục hoàn chỉnh</strong> — một "gói kiến thức" mà Claude khám phá dần dần.</p>
+
+  <div class="highlight">
+    <strong>💡 Tóm gọn trong 1 câu:</strong> Skill = thư mục chứa hướng dẫn + script + template + dữ liệu mà Claude tải theo nhu cầu, thay vì nhét hết vào prompt.
+  </div>
+
+  <h3>So sánh nhanh: Cách cũ vs Skills</h3>
+  <div class="good-bad">
+    <div class="bad">
+      <div class="label">❌ Cách cũ — dump vào prompt</div>
+      <p>Nhét tất cả hướng dẫn vào <code>CLAUDE.md</code> hoặc system prompt. Tốn token, Claude hay bị "quên" vì context quá dài.</p>
+    </div>
+    <div class="good">
+      <div class="label">✅ Skills — tải theo nhu cầu</div>
+      <p>Claude chỉ đọc metadata (~100 tokens). Khi cần mới đọc thêm. Tiết kiệm context, Claude tập trung hơn.</p>
+    </div>
+  </div>
+
+  <h3>Cấu trúc thư mục Skill</h3>
+  <pre><code><span class="code-key">my-skill/</span>
+├── <span class="code-str">SKILL.md</span>          <span class="code-comment"># Bắt buộc: metadata + hướng dẫn</span>
+├── <span class="code-str">references/</span>       <span class="code-comment"># Tài liệu API, docs — đọc khi cần</span>
+├── <span class="code-str">scripts/</span>          <span class="code-comment"># Python/Bash tools — chạy khi cần</span>
+├── <span class="code-str">assets/</span>           <span class="code-comment"># Template, font, icon</span>
+└── <span class="code-str">examples/</span>         <span class="code-comment"># Output mẫu để Claude tham khảo</span></code></pre>
+
+  <h3>Ví dụ SKILL.md đơn giản nhất</h3>
+  <pre><code><span class="code-punct">---</span>
+<span class="code-key">name:</span> <span class="code-str">create-report</span>
+<span class="code-key">description:</span> <span class="code-str">"Tạo báo cáo Excel từ dữ liệu. Kích hoạt khi user</span>
+<span class="code-str">  yêu cầu phân tích CSV, tạo spreadsheet, hoặc báo cáo bảng."</span>
+<span class="code-punct">---</span>
+
+<span class="code-comment"># Quy trình tạo báo cáo</span>
+
+1. Đọc file dữ liệu từ user
+2. Chạy script phân tích: <span class="code-key">`python scripts/analyze.py`</span>
+3. Tạo Excel output theo template trong <span class="code-key">assets/template.xlsx</span>
+
+<span class="code-comment">## Gotchas (điểm hay sai)</span>
+- Luôn kiểm tra encoding UTF-8 trước khi đọc CSV
+- Cột ngày tháng phải format <span class="code-key">YYYY-MM-DD</span></code></pre>
+</section>
+
+<!-- ==================== SECTION 2: PROGRESSIVE DISCLOSURE ==================== -->
+<section>
+  <h2>Kiến trúc Progressive Disclosure</h2>
+  <p class="section-desc">Đây là "linh hồn" của Skills — hệ thống 3 cấp độ tải thông tin, xem context window như tài nguyên công cộng có hạn.</p>
+
+  <!-- SVG Diagram: 3-Level Architecture -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- Level 1 -->
+      <rect x="40" y="20" width="620" height="100" rx="14" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+      <text x="60" y="50" font-family="Inter" font-weight="700" font-size="14" fill="#3C3489">CẤP ĐỘ 1 — Metadata</text>
+      <text x="60" y="72" font-family="Inter" font-size="13" fill="#5f5e5a">Chỉ tải name + description (~100 tokens/skill)</text>
+      <text x="60" y="92" font-family="Inter" font-size="13" fill="#5f5e5a">→ Claude quét danh sách để quyết định skill nào phù hợp</text>
+      <rect x="500" y="35" width="140" height="32" rx="8" fill="#534AB7"/>
+      <text x="570" y="56" font-family="Inter" font-weight="600" font-size="12" fill="white" text-anchor="middle">~2% context</text>
+      <!-- Arrow -->
+      <path d="M350 120 L350 148" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+      <text x="370" y="140" font-family="Inter" font-size="11" fill="#534AB7" font-weight="600">Khi khớp yêu cầu ↓</text>
+      
+      <!-- Level 2 -->
+      <rect x="40" y="155" width="620" height="100" rx="14" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+      <text x="60" y="185" font-family="Inter" font-weight="700" font-size="14" fill="#0C447C">CẤP ĐỘ 2 — SKILL.md body</text>
+      <text x="60" y="207" font-family="Inter" font-size="13" fill="#5f5e5a">Đọc toàn bộ hướng dẫn (~dưới 5.000 tokens)</text>
+      <text x="60" y="227" font-family="Inter" font-size="13" fill="#5f5e5a">→ Quy trình, ràng buộc, gotchas, workflow</text>
+      <rect x="500" y="170" width="140" height="32" rx="8" fill="#378ADD"/>
+      <text x="570" y="191" font-family="Inter" font-weight="600" font-size="12" fill="white" text-anchor="middle">Khi cần thiết</text>
+      <!-- Arrow -->
+      <path d="M350 255 L350 283" stroke="#378ADD" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
+      <text x="370" y="275" font-family="Inter" font-size="11" fill="#378ADD" font-weight="600">Khi thực thi ↓</text>
+
+      <!-- Level 3 -->
+      <rect x="40" y="290" width="620" height="110" rx="14" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+      <text x="60" y="320" font-family="Inter" font-weight="700" font-size="14" fill="#085041">CẤP ĐỘ 3 — Resources (không giới hạn)</text>
+      <text x="60" y="342" font-family="Inter" font-size="13" fill="#5f5e5a">Scripts, templates, references — tải riêng từng file</text>
+      <text x="60" y="362" font-family="Inter" font-size="13" fill="#5f5e5a">→ Script code KHÔNG vào context, chỉ output mới vào</text>
+      <text x="60" y="382" font-family="Inter" font-size="13" fill="#1D9E75" font-weight="600">= Đóng gói hàng MB tài liệu với chi phí token ≈ 0</text>
+      <rect x="500" y="305" width="140" height="32" rx="8" fill="#1D9E75"/>
+      <text x="570" y="326" font-family="Inter" font-weight="600" font-size="12" fill="white" text-anchor="middle">0 tokens idle</text>
+
+      <defs>
+        <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Sơ đồ: Kiến trúc Progressive Disclosure 3 cấp — context window được bảo vệ bằng cách tải thông tin theo nhu cầu</div>
+  </div>
+
+  <div class="highlight green">
+    <strong>🔑 Insight quan trọng từ Thariq Shihipar (kỹ sư Anthropic):</strong><br>
+    "Context window là tài nguyên công cộng — mỗi token bạn nhét vào đều cạnh tranh trực tiếp với conversation history và reasoning space của model."
+  </div>
+
+  <h3>Tại sao điều này quan trọng?</h3>
+  <p>LLM có hiện tượng <strong>"context rot"</strong> — khi context quá dài, khả năng nhớ lại thông tin giảm sút do cơ chế attention phải xử lý n² quan hệ cặp đôi. Anthropic báo cáo context engineering đúng cách cải thiện <strong>54% hiệu suất</strong> benchmark agent, giảm <strong>84% token consumption</strong> trong test 100 vòng.</p>
+</section>
+
+<!-- ==================== SECTION 3: 9 CATEGORIES ==================== -->
+<section>
+  <h2>9 danh mục Skill nội bộ Anthropic</h2>
+  <p class="section-desc">Thariq Shihipar xác nhận taxonomy này vào 03/2026 — không phải quy tắc bắt buộc, mà là cách tốt để kiểm tra "tổ chức mình đang thiếu loại nào".</p>
+
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="num" style="background:var(--accent-light);color:var(--accent);">1</div>
+      <h4>Library & API Reference</h4>
+      <p>Dạy Claude dùng đúng library/SDK nội bộ mà training data chưa biết</p>
+      <span class="example">billing-lib</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--blue-light);color:var(--blue);">2</div>
+      <h4>Product Verification</h4>
+      <p>Test & verify code đang chạy đúng. Kết hợp Playwright, tmux</p>
+      <span class="example">signup-flow-driver</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--accent2-light);color:var(--accent2);">3</div>
+      <h4>Data Fetching & Analysis</h4>
+      <p>Kết nối data stack, monitoring. Đóng gói credentials, query patterns</p>
+      <span class="example">funnel-query</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--amber-light);color:var(--amber);">4</div>
+      <h4>Business Process</h4>
+      <p>Rút gọn workflow lặp đi lặp lại thành 1 lệnh đơn</p>
+      <span class="example">standup-post</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--pink-light);color:var(--pink);">5</div>
+      <h4>Code Scaffolding</h4>
+      <p>Generate boilerplate cho framework bằng composable scripts</p>
+      <span class="example">new-migration</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--coral-light);color:var(--coral);">6</div>
+      <h4>Code Quality & Review</h4>
+      <p>Enforce code standards, chạy tự động qua hooks / GitHub Actions</p>
+      <span class="example">adversarial-review</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--green-light);color:var(--green);">7</div>
+      <h4>CI/CD & Deployment</h4>
+      <p>Push, deploy, release management. Babysit PR, retry CI</p>
+      <span class="example">babysit-pr</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:var(--red-light);color:var(--red);">8</div>
+      <h4>Runbooks</h4>
+      <p>Nhận triệu chứng → điều tra multi-tool → báo cáo chẩn đoán</p>
+      <span class="example">oncall-runner</span>
+    </div>
+    <div class="cat-card">
+      <div class="num" style="background:#f0efe8;color:var(--text2);">9</div>
+      <h4>Infrastructure Ops</h4>
+      <p>Bảo trì, destructive actions cần guardrails (cleanup orphaned pods...)</p>
+      <span class="example">dependency-management</span>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>💡 Quy tắc vàng:</strong> Skills hiệu quả nhất khi dạy Claude những điều nó CHƯA BIẾT — kiến thức nội bộ tổ chức (internal API, quy trình team, deployment procedures), không phải kiến thức chung mà model đã biết từ training data.
+  </div>
+</section>
+
+<!-- ==================== SECTION 4: BEST PRACTICES ==================== -->
+<section>
+  <h2>9 tips viết Skill hay — từ người trong cuộc</h2>
+  <p class="section-desc">Best practices từ đội Anthropic sau hàng trăm skills nội bộ, tổng hợp từ bài viết của Thariq Shihipar và tài liệu chính thức.</p>
+
+  <!-- Tip 1: Description -->
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">1. Description là trigger, không phải summary</h3>
+    <p>Khi khởi động, Claude scan description của tất cả skills để quyết định "có skill nào phù hợp?" Description viết cho <strong>model đọc</strong>, không phải cho người.</p>
+    <div class="good-bad">
+      <div class="bad">
+        <div class="label">❌ Description tệ</div>
+        <code>"I help with Excel."</code>
+      </div>
+      <div class="good">
+        <div class="label">✅ Description tốt</div>
+        <code>"Xử lý file Excel và tạo báo cáo. Sử dụng khi user hỏi về dữ liệu bảng tính, phân tích CSV, hoặc đầu ra dạng bảng."</code>
+      </div>
+    </div>
+    <p style="margin-top:12px;font-size:14px;color:var(--text2);">Research cộng đồng cho thấy: description tối ưu đúng cách cải thiện activation rate từ 20% → 50%. Thêm examples thì 72% → 90%.</p>
+  </div>
+
+  <!-- Tip 2: Gotchas -->
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">2. Gotchas — phần giá trị nhất</h3>
+    <p>Claude đã biết nhiều pattern tiêu chuẩn. Skill nên tập trung vào <strong>thông tin đẩy model ra khỏi hành vi mặc định</strong>. Phần Gotchas liệt kê các failure points phổ biến — update liên tục qua thời gian.</p>
+    <pre><code><span class="code-comment">## Gotchas</span>
+<span class="code-str">- API v3 trả 200 nhưng body rỗng khi token hết hạn</span>
+<span class="code-str">- Field "amount" là CENT, không phải dollar</span>
+<span class="code-str">- Staging dùng endpoint khác production</span>
+<span class="code-str">- Luôn check rate limit header trước khi retry</span></code></pre>
+  </div>
+
+  <!-- Tip 3-9 grid -->
+  <div class="tip-grid">
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--accent2-light);">📁</div>
+      <h4>3. File system = Context engineering</h4>
+      <p>Tách reference ra file riêng (<code>REFERENCE.md</code>, <code>FORMS.md</code>). Claude chỉ đọc khi cần → tiết kiệm token.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--blue-light);">💾</div>
+      <h4>4. Dùng ${CLAUDE_PLUGIN_DATA}</h4>
+      <p>Data trong skill directory bị xóa khi upgrade. Lưu vào thư mục ổn định này cho logs, config, SQLite.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--amber-light);">🔗</div>
+      <h4>5. On-demand hooks</h4>
+      <p>Hooks chỉ active khi skill gọi: <code>/careful</code> block destructive ops, <code>/freeze</code> lock files. 18+ event types.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--pink-light);">📜</div>
+      <h4>6. Script storage — cực hiệu quả</h4>
+      <p>Đóng gói script sẵn → Claude compose thay vì viết từ đầu. Code script không vào context, chỉ output.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--coral-light);">🎯</div>
+      <h4>7. Đừng "railroading" Claude</h4>
+      <p>Skill được tái sử dụng nhiều lần. Cho đủ thông tin nhưng để Claude linh hoạt thích ứng tình huống.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--accent-light);">⚙️</div>
+      <h4>8. Setup pattern</h4>
+      <p>Skill cần config? Lưu vào <code>config.json</code>. Chưa setup → agent hỏi user. Pattern đơn giản nhưng hiệu quả.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 5: EXAMPLE ==================== -->
+<section>
+  <h2>Demo: Skill "standup-post" hoạt động thế nào?</h2>
+  <p class="section-desc">Theo dõi một skill đi qua từng cấp độ progressive disclosure để hiểu cơ chế hoạt động thực tế.</p>
+
+  <div class="stepper">
+    <div class="step" style="border-left: 3px solid var(--accent);">
+      <div class="step-num" style="color:var(--accent);">Bước 1</div>
+      <h4>Khởi động Claude Code</h4>
+      <p>Claude scan metadata: <code>standup-post</code> — "Tổng hợp standup từ GitHub + Jira"</p>
+      <p style="color:var(--accent);font-weight:600;margin:4px 0 0;">~100 tokens</p>
+      <span class="arrow-right">→</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--blue);">
+      <div class="step-num" style="color:var(--blue);">Bước 2</div>
+      <h4>User: "Viết standup cho hôm nay"</h4>
+      <p>Claude khớp yêu cầu → đọc SKILL.md body: quy trình, format, gotchas</p>
+      <p style="color:var(--blue);font-weight:600;margin:4px 0 0;">~2.000 tokens</p>
+      <span class="arrow-right">→</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--accent2);">
+      <div class="step-num" style="color:var(--accent2);">Bước 3</div>
+      <h4>Thực thi</h4>
+      <p>Chạy <code>scripts/fetch_activity.py</code> → lấy GitHub PRs + Jira tickets. Đọc <code>standups.log</code> để so sánh</p>
+      <p style="color:var(--accent2);font-weight:600;margin:4px 0 0;">Chỉ output vào context</p>
+    </div>
+  </div>
+
+  <div class="highlight green">
+    <strong>🎯 Kết quả:</strong> Claude tổng hợp activity từ nhiều nguồn, format theo template chuẩn team, so sánh với lần trước để giữ consistency — tất cả từ 1 lệnh <code>/standup-post</code>
+  </div>
+</section>
+
+<!-- ==================== SECTION 6: COMPARISON ==================== -->
+<section>
+  <h2>So sánh với Cursor, Windsurf, Copilot, Cline</h2>
+  <p class="section-desc">Tất cả đều dùng markdown + metadata — nhưng cách và thời điểm load vào context window là yếu tố quyết định.</p>
+
+  <div style="overflow-x:auto;">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Tính năng</th>
+        <th>Claude Code Skills</th>
+        <th>Cursor Rules</th>
+        <th>Windsurf Rules</th>
+        <th>Copilot</th>
+        <th>Cline Rules</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tải theo nhu cầu</strong></td>
+        <td><span class="badge badge-yes">✓ Progressive</span></td>
+        <td><span class="badge badge-partial">Glob-based</span></td>
+        <td><span class="badge badge-partial">Model decide</span></td>
+        <td><span class="badge badge-no">Always-on</span></td>
+        <td><span class="badge badge-no">Append prompt</span></td>
+      </tr>
+      <tr>
+        <td><strong>Thư mục + scripts</strong></td>
+        <td><span class="badge badge-yes">✓ Đầy đủ</span></td>
+        <td><span class="badge badge-no">File đơn</span></td>
+        <td><span class="badge badge-no">File đơn</span></td>
+        <td><span class="badge badge-no">File đơn</span></td>
+        <td><span class="badge badge-no">File đơn</span></td>
+      </tr>
+      <tr>
+        <td><strong>Hooks/Events</strong></td>
+        <td><span class="badge badge-yes">18+ event types</span></td>
+        <td><span class="badge badge-no">Không</span></td>
+        <td><span class="badge badge-no">Không</span></td>
+        <td><span class="badge badge-partial">Có hooks</span></td>
+        <td><span class="badge badge-no">Không</span></td>
+      </tr>
+      <tr>
+        <td><strong>Cross-platform</strong></td>
+        <td><span class="badge badge-yes">agentskills.io</span></td>
+        <td><span class="badge badge-no">Cursor only</span></td>
+        <td><span class="badge badge-no">Windsurf only</span></td>
+        <td><span class="badge badge-partial">VS Code/GH</span></td>
+        <td><span class="badge badge-no">Cline only</span></td>
+      </tr>
+      <tr>
+        <td><strong>Đặc biệt</strong></td>
+        <td>Plugin marketplace</td>
+        <td>Glob patterns tốt</td>
+        <td>Memories system</td>
+        <td>Platform sâu nhất</td>
+        <td>AI tự sửa rules</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== SECTION 7: CONTEXT ENGINEERING ==================== -->
+<section>
+  <h2>Context Engineering > Prompt Engineering</h2>
+  <p class="section-desc">Skills là triển khai trực tiếp của context engineering — khái niệm mà Anthropic gọi là "sự tiến hoá tự nhiên của prompt engineering".</p>
+
+  <!-- SVG: Context vs Prompt -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Left box: Prompt Engineering -->
+      <rect x="30" y="30" width="290" height="200" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.8"/>
+      <text x="175" y="60" font-family="Inter" font-weight="700" font-size="14" fill="#791F1F" text-anchor="middle">Prompt Engineering</text>
+      <text x="175" y="85" font-family="Inter" font-size="12" fill="#5f5e5a" text-anchor="middle">Phạm vi: System prompt</text>
+      <line x1="60" y1="100" x2="290" y2="100" stroke="#E24B4A" stroke-width="0.5" stroke-dasharray="4"/>
+      <text x="55" y="122" font-family="Inter" font-size="12" fill="#5f5e5a">• Cách diễn đạt hướng dẫn</text>
+      <text x="55" y="144" font-family="Inter" font-size="12" fill="#5f5e5a">• Tối ưu single-turn</text>
+      <text x="55" y="166" font-family="Inter" font-size="12" fill="#5f5e5a">• Chỉnh sửa câu chữ prompt</text>
+      <text x="55" y="192" font-family="Inter" font-size="12" fill="#E24B4A" font-weight="600">→ Tĩnh, giới hạn phạm vi</text>
+
+      <!-- Arrow -->
+      <path d="M330 130 L370 130" stroke="#534AB7" stroke-width="2.5" fill="none" marker-end="url(#arrowPurple2)"/>
+      <text x="350" y="120" font-family="Inter" font-size="11" fill="#534AB7" text-anchor="middle" font-weight="700">TIẾN HOÁ</text>
+
+      <!-- Right box: Context Engineering -->
+      <rect x="380" y="30" width="290" height="200" rx="14" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.8"/>
+      <text x="525" y="60" font-family="Inter" font-weight="700" font-size="14" fill="#085041" text-anchor="middle">Context Engineering</text>
+      <text x="525" y="85" font-family="Inter" font-size="12" fill="#5f5e5a" text-anchor="middle">Phạm vi: TOÀN BỘ tokens</text>
+      <line x1="410" y1="100" x2="640" y2="100" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="4"/>
+      <text x="405" y="122" font-family="Inter" font-size="12" fill="#5f5e5a">• System + tool defs + MCP data</text>
+      <text x="405" y="144" font-family="Inter" font-size="12" fill="#5f5e5a">• Conversation history + memory</text>
+      <text x="405" y="166" font-family="Inter" font-size="12" fill="#5f5e5a">• Retrieved docs + compaction</text>
+      <text x="405" y="192" font-family="Inter" font-size="12" fill="#1D9E75" font-weight="600">→ Động, quản lý toàn bộ pipeline</text>
+
+      <defs>
+        <marker id="arrowPurple2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Context engineering quản lý toàn bộ cấu hình token model nhìn thấy — không chỉ prompt</div>
+  </div>
+
+  <p>Anthropic xác định <strong>6 chiến lược chính</strong>: system prompt đúng "độ cao", thiết kế tool hiệu quả token, truy xuất context đúng lúc, progressive disclosure, compaction cho task dài, và ghi chú có cấu trúc cho agentic memory.</p>
+
+  <div class="highlight">
+    <strong>💡 Thariq nói:</strong> "Hãy nghĩ về toàn bộ file system như một dạng context engineering và progressive disclosure." — Skills chính là triển khai thực tế của triết lý này.
+  </div>
+</section>
+
+<!-- ==================== SECTION 8: ECOSYSTEM ==================== -->
+<section>
+  <h2>Hệ sinh thái & cảnh báo chất lượng</h2>
+  <p class="section-desc">60K+ skills trên GitHub nhưng chất lượng rất khác nhau. Biết chọn đúng skill là kỹ năng quan trọng.</p>
+
+  <div class="highlight coral">
+    <strong>⚠️ Cảnh báo thực tế:</strong> Nhà đánh giá Mikhail Shcheglov test 47 skills phổ biến → <strong>40 cái làm output TỆ HƠN</strong> so với Claude Code thuần. Hầu hết chỉ là "shallow prompt wrappers" thêm token, latency mà không tạo giá trị.
+  </div>
+
+  <h3>Skills đáng chú ý (đã được kiểm chứng)</h3>
+  <div class="tip-grid">
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--accent-light);">🎨</div>
+      <h4>frontend-design</h4>
+      <p>Skill chính thức của Anthropic. 277K+ installs. Cải thiện "design taste" của Claude, tránh mấy pattern AI cũ rích.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--green-light);">🛡️</div>
+      <h4>Sentry code-review</h4>
+      <p>Skill bảo mật duy nhất Tim Kamanin thấy đáng cài đặt sau khi test 5 security skills.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--blue-light);">🔧</div>
+      <h4>obra/superpowers</h4>
+      <p>20+ skills đã battle-tested: TDD, debugging, collaboration workflows. Bộ sưu tập cộng đồng chất lượng cao.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--amber-light);">🧰</div>
+      <h4>skill-creator (meta-skill)</h4>
+      <p>Skill để tạo skill! Có vòng lặp tối ưu description, chạy eval 60/40 train/test, iterate tới 5 lần.</p>
+    </div>
+  </div>
+
+  <h3>Nơi tìm Skills chất lượng</h3>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://claude.com/plugins" target="_blank">
+      <div class="r-title">Claude Plugin Marketplace</div>
+      <div class="r-url">claude.com/plugins</div>
+    </a>
+    <a class="resource-card" href="https://github.com/anthropics/skills" target="_blank">
+      <div class="r-title">GitHub — anthropics/skills</div>
+      <div class="r-url">github.com/anthropics/skills</div>
+    </a>
+    <a class="resource-card" href="https://skillsmp.com" target="_blank">
+      <div class="r-title">SkillsMP — 500K+ entries</div>
+      <div class="r-url">skillsmp.com</div>
+    </a>
+    <a class="resource-card" href="https://agent-skills.cc" target="_blank">
+      <div class="r-title">agent-skills.cc — 1K curated</div>
+      <div class="r-url">agent-skills.cc</div>
+    </a>
+  </div>
+</section>
+
+<!-- ==================== SECTION 9: RESOURCES ==================== -->
+<section>
+  <h2>Tài nguyên học tập chính thức</h2>
+  <p class="section-desc">Nguồn tham khảo chính thức và các bài viết kỹ thuật từ đội Anthropic — đáng bookmark.</p>
+
+  <h3>Tài liệu Anthropic</h3>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://docs.claude.com/en/docs/claude-code/skills" target="_blank">
+      <div class="r-title">Skills Documentation</div>
+      <div class="r-url">docs.claude.com/.../skills</div>
+    </a>
+    <a class="resource-card" href="https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview" target="_blank">
+      <div class="r-title">Agent Skills Overview</div>
+      <div class="r-url">docs.claude.com/.../overview</div>
+    </a>
+    <a class="resource-card" href="https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" target="_blank">
+      <div class="r-title">Engineering Blog: Agent Skills</div>
+      <div class="r-url">anthropic.com/engineering/...</div>
+    </a>
+    <a class="resource-card" href="https://anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">
+      <div class="r-title">Context Engineering Blog</div>
+      <div class="r-url">anthropic.com/engineering/...</div>
+    </a>
+  </div>
+
+  <h3>Bài viết & talks của Thariq Shihipar (@trq212)</h3>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://x.com/trq212/status/2033949937936085378" target="_blank">
+      <div class="r-title">How We Use Skills (03/2026)</div>
+      <div class="r-url">x.com/trq212/status/203394...</div>
+    </a>
+    <a class="resource-card" href="https://youtube.com/watch?v=TqC1qOfiVcQ" target="_blank">
+      <div class="r-title">Agent SDK Workshop (~2h)</div>
+      <div class="r-url">youtube.com — AI Engineer CODE</div>
+    </a>
+    <a class="resource-card" href="https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf" target="_blank">
+      <div class="r-title">Complete Guide PDF</div>
+      <div class="r-url">resources.anthropic.com/...</div>
+    </a>
+    <a class="resource-card" href="https://agentskills.io" target="_blank">
+      <div class="r-title">Open Standard Spec</div>
+      <div class="r-url">agentskills.io</div>
+    </a>
+  </div>
+</section>
+
+<!-- ==================== SECTION 10: QUICK START ==================== -->
+<section>
+  <h2>Bắt đầu trong 5 phút</h2>
+  <p class="section-desc">Tạo skill đầu tiên của bạn — chỉ cần 1 file SKILL.md.</p>
+
+  <div class="stepper">
+    <div class="step" style="border-left: 3px solid var(--accent);">
+      <div class="step-num" style="color:var(--accent);">1</div>
+      <h4>Tạo thư mục</h4>
+      <p><code>mkdir -p .claude/skills/my-first-skill</code></p>
+      <span class="arrow-right">→</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--blue);">
+      <div class="step-num" style="color:var(--blue);">2</div>
+      <h4>Viết SKILL.md</h4>
+      <p>YAML frontmatter + hướng dẫn + gotchas</p>
+      <span class="arrow-right">→</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--accent2);">
+      <div class="step-num" style="color:var(--accent2);">3</div>
+      <h4>Dùng ngay!</h4>
+      <p>Gõ <code>/my-first-skill</code> hoặc để Claude tự kích hoạt</p>
+    </div>
+  </div>
+
+  <h3>Template khởi đầu</h3>
+  <pre><code><span class="code-punct">---</span>
+<span class="code-key">name:</span> <span class="code-str">my-first-skill</span>
+<span class="code-key">description:</span> <span class="code-str">"Mô tả WHEN TO TRIGGER — không phải summary.</span>
+<span class="code-str">  Ví dụ: Sử dụng khi user yêu cầu X, Y, hoặc Z."</span>
+<span class="code-punct">---</span>
+
+<span class="code-comment"># Hướng dẫn chính (giữ dưới 5.000 tokens)</span>
+
+Quy trình:
+1. Bước 1...
+2. Bước 2...
+
+<span class="code-comment">## Gotchas</span>
+<span class="code-str">- Điểm hay sai #1</span>
+<span class="code-str">- Điểm hay sai #2</span>
+
+<span class="code-comment">## Tài liệu tham khảo</span>
+Xem <span class="code-key">references/api-docs.md</span> để biết chi tiết API.</code></pre>
+
+  <div class="highlight green">
+    <strong>🚀 Mẹo nhanh:</strong> Dùng meta-skill <code>skill-creator</code> của Anthropic — gõ <code>/skill-creator</code> trong Claude Code và nó sẽ giúp bạn tạo skill mới, tự tối ưu description, chạy eval để kiểm tra trigger rate!
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Tổng hợp & biên soạn bởi Nitrotech Asia • Nguồn: Anthropic Official Docs, Thariq Shihipar's "Lessons from Building Claude Code" series, Anthropic Engineering Blog</p>
+  <p style="margin-top:8px;">Cập nhật: Tháng 3/2026</p>
+</footer>
+
+</body>
+</html>
