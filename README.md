@@ -12,9 +12,8 @@ Mục tiêu:
 ## 📚 Nội dung chính
 
 ### 🧠 AI System & Framework
-- [Skill System](./docs/skill-system/skill-system.md)
-- [Skill System — Hướng dẫn trực quan](./docs/skill-system/skill-system-visual.html)
-- [Claude Code Agent Skills — Hướng dẫn trực quan](./docs/claude-code-skills-huong-dan-truc-quan.html)
+- [Skill System](./docs/skill-system/skill-system.md) · [🎨 Visual](./docs/skill-system/skill-system-visual.html)
+- [Claude Code Agent Skills](./docs/claude-code-skills-huong-dan-truc-quan.html)
 - AI Workflow Design
 - Prompt vs Skill vs Agent
 
