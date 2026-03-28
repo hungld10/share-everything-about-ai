@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TIÊU ĐỀ}} — Hướng dẫn trực quan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* === Copy đầy đủ CSS từ design-system.css reference === */
+/* === Bao gồm: variables, hero, container, section, cards, === */
+/* === highlight, code, diagram, cat-grid, tip-grid, === */
+/* === good-bad, stepper, timeline, compare-table, === */
+/* === resource-grid, footer, responsive === */
+</style>
+</head>
+<body>
+
+<!-- HERO: Gradient bg, tiêu đề, subtitle, 3-4 stats -->
+<div class="hero">
+  <h1>{{Tiêu đề chủ đề}}</h1>
+  <p class="subtitle">{{Mô tả ngắn gọn — 1-2 câu}}</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="num">{{số}}</span>
+      <span class="label">{{nhãn}}</span>
+    </div>
+    <!-- thêm 2-3 stat nữa -->
+  </div>
+</div>
+
+<div class="container">
+
+<!-- SECTION: Mỗi chủ đề chính là 1 <section> -->
+<section>
+  <h2>{{Tiêu đề section}}</h2>
+  <p class="section-desc">{{Mô tả ngắn cho section}}</p>
+
+  <!-- Chọn components phù hợp: -->
+
+  <!-- Highlight box -->
+  <div class="highlight">
+    <strong>{{Label}}:</strong> {{Nội dung quan trọng}}
+  </div>
+
+  <!-- Good vs Bad -->
+  <div class="good-bad">
+    <div class="bad">
+      <div class="label">{{Label sai}}</div>
+      <p>{{Giải thích}}</p>
+    </div>
+    <div class="good">
+      <div class="label">{{Label đúng}}</div>
+      <p>{{Giải thích}}</p>
+    </div>
+  </div>
+
+  <!-- Card grid -->
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--accent-light);">{{emoji}}</div>
+      <h4>{{Tên}}</h4>
+      <p>{{Mô tả}}</p>
+      <span class="example">{{ví dụ}}</span>
+    </div>
+    <!-- thêm cards -->
+  </div>
+
+  <!-- SVG Diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 {{height}}" xmlns="http://www.w3.org/2000/svg">
+      <!-- Vẽ sơ đồ bằng rect, text, path, marker -->
+    </svg>
+    <div class="diagram-caption">{{Chú thích sơ đồ}}</div>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step" style="border-left: 3px solid var(--accent);">
+      <div class="step-num" style="color:var(--accent);">B1</div>
+      <h4>{{Tên bước}}</h4>
+      <p>{{Mô tả}}</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <!-- thêm steps -->
+  </div>
+
+  <!-- Code block -->
+  <pre><code><span class="code-comment"># Comment</span>
+<span class="code-key">key:</span> <span class="code-str">"value"</span></code></pre>
+
+</section>
+
+<!-- SECTION: Tài nguyên tham khảo (luôn đặt cuối) -->
+<section>
+  <h2>Nguồn tham khảo</h2>
+  <p class="section-desc">Tài liệu chính thức và các bài viết chuyên sâu.</p>
+  <div class="resource-grid">
+    <a class="resource-card" href="{{url}}" target="_blank">
+      <div class="r-title">{{Tên tài liệu}}</div>
+      <div class="r-url">{{domain}}</div>
+    </a>
+    <!-- thêm resource cards -->
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER: Luôn có -->
+<footer>
+  <p>Tổng hợp &amp; biên soạn bởi Hưng 2x &bull; Nguồn: {{danh sách nguồn}}</p>
+  <p style="margin-top:8px;">Cập nhật: Tháng {{MM/YYYY}}</p>
+</footer>
+
+</body>
+</html>

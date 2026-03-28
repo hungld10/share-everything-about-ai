@@ -1,0 +1,132 @@
+/*
+ * Design System cho tài liệu trực quan HTML
+ * Repo: share-everything-about-ai
+ *
+ * File này là THAM KHẢO để Claude tạo tài liệu HTML nhất quán.
+ * Khi tạo file HTML mới, copy toàn bộ CSS variables và các component
+ * cần dùng vào <style> block của file đó (self-contained, không external CSS).
+ */
+
+/* ==================== COLOR TOKENS ==================== */
+:root {
+  /* Backgrounds */
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+
+  /* Text */
+  --text: #1a1a18;
+  --text2: #5f5e5a;           /* secondary */
+  --text3: #888780;           /* muted */
+
+  /* Border */
+  --border: rgba(0,0,0,0.08);
+
+  /* Brand colors */
+  --accent: #534AB7;          /* primary purple */
+  --accent-light: #EEEDFE;
+  --accent2: #1D9E75;         /* secondary green */
+  --accent2-light: #E1F5EE;
+
+  /* Semantic colors */
+  --blue: #378ADD;
+  --blue-light: #E6F1FB;
+  --coral: #D85A30;
+  --coral-light: #FAECE7;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --pink: #D4537E;
+  --pink-light: #FBEAF0;
+  --red: #E24B4A;
+  --red-light: #FCEBEB;
+  --green: #639922;
+  --green-light: #EAF3DE;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+/*
+ * Font stack: Inter (headings + body), JetBrains Mono (code)
+ * Google Fonts link to include in <head>:
+ * <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+ */
+
+/* ==================== COMPONENT CATALOG ==================== */
+
+/*
+ * 1. HERO SECTION
+ *    - Gradient background: linear-gradient(135deg, #1a1a2e 0%, #534AB7 40%, #1D9E75 80%, #378ADD 100%)
+ *    - Hoặc: linear-gradient(135deg, #26215C 0%, #534AB7 50%, #1D9E75 100%)
+ *    - White text, centered
+ *    - Stats: flex row, glass-morphism cards (rgba white bg + backdrop-filter blur)
+ *    - h1: clamp(28px, 5vw, 48px), font-weight 800
+ *
+ * 2. HIGHLIGHT BOXES
+ *    - Default (purple): bg var(--accent-light), border rgba(83,74,183,0.12)
+ *    - Green: class .green
+ *    - Coral (warning): class .coral
+ *    - Blue (info): class .blue
+ *    - Padding: 20px 24px, border-radius: 12px
+ *
+ * 3. GOOD vs BAD COMPARISON
+ *    - 2-column grid
+ *    - .good: bg var(--green-light), green border
+ *    - .bad: bg var(--red-light), red border
+ *    - Label: uppercase, 12px, bold
+ *
+ * 4. CARD GRID (cat-grid)
+ *    - grid-template-columns: repeat(auto-fill, minmax(230px, 1fr))
+ *    - Cards: white bg, border, rounded 12px, hover lift effect
+ *    - Icon badge: 36x36 rounded square with colored bg
+ *    - Example tag: mono font, accent color, light bg pill
+ *
+ * 5. TIP GRID
+ *    - grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+ *    - Cards: white bg, 20px padding, icon 36x36 on top
+ *
+ * 6. STEPPER (horizontal process)
+ *    - Flex row, equal-width steps
+ *    - Left colored border per step
+ *    - Arrow-right between steps (absolute positioned)
+ *    - Responsive: becomes vertical on mobile
+ *
+ * 7. TIMELINE (vertical)
+ *    - Left line: 2px gradient from accent to accent2
+ *    - Circle dots: 12px, border accent, white fill
+ *    - Items: cards with phase label + h4 + description
+ *
+ * 8. COMPARISON TABLE
+ *    - border-collapse: separate, rounded corners
+ *    - th: uppercase, gray bg
+ *    - Badges: .badge-yes (green), .badge-no (red), .badge-partial (amber)
+ *
+ * 9. CODE BLOCKS
+ *    - pre: bg #1e1e2e (Catppuccin Mocha), text #cdd6f4
+ *    - Syntax classes: .code-comment (#6c7086), .code-key (#cba6f7),
+ *      .code-str (#a6e3a1), .code-punct (#89b4fa)
+ *
+ * 10. RESOURCE CARDS
+ *     - Grid links with title + url, hover lift
+ *     - URL in mono font, accent color
+ *
+ * 11. SVG DIAGRAMS
+ *     - Inline SVG in .diagram-wrap container
+ *     - Use brand colors for fills/strokes
+ *     - Text: font-family="Inter"
+ *     - Arrow markers with matching colors
+ *     - Caption below: .diagram-caption, 13px, muted color
+ *
+ * 12. LAYER CARDS (for layered architectures)
+ *     - Horizontal card: number badge left + content right
+ *     - Left colored border matching the layer
+ *     - Question tagline at bottom in layer color
+ *
+ * 13. FOOTER
+ *     - Centered, muted text, border-top
+ *     - Format: "Tổng hợp & biên soạn bởi Hưng 2x • Nguồn: ..."
+ *     - "Cập nhật: Tháng MM/YYYY"
+ */
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+/*
+ * 640px: stepper → vertical, cat-grid → 1col, hero stats smaller
+ * 560px: good-bad → 1col
+ */
