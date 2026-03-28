@@ -8,6 +8,7 @@ Thư mục này chứa các tài liệu hệ thống hoá về AI.
 
 ### 🧠 Skill System
 - [Skill System Guide](./skill-system/skill-system.md)
+- [Skill System — Hướng dẫn trực quan](./skill-system/skill-system-visual.html)
 - [Claude Code Agent Skills — Hướng dẫn trực quan cho người mới](./claude-code-skills-huong-dan-truc-quan.html)
 
 ---

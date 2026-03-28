@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill System Guide — Hướng dẫn trực quan xây dựng hệ thống kỹ năng AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --text: #1a1a18;
+  --text2: #5f5e5a;
+  --text3: #888780;
+  --border: rgba(0,0,0,0.08);
+  --accent: #534AB7;
+  --accent-light: #EEEDFE;
+  --accent2: #1D9E75;
+  --accent2-light: #E1F5EE;
+  --blue: #378ADD;
+  --blue-light: #E6F1FB;
+  --coral: #D85A30;
+  --coral-light: #FAECE7;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --pink: #D4537E;
+  --pink-light: #FBEAF0;
+  --red: #E24B4A;
+  --red-light: #FCEBEB;
+  --green: #639922;
+  --green-light: #EAF3DE;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #534AB7 40%, #1D9E75 80%, #378ADD 100%);
+  color: white;
+  padding: 80px 24px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(255,255,255,0.04) 0%, transparent 50%);
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero .subtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  opacity: 0.85;
+  max-width: 640px;
+  margin: 0 auto 32px;
+  position: relative;
+  font-weight: 400;
+}
+.hero .stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.hero .stat {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 16px 24px;
+  min-width: 160px;
+}
+.hero .stat .num {
+  font-size: 28px;
+  font-weight: 800;
+  display: block;
+}
+.hero .stat .label {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Section */
+section {
+  padding: 64px 0;
+}
+section + section {
+  border-top: 1px solid var(--border);
+}
+
+h2 {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.section-desc {
+  font-size: 17px;
+  color: var(--text2);
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  color: var(--text);
+}
+
+p { margin-bottom: 16px; }
+p + p { margin-top: -4px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-accent {
+  border-left: 4px solid var(--accent);
+}
+
+/* Highlight box */
+.highlight {
+  background: var(--accent-light);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  border: 1px solid rgba(83,74,183,0.12);
+}
+.highlight.green {
+  background: var(--accent2-light);
+  border-color: rgba(29,158,117,0.12);
+}
+.highlight.coral {
+  background: var(--coral-light);
+  border-color: rgba(216,90,48,0.12);
+}
+.highlight.blue {
+  background: var(--blue-light);
+  border-color: rgba(55,138,221,0.12);
+}
+.highlight strong { color: var(--accent); }
+.highlight.green strong { color: var(--accent2); }
+.highlight.coral strong { color: var(--coral); }
+
+/* Code */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  background: #f0efe8;
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: #3C3489;
+}
+pre {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 12px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+.code-comment { color: #6c7086; }
+.code-key { color: #cba6f7; }
+.code-str { color: #a6e3a1; }
+.code-punct { color: #89b4fa; }
+
+/* Diagram container */
+.diagram-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 24px 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.diagram-wrap svg {
+  max-width: 100%;
+  height: auto;
+}
+.diagram-caption {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Category grid */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.cat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.cat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.cat-card .icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.cat-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.cat-card p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin: 0;
+}
+.cat-card .example {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+/* Tips */
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.tip-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.tip-card .tip-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.tip-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tip-card p {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Good vs Bad */
+.good-bad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+@media (max-width: 560px) {
+  .good-bad { grid-template-columns: 1fr; }
+}
+.good-bad .good, .good-bad .bad {
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 14px;
+}
+.good-bad .good {
+  background: var(--green-light);
+  border: 1px solid rgba(99,153,34,0.15);
+}
+.good-bad .bad {
+  background: var(--red-light);
+  border: 1px solid rgba(226,75,74,0.15);
+}
+.good-bad .label {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.good .label { color: var(--green); }
+.bad .label { color: var(--red); }
+
+/* Stepper */
+.stepper {
+  display: flex;
+  gap: 0;
+  margin: 24px 0;
+  align-items: stretch;
+}
+.step {
+  flex: 1;
+  position: relative;
+  padding: 20px 16px 20px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.step:first-child { border-radius: 12px 0 0 12px; }
+.step:last-child { border-radius: 0 12px 12px 0; }
+.step + .step { border-left: none; }
+.step .step-num {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.step h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.step p { font-size: 12.5px; color: var(--text2); line-height: 1.45; margin: 0; }
+.step .arrow-right {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: var(--text3);
+  font-size: 18px;
+}
+
+/* Layer card */
+.layer-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.layer-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.layer-content h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.layer-content p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0;
+}
+.layer-content .layer-q {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* Resources */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.resource-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: block;
+}
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.resource-card .r-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.resource-card .r-url {
+  font-size: 12px;
+  color: var(--accent);
+  word-break: break-all;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  margin: 24px 0;
+  padding-left: 32px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  border-radius: 2px;
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--card);
+}
+.timeline-item .phase {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.timeline-item h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.timeline-item p {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text3);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .stepper { flex-direction: column; }
+  .step { border-radius: 0 !important; }
+  .step:first-child { border-radius: 12px 12px 0 0 !important; }
+  .step:last-child { border-radius: 0 0 12px 12px !important; }
+  .step + .step { border-left: 1px solid var(--border); border-top: none; }
+  .step .arrow-right { display: none; }
+  .hero .stats { gap: 12px; }
+  .hero .stat { min-width: 120px; padding: 12px 16px; }
+  .hero .stat .num { font-size: 22px; }
+  .cat-grid { grid-template-columns: 1fr; }
+  .layer-card { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+  <h1>Skill System Guide</h1>
+  <p class="subtitle">Hướng dẫn trực quan xây dựng hệ thống kỹ năng AI — từ tư duy gốc đến triển khai thực tế 30 ngày</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="num">5</span>
+      <span class="label">Layer<br>kiến trúc</span>
+    </div>
+    <div class="stat">
+      <span class="num">8</span>
+      <span class="label">Loại kỹ năng<br>cơ bản</span>
+    </div>
+    <div class="stat">
+      <span class="num">7</span>
+      <span class="label">Bước<br>triển khai</span>
+    </div>
+    <div class="stat">
+      <span class="num">30</span>
+      <span class="label">Ngày<br>lộ trình</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ==================== SECTION 1: SKILL VS PROMPT ==================== -->
+<section>
+  <h2>Kỹ năng khác gì với Prompt?</h2>
+  <p class="section-desc">Hiểu sự khác biệt cốt lõi giữa prompt đơn lẻ và hệ thống kỹ năng — nền tảng để xây dựng "AI Knowledge OS".</p>
+
+  <div class="good-bad">
+    <div class="bad">
+      <div class="label">Prompt truyền thống</div>
+      <p>Gửi yêu cầu &rarr; nhận kết quả &rarr; chỉnh sửa &rarr; thử lại. Phù hợp tác vụ ngắn, ít bước, ít rủi ro. Phải giải thích lại từ đầu mỗi lần.</p>
+    </div>
+    <div class="good">
+      <div class="label">Skill System</div>
+      <p>Đóng gói tri thức, quy tắc, quy trình vào file Markdown. Claude "biết" sẵn context, chỉ cần kích hoạt. Tái sử dụng, kiểm chứng, phối hợp nhóm.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Ian Loe:</strong> "Nếu prompt engineering vẫn là giới hạn cao nhất cho khả năng AI của bạn, thì bạn đã tụt lại phía sau." Thay vào đó, hãy xây dựng thư viện skills — mỗi skill đóng gói tri thức cho một loại công việc cụ thể.
+  </div>
+
+  <p>Mỗi skill thực chất là một <strong>thư mục chứa SKILL.md</strong> cùng các tài nguyên liên quan. Claude "tự học" skill một lần rồi áp dụng lại mãi mà không phải giải thích lại từ đầu. Điều này giúp chuyển từ <em>prompt engineer cá nhân</em> sang <em>skill system tổ chức</em>.</p>
+
+  <pre><code><span class="code-comment"># Ví dụ: Thay vì prompt lặp lại mỗi lần...</span>
+<span class="code-str">"Viết proposal đào tạo AI cho doanh nghiệp X,
+ cần có phần mục tiêu, phương pháp, timeline..."</span>
+
+<span class="code-comment"># ...Bạn tạo skill một lần, dùng mãi:</span>
+<span class="code-key">/write-enterprise-proposal</span>
+<span class="code-str">&rarr; Claude đã biết cấu trúc, ngôn ngữ, checklist</span>
+<span class="code-str">&rarr; Chỉ cần cung cấp: tên KH, mục tiêu, đối tượng</span></code></pre>
+</section>
+
+<!-- ==================== SECTION 2: 5-LAYER MODEL ==================== -->
+<section>
+  <h2>Mô hình 5 lớp của hệ Skill</h2>
+  <p class="section-desc">Kiến trúc hoàn chỉnh từ mục tiêu đến cải tiến liên tục — mỗi lớp trả lời một câu hỏi then chốt.</p>
+
+  <!-- SVG Diagram: 5 Layers -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 520" xmlns="http://www.w3.org/2000/svg">
+      <!-- Layer 1: Intent -->
+      <rect x="40" y="10" width="620" height="80" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+      <text x="60" y="40" font-family="Inter" font-weight="800" font-size="14" fill="#3C3489">1. INTENT — Mục tiêu</text>
+      <text x="60" y="62" font-family="Inter" font-size="12" fill="#5f5e5a">Xác định rõ nhiệm vụ, đầu ra mong đợi và tiêu chí đúng/sai</text>
+      <rect x="520" y="25" width="120" height="28" rx="8" fill="#534AB7"/>
+      <text x="580" y="44" font-family="Inter" font-weight="600" font-size="11" fill="white" text-anchor="middle">Cái gì?</text>
+
+      <path d="M350 90 L350 108" stroke="#534AB7" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+
+      <!-- Layer 2: Knowledge -->
+      <rect x="40" y="110" width="620" height="80" rx="12" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+      <text x="60" y="140" font-family="Inter" font-weight="800" font-size="14" fill="#0C447C">2. KNOWLEDGE — Tri thức</text>
+      <text x="60" y="162" font-family="Inter" font-size="12" fill="#5f5e5a">Domain guides, quy định, best practices, style guide, API docs, template</text>
+      <rect x="520" y="125" width="120" height="28" rx="8" fill="#378ADD"/>
+      <text x="580" y="144" font-family="Inter" font-weight="600" font-size="11" fill="white" text-anchor="middle">Cần biết gì?</text>
+
+      <path d="M350 190 L350 208" stroke="#378ADD" stroke-width="1.5" fill="none" marker-end="url(#a2)"/>
+
+      <!-- Layer 3: Execution -->
+      <rect x="40" y="210" width="620" height="80" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+      <text x="60" y="240" font-family="Inter" font-weight="800" font-size="14" fill="#085041">3. EXECUTION — Thực thi</text>
+      <text x="60" y="262" font-family="Inter" font-size="12" fill="#5f5e5a">Scripts, workflow, commands, templates, automation, checklist thao tác</text>
+      <rect x="520" y="225" width="120" height="28" rx="8" fill="#1D9E75"/>
+      <text x="580" y="244" font-family="Inter" font-weight="600" font-size="11" fill="white" text-anchor="middle">Cách làm?</text>
+
+      <path d="M350 290 L350 308" stroke="#1D9E75" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
+
+      <!-- Layer 4: Verification -->
+      <rect x="40" y="310" width="620" height="80" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="1"/>
+      <text x="60" y="340" font-family="Inter" font-weight="800" font-size="14" fill="#8B3415">4. VERIFICATION — Kiểm chứng</text>
+      <text x="60" y="362" font-family="Inter" font-size="12" fill="#5f5e5a">Test cases, checklist, ví dụ mẫu, anti-patterns, đối chiếu thực tế</text>
+      <rect x="520" y="325" width="120" height="28" rx="8" fill="#D85A30"/>
+      <text x="580" y="344" font-family="Inter" font-weight="600" font-size="11" fill="white" text-anchor="middle">Đã đúng?</text>
+
+      <path d="M350 390 L350 408" stroke="#D85A30" stroke-width="1.5" fill="none" marker-end="url(#a4)"/>
+
+      <!-- Layer 5: Evolution -->
+      <rect x="40" y="410" width="620" height="80" rx="12" fill="#FAEEDA" stroke="#BA7517" stroke-width="1"/>
+      <text x="60" y="440" font-family="Inter" font-weight="800" font-size="14" fill="#6B4410">5. EVOLUTION — Phát triển</text>
+      <text x="60" y="462" font-family="Inter" font-size="12" fill="#5f5e5a">Gotchas, lessons learned, changelog, phiên bản nâng cấp</text>
+      <rect x="520" y="425" width="120" height="28" rx="8" fill="#BA7517"/>
+      <text x="580" y="444" font-family="Inter" font-weight="600" font-size="11" fill="white" text-anchor="middle">Học được gì?</text>
+
+      <!-- Loop arrow -->
+      <path d="M680 450 Q720 250 680 50" stroke="#888780" stroke-width="1.5" fill="none" stroke-dasharray="6" marker-end="url(#a5)"/>
+      <text x="706" y="255" font-family="Inter" font-size="10" fill="#888780" transform="rotate(90, 706, 255)" text-anchor="middle">Vòng lặp cải tiến</text>
+
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Sơ đồ: Mô hình 5 lớp của hệ Skill — vòng lặp liên tục từ Intent đến Evolution</div>
+  </div>
+
+  <div class="layer-card" style="border-left: 4px solid var(--accent);">
+    <div class="layer-num" style="background:var(--accent-light);color:var(--accent);">1</div>
+    <div class="layer-content">
+      <h4>Intent Layer — Lớp Mục tiêu</h4>
+      <p>Xác định rõ nhiệm vụ cần làm, đầu ra mong đợi và tiêu chí đúng/sai. Nếu không rõ ràng ở bước này, AI rất dễ sinh ra kết quả "có vẻ ổn" nhưng không thực sự giải quyết yêu cầu.</p>
+      <div class="layer-q" style="color:var(--accent);">"Chúng ta đang cố gắng đạt mục tiêu gì, theo tiêu chuẩn nào?"</div>
+    </div>
+  </div>
+
+  <div class="layer-card" style="border-left: 4px solid var(--blue);">
+    <div class="layer-num" style="background:var(--blue-light);color:var(--blue);">2</div>
+    <div class="layer-content">
+      <h4>Knowledge Layer — Lớp Tri thức</h4>
+      <p>Cung cấp mọi kiến thức nền tảng, quy tắc và tài liệu cần thiết: domain guides, quy định doanh nghiệp, best practices, style guide, API docs, template, voice branding.</p>
+      <div class="layer-q" style="color:var(--blue);">"AI cần biết gì để làm đúng?"</div>
+    </div>
+  </div>
+
+  <div class="layer-card" style="border-left: 4px solid var(--accent2);">
+    <div class="layer-num" style="background:var(--accent2-light);color:var(--accent2);">3</div>
+    <div class="layer-content">
+      <h4>Execution Layer — Lớp Thực thi</h4>
+      <p>Hướng dẫn cách thực hiện nhiệm vụ: scripts, mẫu workflow, commands, file template, code scaffold, automation script, checklist thao tác. Biến hướng dẫn thành công cụ thực thi cụ thể.</p>
+      <div class="layer-q" style="color:var(--accent2);">"Cần làm gì và chạy như thế nào?"</div>
+    </div>
+  </div>
+
+  <div class="layer-card" style="border-left: 4px solid var(--coral);">
+    <div class="layer-num" style="background:var(--coral-light);color:var(--coral);">4</div>
+    <div class="layer-content">
+      <h4>Verification Layer — Lớp Kiểm chứng</h4>
+      <p>Đảm bảo kết quả đầu ra thực sự đạt yêu cầu: test case, ví dụ đầu ra mong đợi, checklist chống mẫu lỗi (anti-patterns), bước mô phỏng, đối chiếu thực tế.</p>
+      <div class="layer-q" style="color:var(--coral);">"Làm sao biết kết quả là đúng và có thể tin dùng?"</div>
+    </div>
+  </div>
+
+  <div class="layer-card" style="border-left: 4px solid var(--amber);">
+    <div class="layer-num" style="background:var(--amber-light);color:var(--amber);">5</div>
+    <div class="layer-content">
+      <h4>Evolution Layer — Lớp Phát triển</h4>
+      <p>Kỹ năng không phải tài liệu bất động. Sau mỗi lần sử dụng, rút kinh nghiệm và cập nhật skill: gotchas, lessons learned, changelog, phiên bản nâng cấp.</p>
+      <div class="layer-q" style="color:var(--amber);">"Sau mỗi lần, học được gì để cải thiện?"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 3: 8 SKILL TYPES ==================== -->
+<section>
+  <h2>8 loại kỹ năng cơ bản</h2>
+  <p class="section-desc">Phân loại skill theo vai trò — giúp tổ chức hệ thống có cấu trúc, dễ tìm kiếm và tái sử dụng.</p>
+
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--accent-light);">📚</div>
+      <h4>Knowledge Skills</h4>
+      <p>Cung cấp nền tảng tri thức và khung tham khảo: company overview, brand voice, framework đào tạo, tiêu chuẩn proposal</p>
+      <span class="example">genai-training-framework</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--coral-light);">✅</div>
+      <h4>Verification Skills</h4>
+      <p>Kiểm tra đầu ra của các task khác. Điểm khác biệt giữa "AI trả lời hay" và "AI làm việc đáng tin"</p>
+      <span class="example">verify-proposal-completeness</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--blue-light);">📊</div>
+      <h4>Data Skills</h4>
+      <p>Xử lý và phân tích dữ liệu: phân tích báo cáo, làm sạch danh sách, rút insight từ khảo sát</p>
+      <span class="example">analyze-excel-sales-report</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--accent2-light);">⚡</div>
+      <h4>Automation Skills</h4>
+      <p>Thực hiện các chuỗi thao tác lặp đi lặp lại: tạo thư mục, tạo báo cáo, xuất bản nội dung</p>
+      <span class="example">generate-client-kickoff-pack</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--amber-light);">🏗️</div>
+      <h4>Scaffolding Skills</h4>
+      <p>Dựng khung ban đầu cho project hay tài liệu: khởi tạo project, dựng khuôn proposal, tạo dàn ý</p>
+      <span class="example">scaffold-laravel-project</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--pink-light);">🔍</div>
+      <h4>Review Skills</h4>
+      <p>Phản biện, rà soát và cải thiện đầu ra: đánh giá logic nghiệp vụ, nhận xét slide, soát bài viết</p>
+      <span class="example">review-business-logic</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--green-light);">📋</div>
+      <h4>Runbook Skills</h4>
+      <p>Hướng dẫn vận hành theo quy trình: onboard khách hàng, xử lý bug, vận hành ngày đào tạo</p>
+      <span class="example">runbook-client-onboarding</span>
+    </div>
+    <div class="cat-card">
+      <div class="icon-badge" style="background:var(--red-light);">🚀</div>
+      <h4>Infra/CI/Delivery</h4>
+      <p>Triển khai kỹ thuật và đảm bảo chất lượng: deploy, pre-release checks, CI checklist</p>
+      <span class="example">deploy-vercel-app</span>
+    </div>
+  </div>
+
+  <div class="highlight green">
+    <strong>Mẹo:</strong> Verification Skills chính là yếu tố quyết định sự ổn định. Chúng giúp tự động kiểm tra sai sót, từ đó nâng giá trị kết quả của AI.
+  </div>
+</section>
+
+<!-- ==================== SECTION 4: GOLDEN RULES ==================== -->
+<section>
+  <h2>4 nguyên tắc vàng khi thiết kế Skill</h2>
+  <p class="section-desc">Những quy tắc quan trọng nhất để xây dựng kỹ năng chất lượng, đáng tin cậy và dễ bảo trì.</p>
+
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">1. Một skill = một nhiệm vụ duy nhất</h3>
+    <p>Đừng gom nhiều chức năng khác nhau vào một skill. Tạo các <strong>micro-skill</strong> nhỏ, đơn nhiệm — giảm phức tạp và tăng khả năng bảo trì.</p>
+    <div class="good-bad">
+      <div class="bad">
+        <div class="label">&#10008; Sai</div>
+        <code>skill_viết_bài_kiểm_tra_đăng_fb_tạo_ảnh</code>
+      </div>
+      <div class="good">
+        <div class="label">&#10004; Đúng</div>
+        <code>write-facebook-post</code> + <code>verify-facebook-post</code> + <code>generate-cover-image</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">2. Skill là thư mục, không chỉ file đơn lẻ</h3>
+    <p>Mỗi thư mục skill có thể chứa <code>SKILL.md</code> (bắt buộc) kèm theo <code>scripts/</code>, <code>references/</code>, <code>assets/</code>.</p>
+    <pre><code><span class="code-key">skill-name/</span>
+├── <span class="code-str">SKILL.md</span>              <span class="code-comment"># Hướng dẫn (file chính)</span>
+├── <span class="code-str">scripts/</span>              <span class="code-comment"># Script (mã tự động)</span>
+├── <span class="code-str">references/</span>           <span class="code-comment"># Tài liệu bổ sung</span>
+└── <span class="code-str">assets/</span>               <span class="code-comment"># Tài nguyên (template, hình ảnh)</span></code></pre>
+  </div>
+
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">3. Luôn có Verification đi kèm</h3>
+    <p>Nếu thiếu bước kiểm chứng, skill chỉ là "máy phát sinh" kết quả. Mỗi skill cần định nghĩa rõ: <strong>tiêu chí đạt</strong>, test case, checklist, ví dụ mẫu tốt/xấu, gotchas và cách sửa.</p>
+  </div>
+
+  <div class="card card-accent">
+    <h3 style="margin-top:0;">4. Cấu trúc hướng dẫn ưu tiên hơn điều khiển cứng</h3>
+    <p>Tránh liệt kê quá chi tiết kiểu "Bước 1 làm này, Bước 2 làm kia". Thay vào đó, xác định mục tiêu chung, cung cấp ngữ cảnh và công cụ phù hợp, rồi <strong>để Claude tự biện luận chi tiết</strong>.</p>
+    <div class="highlight blue">
+      <strong>Claude docs:</strong> "Set appropriate degrees of freedom" — chọn mức hướng dẫn chung hay chi tiết tuỳ vào độ phức tạp của nhiệm vụ.
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 5: PERSONAL SKILL OS ==================== -->
+<section>
+  <h2>Personal Skill OS — 6 cụm chức năng</h2>
+  <p class="section-desc">Xây dựng thư viện kỹ năng cá nhân như một "hệ điều hành" cho công việc hằng ngày.</p>
+
+  <div class="tip-grid">
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--accent-light);">🧠</div>
+      <h4>Thinking Skills</h4>
+      <p>Phân tích, viết lách chiến lược, phát triển ý tưởng. VD: <code>think-strategically</code>, <code>write-in-my-voice</code>, <code>build-framework-from-ideas</code></p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--blue-light);">✍️</div>
+      <h4>Content Skills</h4>
+      <p>Tạo và chỉnh sửa nội dung. VD: <code>write-facebook-post</code>, <code>write-linkedin-article</code>, <code>create-video-script</code></p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--accent2-light);">🎓</div>
+      <h4>Teaching Skills</h4>
+      <p>Thiết kế chương trình đào tạo. VD: <code>design-nontech-ai-training</code>, <code>build-case-study-by-department</code></p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--amber-light);">💼</div>
+      <h4>Consulting Skills</h4>
+      <p>Dự án tư vấn, khảo sát nhu cầu. VD: <code>diagnose-enterprise-ai-readiness</code>, <code>build-ai-usecase-map</code></p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--coral-light);">🔧</div>
+      <h4>Build Skills</h4>
+      <p>Prototyping, code, tự động hoá. VD: <code>scaffold-agent-project</code>, <code>build-laravel-module</code>, <code>setup-rag-structure</code></p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon" style="background:var(--green-light);">⚙️</div>
+      <h4>Operating Skills</h4>
+      <p>Công việc hằng ngày. VD: <code>meeting-note-to-actions</code>, <code>weekly-review-and-planning</code>, <code>postmortem-after-project</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 6: PROJECT SKILL OS ==================== -->
+<section>
+  <h2>Project Skill OS — Cấu trúc dự án</h2>
+  <p class="section-desc">Mỗi dự án là một "mini-OS" có cấu trúc thư mục rõ ràng, giúp Claude dễ dàng truy cập và thực thi.</p>
+
+  <pre><code><span class="code-key">project-name/</span>
+├── <span class="code-str">context/</span>              <span class="code-comment"># Bối cảnh dự án (goals, stakeholders, scope)</span>
+├── <span class="code-str">skills/</span>               <span class="code-comment"># Các thư mục skill (knowledge/, verification/, automation/)</span>
+├── <span class="code-str">templates/</span>            <span class="code-comment"># Mẫu tài liệu, mẫu code, ví dụ</span>
+├── <span class="code-str">data/</span>                 <span class="code-comment"># Dữ liệu mẫu, schema, mapping</span>
+├── <span class="code-str">scripts/</span>              <span class="code-comment"># Mã nguồn phục vụ dự án</span>
+├── <span class="code-str">outputs/</span>              <span class="code-comment"># Kết quả đã tạo (báo cáo, code)</span>
+├── <span class="code-str">logs/</span>                 <span class="code-comment"># Nhật ký quá trình chạy</span>
+└── <span class="code-str">lessons/</span>              <span class="code-comment"># Bài học, gotchas, changelog, failure cases</span></code></pre>
+
+  <div class="highlight green">
+    <strong>Workflow:</strong> Claude làm việc trong project &rarr; truy cập <code>skills/</code> để chọn skill phù hợp &rarr; dùng <code>templates/</code> và <code>scripts/</code> sẵn có &rarr; ghi output vào <code>outputs/</code> &rarr; rút kinh nghiệm vào <code>lessons/</code>
+  </div>
+</section>
+
+<!-- ==================== SECTION 7: 7-STEP PROCESS ==================== -->
+<section>
+  <h2>Quy trình triển khai 7 bước</h2>
+  <p class="section-desc">Từ xác định tác vụ đến cập nhật liên tục — quy trình thực chiến để biến công việc thành skill.</p>
+
+  <div class="stepper" style="margin-bottom: 16px;">
+    <div class="step" style="border-left: 3px solid var(--accent);">
+      <div class="step-num" style="color:var(--accent);">B1</div>
+      <h4>Xác định tác vụ</h4>
+      <p>Liệt kê 5–10 việc lặp lại nhiều nhất</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--blue);">
+      <div class="step-num" style="color:var(--blue);">B2</div>
+      <h4>Tách đơn vị</h4>
+      <p>Chia nhỏ thành các bước độc lập</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--accent2);">
+      <div class="step-num" style="color:var(--accent2);">B3</div>
+      <h4>Đóng gói</h4>
+      <p>Tạo thư mục skill với SKILL.md</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--amber);">
+      <div class="step-num" style="color:var(--amber);">B4</div>
+      <h4>Viết SKILL.md</h4>
+      <p>Theo cấu trúc chuẩn</p>
+    </div>
+  </div>
+
+  <div class="stepper">
+    <div class="step" style="border-left: 3px solid var(--pink);">
+      <div class="step-num" style="color:var(--pink);">B5</div>
+      <h4>Đính kèm tài nguyên</h4>
+      <p>Template, ví dụ, checklist</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--coral);">
+      <div class="step-num" style="color:var(--coral);">B6</div>
+      <h4>Sử dụng thực tế</h4>
+      <p>Test với 5–10 bài toán</p>
+      <span class="arrow-right">&rarr;</span>
+    </div>
+    <div class="step" style="border-left: 3px solid var(--accent2);">
+      <div class="step-num" style="color:var(--accent2);">B7</div>
+      <h4>Cập nhật & Evolve</h4>
+      <p>Rút kinh nghiệm, thêm gotchas</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 8: SKILL.MD TEMPLATE ==================== -->
+<section>
+  <h2>Mẫu SKILL.md chuẩn</h2>
+  <p class="section-desc">Template đầy đủ để tạo skill đầu tiên của bạn — chỉ cần copy và tuỳ chỉnh.</p>
+
+  <pre><code><span class="code-comment"># SKILL: write-enterprise-proposal</span>
+
+<span class="code-key">## Purpose</span>
+<span class="code-str">Tạo proposal đào tạo/tư vấn chuẩn enterprise,
+logic rõ ràng, hướng đến lãnh đạo doanh nghiệp.</span>
+
+<span class="code-key">## Use When</span>
+<span class="code-str">- Cần viết proposal cho khách hàng doanh nghiệp
+- Cần chuẩn hoá cấu trúc đề xuất
+- Cần giữ phong cách chuyên nghiệp, chiến lược</span>
+
+<span class="code-key">## Required Inputs</span>
+<span class="code-str">- Tên khách hàng
+- Bối cảnh / nhu cầu của khách
+- Đối tượng học viên
+- Mục tiêu chương trình
+- Thời lượng dự kiến</span>
+
+<span class="code-key">## Expected Output</span>
+<span class="code-str">- Proposal có cấu trúc hoàn chỉnh
+- Ngôn ngữ rõ ràng, thuyết phục
+- Logic: bối cảnh &rarr; vấn đề &rarr; mục tiêu &rarr; chương trình &rarr; kết quả</span>
+
+<span class="code-key">## Execution Approach</span>
+<span class="code-str">1. Phân tích bối cảnh và nhu cầu
+2. Nhóm nhu cầu thành 3–5 mục tiêu trọng tâm
+3. Thiết kế chương trình phù hợp từng nhóm
+4. Viết proposal theo cấu trúc chuẩn
+5. Kiểm tra sự rõ ràng và sức thuyết phục</span>
+
+<span class="code-key">## Verification</span>
+<span class="code-str">- Đã có đủ phần bắt buộc chưa?
+- Logic triển khai (mục tiêu &rarr; kết quả) có xuyên suốt?
+- Ngôn ngữ phù hợp đối tượng?
+- Bám sát đầu vào (nhu cầu khách hàng)?</span>
+
+<span class="code-key">## Gotchas</span>
+<span class="code-str">- Nhu cầu KH mơ hồ &rarr; hỏi lại trước khi viết
+- Đối tượng quá đa dạng &rarr; tách section riêng
+- Thiếu data thực tế &rarr; dùng case study tương tự</span>
+
+<span class="code-key">## References</span>
+<span class="code-str">- templates/proposal-outline.md
+- examples/sample-proposal-b2b.md
+- verification/checklist.md</span>
+
+<span class="code-key">## Changelog</span>
+<span class="code-str">- v1.0: Khởi tạo cơ bản
+- v1.1: Thêm mục tiêu chi tiết theo phòng ban
+- v1.2: Cập nhật checklist, bổ sung ví dụ</span></code></pre>
+</section>
+
+<!-- ==================== SECTION 9: 4C VERIFICATION ==================== -->
+<section>
+  <h2>Cơ chế kiểm chứng 4C</h2>
+  <p class="section-desc">Framework 4C để thiết kế bước kiểm chứng cho mọi skill — biến đầu ra "có vẻ ổn" thành "đủ tin cậy để dùng".</p>
+
+  <div class="cat-grid">
+    <div class="cat-card" style="border-top: 3px solid var(--accent);">
+      <div class="icon-badge" style="background:var(--accent-light);">✓</div>
+      <h4>Correctness — Đúng đắn</h4>
+      <p>Kết quả có chính xác không? Đúng logic, đúng dữ kiện, đúng quy trình/định dạng?</p>
+    </div>
+    <div class="cat-card" style="border-top: 3px solid var(--blue);">
+      <div class="icon-badge" style="background:var(--blue-light);">📋</div>
+      <h4>Completeness — Đầy đủ</h4>
+      <p>Có thiếu phần nào không? Tất cả phần bắt buộc đã có chưa? Có bỏ sót bước quan trọng?</p>
+    </div>
+    <div class="cat-card" style="border-top: 3px solid var(--accent2);">
+      <div class="icon-badge" style="background:var(--accent2-light);">🎯</div>
+      <h4>Context-fit — Phù hợp</h4>
+      <p>Nội dung đúng ngành chưa? Đúng đối tượng (non-tech/kỹ thuật)? Có bám sát mục tiêu?</p>
+    </div>
+    <div class="cat-card" style="border-top: 3px solid var(--coral);">
+      <div class="icon-badge" style="background:var(--coral-light);">⚠️</div>
+      <h4>Consequence — Hậu quả</h4>
+      <p>Nếu kết quả này được dùng thực tế, có rủi ro gì? Có điều gì sẽ bị hiểu sai?</p>
+    </div>
+  </div>
+
+  <div class="highlight coral">
+    <strong>Câu hỏi vàng:</strong> "Nếu kết quả này được đưa vào thực tế ngay lập tức, rủi ro lớn nhất là gì?" — Thêm câu hỏi này vào cuối mỗi skill để nâng cao độ tin cậy.
+  </div>
+</section>
+
+<!-- ==================== SECTION 10: 4 AXES ==================== -->
+<section>
+  <h2>4 trục tuỳ chỉnh cho cá nhân</h2>
+  <p class="section-desc">Dựa trên định hướng cá nhân, tuỳ chỉnh bộ skill thành 4 trục chính phù hợp với bạn.</p>
+
+  <div class="tip-grid">
+    <div class="tip-card" style="border-top: 3px solid var(--accent);">
+      <div class="tip-icon" style="background:var(--accent-light);">📝</div>
+      <h4>Trục 1: Tư duy & Viết chiến lược AI</h4>
+      <p>Phân tích, viết bài chia sẻ, nghiên cứu. VD: <code>translate-research-into-insight</code>, <code>write-ai-article-in-my-voice</code>, <code>build-framework-from-research</code></p>
+    </div>
+    <div class="tip-card" style="border-top: 3px solid var(--blue);">
+      <div class="tip-icon" style="background:var(--blue-light);">🎓</div>
+      <h4>Trục 2: Đào tạo doanh nghiệp</h4>
+      <p>Nội dung đào tạo và case-study. VD: <code>design-enterprise-ai-training</code>, <code>adapt-content-for-nontech</code>, <code>write-training-proposal</code></p>
+    </div>
+    <div class="tip-card" style="border-top: 3px solid var(--accent2);">
+      <div class="tip-icon" style="background:var(--accent2-light);">🤖</div>
+      <h4>Trục 3: Phát triển sản phẩm/agent</h4>
+      <p>Kỹ thuật và phát triển agent. VD: <code>scaffold-agent-skill-system</code>, <code>design-system-prompt</code>, <code>build-rag-folder-structure</code></p>
+    </div>
+    <div class="tip-card" style="border-top: 3px solid var(--amber);">
+      <div class="tip-icon" style="background:var(--amber-light);">💼</div>
+      <h4>Trục 4: Vận hành kinh doanh</h4>
+      <p>Thu thập yêu cầu, họp hành, chuyển tải. VD: <code>client-brief-to-prd</code>, <code>meeting-notes-to-action-plan</code>, <code>diagnose-ai-readiness</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 11: 30-DAY ROADMAP ==================== -->
+<section>
+  <h2>Lộ trình triển khai 30 ngày</h2>
+  <p class="section-desc">Gợi ý chia tiến trình xây skill thành 5 giai đoạn — bắt đầu từ từ, tích luỹ dần và hoàn thiện bền vững.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="phase">Giai đoạn 1 — Ngày 1–7</div>
+      <h4>Gom & Đánh giá</h4>
+      <p>Liệt kê 10 tác vụ lặp lại nhiều nhất. Đánh giá những task vừa lặp lại, vừa giá trị để ưu tiên.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="phase">Giai đoạn 2 — Ngày 8–14</div>
+      <h4>Chuẩn hoá 5 skill đầu tiên</h4>
+      <p>2 skill nội dung + 2 skill đào tạo/tư vấn + 1 skill verification. Viết SKILL.md cơ bản, đặt vào thư mục, thêm templates và ví dụ đơn giản.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="phase">Giai đoạn 3 — Ngày 15–20</div>
+      <h4>Hoàn thiện chi tiết</h4>
+      <p>Đính kèm đầy đủ mẫu tài liệu, ví dụ đầu ra, checklist kiểm tra, kịch bản thực thi. Kiểm thử vài lần để chắc skill chạy ổn.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="phase">Giai đoạn 4 — Ngày 21–27</div>
+      <h4>Thực dùng 5–10 bài toán</h4>
+      <p>Quan sát: skill nào tiết kiệm thời gian nhất? Skill nào ra output chưa ổn? Lỗi lặp lại ở đâu? Ghi lại mọi thiếu sót.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="phase" style="color:var(--accent2);">Giai đoạn 5 — Ngày 28–30</div>
+      <h4>Cập nhật & Đóng nhãn phiên bản</h4>
+      <p>Thêm gotchas, lessons learned. Đóng nhãn version mới. Đảm bảo mọi skill đều có verification và cập nhật.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 12: FORMULA ==================== -->
+<section>
+  <h2>Công thức vận hành ngắn gọn</h2>
+  <p class="section-desc">Một vòng lặp liên tục tạo ra năng lực tích luỹ — mỗi lần lặp lại đều giúp cải thiện hệ thống tổng thể.</p>
+
+  <!-- SVG: SCOPE → SKILL → EXECUTE → VERIFY → EVOLVE -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="120" height="60" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+      <text x="70" y="46" font-family="Inter" font-weight="700" font-size="13" fill="#3C3489" text-anchor="middle">SCOPE</text>
+      <text x="70" y="64" font-family="Inter" font-size="10" fill="#5f5e5a" text-anchor="middle">Xác định bài toán</text>
+
+      <path d="M135 50 L155 50" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#af)"/>
+
+      <rect x="160" y="20" width="120" height="60" rx="10" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+      <text x="220" y="46" font-family="Inter" font-weight="700" font-size="13" fill="#0C447C" text-anchor="middle">SKILL</text>
+      <text x="220" y="64" font-family="Inter" font-size="10" fill="#5f5e5a" text-anchor="middle">Chọn/tạo module</text>
+
+      <path d="M285 50 L305 50" stroke="#378ADD" stroke-width="2" fill="none" marker-end="url(#af2)"/>
+
+      <rect x="310" y="20" width="120" height="60" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+      <text x="370" y="46" font-family="Inter" font-weight="700" font-size="13" fill="#085041" text-anchor="middle">EXECUTE</text>
+      <text x="370" y="64" font-family="Inter" font-size="10" fill="#5f5e5a" text-anchor="middle">Thực thi</text>
+
+      <path d="M435 50 L455 50" stroke="#1D9E75" stroke-width="2" fill="none" marker-end="url(#af3)"/>
+
+      <rect x="460" y="20" width="120" height="60" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1"/>
+      <text x="520" y="46" font-family="Inter" font-weight="700" font-size="13" fill="#8B3415" text-anchor="middle">VERIFY</text>
+      <text x="520" y="64" font-family="Inter" font-size="10" fill="#5f5e5a" text-anchor="middle">Kiểm tra</text>
+
+      <path d="M585 50 L605 50" stroke="#D85A30" stroke-width="2" fill="none" marker-end="url(#af4)"/>
+
+      <rect x="610" y="20" width="120" height="60" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="1"/>
+      <text x="670" y="46" font-family="Inter" font-weight="700" font-size="13" fill="#6B4410" text-anchor="middle">EVOLVE</text>
+      <text x="670" y="64" font-family="Inter" font-size="10" fill="#5f5e5a" text-anchor="middle">Cập nhật</text>
+
+      <!-- Loop arrow -->
+      <path d="M670 85 Q670 110 350 110 Q30 110 30 85" stroke="#888780" stroke-width="1.5" fill="none" stroke-dasharray="5" marker-end="url(#af5)"/>
+      <text x="350" y="106" font-family="Inter" font-size="10" fill="#888780" text-anchor="middle">Vòng lặp cải tiến liên tục</text>
+
+      <defs>
+        <marker id="af" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="af2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="af3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="af4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="af5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Công thức vận hành: SCOPE &rarr; SKILL &rarr; EXECUTE &rarr; VERIFY &rarr; EVOLVE &rarr; (lặp lại)</div>
+  </div>
+
+  <div class="highlight green">
+    <strong>Hệ Skill không chỉ giúp tăng tốc công việc một cách nhất quán, mà còn cho phép mở rộng năng lực cá nhân và tổ chức theo thời gian.</strong> Mỗi lần lặp lại — từ xác định scope đến chỉnh sửa skill — đều giúp cải thiện hệ thống tổng thể.
+  </div>
+</section>
+
+<!-- ==================== SECTION 13: REFERENCES ==================== -->
+<section>
+  <h2>Nguồn tham khảo</h2>
+  <p class="section-desc">Tài liệu chính thức và các bài viết chuyên sâu — đáng bookmark.</p>
+
+  <div class="resource-grid">
+    <a class="resource-card" href="https://ianloe.medium.com/beyond-prompt-engineering-its-time-to-build-skills-for-ai-a4ff296fc216" target="_blank">
+      <div class="r-title">Beyond Prompt Engineering — Ian Loe</div>
+      <div class="r-url">ianloe.medium.com</div>
+    </a>
+    <a class="resource-card" href="https://medium.com/@ooi_yee_fei/custom-claude-code-skill-auto-generating-updating-architecture-diagrams-with-excalidraw-431022f75a13" target="_blank">
+      <div class="r-title">Custom Claude Code Skill — Yee Fei</div>
+      <div class="r-url">medium.com/@ooi_yee_fei</div>
+    </a>
+    <a class="resource-card" href="https://gist.github.com/joyrexus/ff71917b4fc0a2cbc84974212da34a4a" target="_blank">
+      <div class="r-title">Complete Guide to Building Skills</div>
+      <div class="r-url">gist.github.com/joyrexus</div>
+    </a>
+    <a class="resource-card" href="https://abvijaykumar.medium.com/deep-dive-skill-md-part-1-2-09fc9a536996" target="_blank">
+      <div class="r-title">Deep Dive SKILL.md — A B Vijay Kumar</div>
+      <div class="r-url">abvijaykumar.medium.com</div>
+    </a>
+    <a class="resource-card" href="https://www.linkedin.com/posts/manikandanjeeva_ai-genai-claudeskills-activity-7422130149212499968-OXFn" target="_blank">
+      <div class="r-title">From Prompts to Skills Architecture</div>
+      <div class="r-url">linkedin.com/manikandanjeeva</div>
+    </a>
+    <a class="resource-card" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices" target="_blank">
+      <div class="r-title">Skill Authoring Best Practices — Claude</div>
+      <div class="r-url">platform.claude.com</div>
+    </a>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Tổng hợp & biên soạn bởi Hưng 2x &bull; Nguồn: Anthropic Official Docs, Ian Loe, Yee Fei, A B Vijay Kumar, Manikandan Jeeva</p>
+  <p style="margin-top:8px;">Cập nhật: Tháng 3/2026</p>
+</footer>
+
+</body>
+</html>
