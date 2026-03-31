@@ -17,6 +17,9 @@ Mục tiêu:
 - AI Workflow Design
 - Prompt vs Skill vs Agent
 
+### ⚙️ Claude Configuration
+- [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./docs/claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](./docs/claude-personal-preferences/claude-personal-preferences-visual.html)
+
 ### 🛠️ Engineering & Build
 - Agent Architecture
 - RAG System
