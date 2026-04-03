@@ -20,6 +20,10 @@
      Nội dung cần thể hiện: icon Claude + màn hình settings + mũi tên → conversations
      Màu sắc: tím #534AB7, xanh lá #1D9E75 -->
 
+![Tổng quan "What is Personal Preferences"](./images/fig-01-what-is-personal-preferences.png)
+*Fig-01 — Tổng quan "What is Personal Preferences"*
+
+
 **Personal Preferences** (hay "Profile Preferences") là tính năng cho phép bạn cấu hình toàn bộ hành vi của Claude một lần duy nhất — và áp dụng tự động cho **mọi cuộc hội thoại** sau đó, không cần giải thích lại.
 
 Đây là một **text field tự do** đặt tại `Settings → General → What personal preferences should Claude consider in responses?` trên Claude.ai.
@@ -41,6 +45,9 @@ Personal Preferences giải quyết đúng vấn đề đó【[1](https://suppor
      Phong cách: clean technical diagram
      Nội dung: 3 tầng (Settings store → System Prompt → Conversation)
      Màu sắc: tím #534AB7 cho System Prompt layer, xanh lá cho conversation -->
+
+![Kiến trúc "Personal Preferences Injection Flow"](./images/fig-02-injection-flow.png)
+*Fig-02 — Kiến trúc "Personal Preferences Injection Flow"*
 
 Khi bạn bắt đầu một cuộc hội thoại mới với Claude, hệ thống thực hiện theo trình tự sau:
 
@@ -78,6 +85,9 @@ Khi bạn bắt đầu một cuộc hội thoại mới với Claude, hệ thố
      Nội dung: Claude settings panel với trường Personal Preferences được highlight
      Màu sắc: giữ nguyên màu UI của Claude.ai -->
 
+![UI Mockup Settings Screen](./images/fig-03-settings-ui-mockup.png)
+*Fig-03 — UI Mockup Settings Screen*
+
 ### Các bước thực hiện
 
 1. Truy cập [claude.ai](https://claude.ai)
@@ -103,6 +113,9 @@ Từ thời điểm đó, mọi hội thoại mới sẽ tự động áp dụng
      Phong cách: modern infographic, icon-based
      6 nhóm: Identity, Behavior, Format, Domain, Language, Process
      Màu sắc: mỗi nhóm 1 màu từ design system -->
+
+![Phân loại 6 nhóm Preferences](./images/fig-04-6-preference-types.png)
+*Fig-04 — Phân loại 6 nhóm Preferences*
 
 Có thể phân loại preferences thành 6 nhóm chính:
 
@@ -171,6 +184,9 @@ Hướng dẫn Claude cách tiếp cận công việc — đây là loại **có
      Phong cách: character illustration, flat design, professional
      Mỗi persona: avatar + title + key traits
      Màu sắc: tím, xanh lá, xanh dương, cam -->
+
+![4 Persona Cards](./images/fig-05-4-personas.png)
+*Fig-05 — 4 Persona Cards*
 
 ### Developer / Kỹ sư phần mềm
 
@@ -250,6 +266,9 @@ Quy tắc:
      Nội dung: 5 cặp Do/Don't với icon checkmark/cross
      Màu sắc: xanh lá cho Do, đỏ cho Don't -->
 
+![Do vs Don't Comparison Infographic](./images/fig-06-do-vs-dont.png)
+*Fig-06 — Do vs Don't Comparison Infographic*
+
 ### DO ✅
 
 **Cụ thể về điều bạn KHÔNG muốn**
@@ -318,6 +337,9 @@ Claude có 4 tầng cấu hình, mỗi tầng có phạm vi và mục đích kh�
      Phong cách: icon-based warning cards, professional
      Nội dung: 4-5 giới hạn quan trọng với icon cảnh báo
      Màu sắc: cam #BA7517, đỏ #E24B4A -->
+
+![Warning / Limitations Infographic](./images/fig-07-limitations-warnings.png)
+*Fig-07 — Warning / Limitations Infographic*
 
 ### Giới hạn kỹ thuật
 - **Token consumption:** Preferences được nhúng vào *mỗi* conversation → tiêu thụ context window ngay từ đầu
