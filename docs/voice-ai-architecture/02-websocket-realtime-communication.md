@@ -138,58 +138,123 @@ Phone/PSTN ──→ Twilio/Telnyx
 
 **Ứng dụng:** Điện thoại thực (PSTN), gọi qua số điện thoại
 
-### Chi tiết so sánh: HTTP vs WebSocket trong thực tế
+<style>
+  .wrap{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:.5rem 0}
+  .section{margin:0 0 2rem}
+  .section-title{font-size:14px;font-weight:600;color:#1f2937;margin:0 0 10px}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
+  .vs-card{border-radius:8px;padding:14px 16px;border:.5px solid #e5e7eb;background:#ffffff}
+  .vs-h{font-size:13px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:6px;color:#1f2937}
+  .vs-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .vs-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:.5px solid #e5e7eb}
+  .vs-row:first-of-type{border-top:none}
+  .vs-k{color:#6b7280}
+  .vs-v{color:#1f2937;font-weight:600;text-align:right;max-width:55%}
+  .timeline{margin:0 0 8px}
+  .tl-label{font-size:11px;color:#6b7280;margin:0 0 6px;letter-spacing:.03em;text-transform:uppercase}
+  .tl-row{display:flex;align-items:center;gap:0;margin:0 0 4px}
+  .tl-box{font-size:10px;padding:5px 8px;border-radius:6px;text-align:center;line-height:1.3;font-weight:600}
+  .tl-arr{font-size:12px;color:#9ca3af;padding:0 2px;flex-shrink:0}
+  .tl-http .tl-box{background:#fee2e2;color:#991b1b}
+  .tl-ws .tl-box{background:#d1fae5;color:#065f46}
+  .note-box{border-radius:6px;padding:10px 14px;font-size:12px;line-height:1.5;margin:10px 0 0}
+  .note-info{background:#eff6ff;color:#1e40af;border-left:3px solid #3b82f6}
+  .note-warn{background:#fef3c7;color:#92400e;border-left:3px solid #fbbf24}
+  .pattern{background:#f3f4f6;border-radius:8px;padding:14px 16px;margin:0 0 10px}
+  .pattern-h{font-size:13px;font-weight:600;color:#1f2937;margin:0 0 8px}
+  .pattern-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:0 0 6px}
+  .pattern-node{font-size:11px;padding:6px 10px;border-radius:6px;text-align:center;line-height:1.3;white-space:nowrap;font-weight:500}
+  .n-blue{background:#dbeafe;color:#1e40af}
+  .n-green{background:#d1fae5;color:#065f46}
+  .n-purple{background:#e9d5ff;color:#6b21a8}
+  .n-gray{background:#f3f4f6;color:#4b5563;border:.5px solid #e5e7eb}
+  .p-arr{font-size:12px;color:#9ca3af;padding:0 3px;flex-shrink:0}
+  .pattern-note{font-size:11px;color:#4b5563;line-height:1.4;margin:0}
+  @media(max-width:480px){.vs{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
 
-#### So sánh kỹ thuật chi tiết
+<div class="section">
+  <div class="section-title">HTTP vs WebSocket cho audio streaming</div>
+  <div class="vs">
+    <div class="vs-card">
+      <div class="vs-h"><div class="vs-dot" style="background:#dc2626"></div> HTTP request-response</div>
+      <div class="vs-row"><span class="vs-k">Mô hình</span><span class="vs-v">Hỏi → đáp → đóng</span></div>
+      <div class="vs-row"><span class="vs-k">Hướng</span><span class="vs-v">Một chiều mỗi lượt</span></div>
+      <div class="vs-row"><span class="vs-k">Header overhead</span><span class="vs-v">200-500 bytes/request</span></div>
+      <div class="vs-row"><span class="vs-k">Connection</span><span class="vs-v">Mở/đóng mỗi lần</span></div>
+      <div class="vs-row"><span class="vs-k">Server push?</span><span class="vs-v">Không thể</span></div>
+      <div class="vs-row"><span class="vs-k">Audio 20ms chunks</span><span class="vs-v">50 req/s mỗi chiều</span></div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-h"><div class="vs-dot" style="background:#059669"></div> WebSocket (RFC 6455)</div>
+      <div class="vs-row"><span class="vs-k">Mô hình</span><span class="vs-v">Mở 1 lần → stream liên tục</span></div>
+      <div class="vs-row"><span class="vs-k">Hướng</span><span class="vs-v">Full-duplex (cả 2 chiều)</span></div>
+      <div class="vs-row"><span class="vs-k">Frame overhead</span><span class="vs-v">2-14 bytes/frame</span></div>
+      <div class="vs-row"><span class="vs-k">Connection</span><span class="vs-v">Persistent suốt cuộc gọi</span></div>
+      <div class="vs-row"><span class="vs-k">Server push?</span><span class="vs-v">Bất cứ lúc nào</span></div>
+      <div class="vs-row"><span class="vs-k">Audio 20ms chunks</span><span class="vs-v">Frames liên tục, gần 0 overhead</span></div>
+    </div>
+  </div>
+</div>
 
-| Tiêu chí | HTTP Request-Response | WebSocket (RFC 6455) |
-|---------|----------------------|----------------------|
-| **Mô hình** | Hỏi → đáp → đóng | Mở 1 lần → stream liên tục |
-| **Hướng** | Một chiều mỗi lượt | Full-duplex (cả 2 chiều) |
-| **Header overhead** | 200-500 bytes/request | 2-14 bytes/frame |
-| **Connection** | Mở/đóng mỗi lần | Persistent suốt cuộc gọi |
-| **Server push?** | Không thể | Bất cứ lúc nào |
-| **Audio 20ms chunks** | 50 req/s mỗi chiều | Frames liên tục, gần 0 overhead |
+<div class="section">
+  <div class="section-title">Gửi 1 giây audio (50 chunks × 20ms)</div>
+  <div class="timeline">
+    <div class="tl-label">HTTP — mỗi chunk là 1 request</div>
+    <div class="tl-row tl-http">
+      <div class="tl-box">Req 1<br>+header</div><span class="tl-arr">→</span>
+      <div class="tl-box">Res 1</div><span class="tl-arr">,</span>
+      <div class="tl-box">Req 2<br>+header</div><span class="tl-arr">→</span>
+      <div class="tl-box">Res 2</div><span class="tl-arr">,</span>
+      <div class="tl-box" style="opacity:.6">...×50</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-label">WebSocket — 1 connection, frames liên tục</div>
+    <div class="tl-row tl-ws">
+      <div class="tl-box">Handshake<br>(1 lần)</div><span class="tl-arr">→</span>
+      <div class="tl-box">Frame 1</div><span class="tl-arr">→</span>
+      <div class="tl-box">Frame 2</div><span class="tl-arr">→</span>
+      <div class="tl-box">Frame 3</div><span class="tl-arr">→</span>
+      <div class="tl-box" style="opacity:.7">...liên tục</div>
+    </div>
+  </div>
+  <div class="note-box note-warn">Audio G.711: mỗi chunk 20ms = ~320 bytes. HTTP header thêm ~300 bytes → overhead gần 50%. WebSocket frame header chỉ 2 bytes → overhead dưới 1%.</div>
+</div>
 
-#### Timeline: Gửi 1 giây audio (50 chunks × 20ms)
+<div class="section">
+  <div class="section-title">2 pattern WebSocket trong Voice AI</div>
+  <div class="pattern">
+    <div class="pattern-h">Pattern 1: Browser — Direct WebSocket</div>
+    <div class="pattern-flow">
+      <span class="pattern-node n-blue">Browser</span>
+      <span class="p-arr">—token→</span>
+      <span class="pattern-node n-gray">Server (auth only)</span>
+      <span class="p-arr">—token→</span>
+      <span class="pattern-node n-blue">Browser</span>
+      <span class="p-arr">══WSS══</span>
+      <span class="pattern-node n-green">AI Model</span>
+    </div>
+    <p class="pattern-note">Server không chạm audio → latency tối thiểu. Audio đi thẳng browser ↔ AI.</p>
+  </div>
+  <div class="pattern">
+    <div class="pattern-h">Pattern 2: Phone — Double WebSocket qua Server</div>
+    <div class="pattern-flow">
+      <span class="pattern-node n-purple">Phone/PSTN</span>
+      <span class="p-arr">→</span>
+      <span class="pattern-node n-purple">Twilio</span>
+      <span class="p-arr">═WS#1═</span>
+      <span class="pattern-node n-gray">Server (transcode)</span>
+      <span class="p-arr">═WS#2═</span>
+      <span class="pattern-node n-green">AI Model</span>
+    </div>
+    <p class="pattern-note">Server xử lý transcode G.711↔PCM. 2 WebSocket + audio buffer + session state nằm cùng process.</p>
+  </div>
+  <div class="note-box note-info">Đây là lý do Unified Server pattern (chủ đề 12) gom HTTP + 2 WebSocket vào 1 process — sync qua Redis mỗi 20ms sẽ giết latency.</div>
+</div>
 
-**HTTP — Mỗi chunk là 1 request:**
-```
-Req 1 (header)  →  Res 1  ,  Req 2 (header)  →  Res 2  ,  ...×50
-[======50ms======] [20ms]     [======50ms======] [20ms]
-```
-
-**Thực tế:**
-- Mỗi chunk G.711 8kHz 20ms = ~320 bytes payload
-- HTTP header = ~200-500 bytes
-- Overhead = 50-150% ❌
-- Tổng cộng: 1 giây audio = 50 requests, mỗi request overhead hàng trăm ms
-
-**WebSocket — 1 connection, frames liên tục:**
-```
-Handshake (1 lần) → Frame 1 → Frame 2 → Frame 3 → ...liên tục (50 frames)
-[====50-150ms====] [2-14B]    [2-14B]    [2-14B]
-```
-
-**Thực tế:**
-- Handshake: 50-150ms (một lần duy nhất)
-- Mỗi chunk = 1 frame: 2-14 bytes header
-- Overhead = < 1% ✅
-- Tất cả 50 frames gửi liên tục, không chờ
-
-#### Ảnh hưởng đến latency budget
-
-Với latency budget tổng 300ms:
-
-**HTTP:** 
-- 50 requests × (handshake overhead) + header overhead = **100-200ms đã mất**
-- Chỉ còn 100-200ms cho AI xử lý
-- **Kết quả:** AI bị "kém cỏi" vì không có thời gian xử lý
-
-**WebSocket:**
-- Handshake một lần: 50-150ms (amortized = gần 0ms/frame)
-- Overhead per-frame: < 1ms
-- **Kết quả:** ~280ms còn cho AI xử lý, đủ để suy luận tốt
+</div>
 
 ---
 
