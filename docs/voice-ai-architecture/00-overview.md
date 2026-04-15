@@ -366,26 +366,26 @@ Với channel browser, có một vấn đề bảo mật cơ bản: **WebSocket 
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ CONTROL PLANE — Lấy token (qua HTTP server)                    │
+│ CONTROL PLANE — Lấy token (qua HTTP server)                     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Browser        Server              AI Endpoint                │
-│    │              │                       │                    │
-│    │─────────────>│ POST /api/live-token  │                    │
-│    │              ├──────────────────────>│                    │
+│  Browser        Server              AI Endpoint                 │
+│    │              │                       │                     │
+│    │─────────────>│ POST /api/live-token  │                     │
+│    │              ├──────────────────────>│                     │
 │    │              │                   (verify auth)             │
-│    │              │<─────────────────────┤                    │
-│    │<─────────────│ ephemeral token ✓     │                    │
-│    │  (30min TTL) │  (API key stays hidden in server)          │
+│    │              │<──────────────────────┤                     │
+│    │<─────────────│ ephemeral token ✓     │                     │
+│    │  (30min TTL) │  (API key stays hidden in server)           │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
-│ DATA PLANE — Stream audio (trực tiếp, KHÔNG qua server)       │
+│ DATA PLANE — Stream audio (trực tiếp, KHÔNG qua server)         │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Browser ◄──── WebSocket + ephemeral token ───► AI Model       │
-│           ◄─── Audio stream (bidirectional) ──►                │
+│  Browser ◄──── WebSocket + ephemeral token ───► AI Model        │
+│           ◄─── Audio stream (bidirectional) ──►                 │
 │          (zero server latency · real-time)                      │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -407,21 +407,21 @@ Nhớ lại vấn đề thứ 5: 2–3 giây im lặng sau khi bắt máy. Pre-C
 ❌ KHÔNG CÓ PRE-CONNECT (Current state — chậm):
 ┌──────────────────────────────────────────────────────────────┐
 │  Bắt máy   → Connect AI      → Load prompt  → Generate voice │
-│             (800ms)           (400ms)         (1200ms)        │
-│             └─────────────────────────────────────────────┘   │
+│             (800ms)           (400ms)         (1200ms)       │
+│             └─────────────────────────────────────────────┘  │
 │                     2-3 giây im lặng                         │
 └──────────────────────────────────────────────────────────────┘
 
 ✅ CÓ PRE-CONNECT (Optimized — nhanh):
 ┌──────────────────────────────────────────────────────────────┐
 │  Phone reo   → [All work happens here]                       │
-│  (khi user   │ • Connect AI      (800ms)                      │
-│   chưa bắt)  │ • Load prompt     (400ms)                      │
-│              │ • Cache greeting  (1200ms)                     │
+│  (khi user   │ • Connect AI      (800ms)                     │
+│   chưa bắt)  │ • Load prompt     (400ms)                     │
+│              │ • Cache greeting  (1200ms)                    │
 │              └────────────────── (song song với tiếng reo)   │
 │                                                              │
-│  User bắt máy → ▶ Play greeting (100ms only)                │
-│                 ✓ Conversation starts immediately           │
+│  User bắt máy → ▶ Play greeting (100ms only)                 │
+│                 ✓ Conversation starts immediately            │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -663,21 +663,21 @@ Khi AI nhận diện được user sắp cần một action (flight booking), th
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  User nói:    "Tôi muốn đặt vé máy bay từ Hà Nội..."         │
-│                                                        ↓        │
-│ AI nhận diện intent: BOOKING_FLIGHT                           │
-│ → 🚀 Bắt đầu gọi flight API (NGAY đây, không chờ)            │
-│                                                                │
-│  User tiếp:   "...đến TP.HCM ngày mai"                        │
-│               [AI API call vẫn đang chạy...]                  │
-│                                                                │
-│  User nói xong: "✓ Tìm kiếm cho tôi"                          │
-│                 └─ Lúc này API đã có kết quả sẵn              │
-│                                                                │
-│  AI respond ngay: "Tôi thấy có 3 chuyến..."                   │
-│                   ✓ Near-zero tool latency                    │
-│                                                                │
-│  Benefit: Latency bị "che" bằng user's speaking time          │
+│  User nói:    "Tôi muốn đặt vé máy bay từ Hà Nội..."            │
+│                             ↓                                   │
+│ AI nhận diện intent: BOOKING_FLIGHT                             │
+│ → 🚀 Bắt đầu gọi flight API (NGAY đây, không chờ)               │
+│                             ↓                                   │
+│  User tiếp:   "...đến TP.HCM ngày mai"                          │
+│               [AI API call vẫn đang chạy...]                    │
+│                             ↓                                   │
+│  User nói xong: "✓ Tìm kiếm cho tôi"                            │
+│                 └─ Lúc này API đã có kết quả sẵn                │
+│                             ↓                                   │
+│  AI respond ngay: "Tôi thấy có 3 chuyến..."                     │
+│                   ✓ Near-zero tool latency                      │
+│                             ↓                                   │
+│  Benefit: Latency bị "che" bằng user's speaking time            │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
