@@ -681,6 +681,143 @@
             <div class="warning" style="margin-top: 24px;">
                 <strong>Lý do Double WebSocket:</strong> Twilio gửi audio qua WS#1, server xử lý/transcode, rồi forward qua WS#2 đến AI. Hai WebSocket này phải giao tiếp qua <strong>shared memory của 1 process</strong> — đây là lý do Unified Server pattern (chủ đề 12) quan trọng.
             </div>
+
+            <h3 style="margin-top: 40px;">Timeline chi tiết: Gửi 1 giây audio (50 chunks × 20ms)</h3>
+
+            <div class="diagram">
+                <div class="diagram-title" style="margin-bottom: 24px;"><strong>HTTP</strong> — Mỗi chunk là 1 request riêng</div>
+                <div style="background: #fecaca; padding: 16px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12px; color: #7f1d1d; margin-bottom: 20px;">
+Req 1 (header ~300B) → Res 1 , Req 2 (header ~300B) → Res 2 , ...×50<br>
+[<span style="background: #dc2626; color: white; padding: 2px 4px;">======overhead======</span>] [20ms] [<span style="background: #dc2626; color: white; padding: 2px 4px;">======overhead======</span>] [20ms]<br><br>
+Kết quả: 50 chunks × (handshake overhead) = <strong style="color: #dc2626;">100-200ms mất đi</strong> 🔴
+                </div>
+
+                <div class="diagram-title" style="margin-bottom: 24px;"><strong>WebSocket</strong> — 1 connection, frames liên tục</div>
+                <div style="background: #d1fae5; padding: 16px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12px; color: #065f46; margin-bottom: 20px;">
+Handshake (1 lần) → Frame 1 → Frame 2 → Frame 3 → ...liên tục (50 frames)<br>
+[<span style="background: #059669; color: white; padding: 2px 4px;">===50-150ms===</span>]  [2-14B]   [2-14B]   [2-14B]<br><br>
+Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059669;">~280ms cho AI xử lý</strong> 🟢
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">Ảnh hưởng đến Latency Budget (300ms tổng)</h3>
+
+            <div class="comparison">
+                <div class="comp-card http">
+                    <div class="comp-title">
+                        <div class="comp-dot danger"></div>
+                        HTTP — Tốn quá nhiều
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">50 requests overhead</span>
+                        <span class="comp-value">100-200ms</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Còn cho AI xử lý</span>
+                        <span class="comp-value">100-200ms</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Phần trăm mất đi</span>
+                        <span class="comp-value">33-66% 😱</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Kết quả</span>
+                        <span class="comp-value">AI không thể suy luận</span>
+                    </div>
+                </div>
+
+                <div class="comp-card ws">
+                    <div class="comp-title">
+                        <div class="comp-dot success"></div>
+                        WebSocket — Hiệu quả
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Handshake overhead</span>
+                        <span class="comp-value">50-150ms (1 lần)</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Còn cho AI xử lý</span>
+                        <span class="comp-value">~280ms</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Phần trăm mất đi</span>
+                        <span class="comp-value">&lt;20% ✅</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Kết quả</span>
+                        <span class="comp-value">AI có đủ thời gian tư duy</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unified Server Pattern -->
+        <section>
+            <h2>Unified Server Pattern — Tại sao architecture quan trọng</h2>
+
+            <p><strong>Khi thấy Pattern 2 (Phone Double WebSocket),</strong> nhiều engineer sẽ nghĩ: "Tại sao không tách thành 2 service riêng, rồi sync qua Redis?"</p>
+
+            <div class="warning">
+                <strong>Kết quả:</strong> Latency tăng 100-200ms chỉ vì sync qua Redis mỗi 20ms.
+            </div>
+
+            <h3>Tại sao sync qua Redis giết latency</h3>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🔄</div>
+                    <h4>Redis roundtrip</h4>
+                    <p>~1-2ms (local), ~5-10ms (network). Mỗi audio chunk = 1 write + 1 read = 2-4ms.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⚙️</div>
+                    <h4>50 chunks/giây</h4>
+                    <p>50 × 2-4ms = <strong>100-200ms/giây overhead</strong>.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📊</div>
+                    <h4>Latency budget 300ms</h4>
+                    <p>100-200ms overhead = <strong>33-66% của budget</strong>.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🧠</div>
+                    <h4>AI không có thời gian</h4>
+                    <p>Chỉ còn 100-150ms cho AI suy luận — không đủ.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">Giải pháp: Unified Server Pattern</h3>
+
+            <p><strong>Gom HTTP + 2 WebSocket vào cùng 1 Node.js process</strong> để giao tiếp qua shared memory:</p>
+
+            <div class="diagram">
+                <div class="diagram-title">Kiến trúc Unified Server (Bài 12)</div>
+                <div class="flow">
+                    <span class="flow-node purple">Twilio<br>WS#1</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node gray">Ring Buffer<br>(Shared Memory)</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node gray">Processing<br>Thread</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node green">AI Model<br>WS#2</span>
+                </div>
+            </div>
+
+            <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <strong style="color: #059669;">Kết quả:</strong>
+                <ul style="margin: 12px 0 0 20px;">
+                    <li><strong>Latency per-chunk:</strong> &lt; 1ms (shared memory, không Redis)</li>
+                    <li><strong>Overhead tổng:</strong> &lt;5% thay vì 33-66%</li>
+                    <li><strong>AI xử lý:</strong> Có ~280ms đủ để suy luận tốt</li>
+                </ul>
+            </div>
+
+            <div class="highlight" style="margin-top: 24px;">
+                <strong>Đây là điểm mấu chốt:</strong> Hiểu WebSocket không chỉ là hiểu protocol, mà là hiểu <strong>tại sao kiến trúc server phải là sao</strong> để tránh latency trap. Pattern 2 (Double WebSocket) chỉ hoạt động tốt khi triển khai qua Unified Server.
+            </div>
         </section>
 
         <!-- Lifecycle Section -->

@@ -138,6 +138,59 @@ Phone/PSTN ──→ Twilio/Telnyx
 
 **Ứng dụng:** Điện thoại thực (PSTN), gọi qua số điện thoại
 
+### Chi tiết so sánh: HTTP vs WebSocket trong thực tế
+
+#### So sánh kỹ thuật chi tiết
+
+| Tiêu chí | HTTP Request-Response | WebSocket (RFC 6455) |
+|---------|----------------------|----------------------|
+| **Mô hình** | Hỏi → đáp → đóng | Mở 1 lần → stream liên tục |
+| **Hướng** | Một chiều mỗi lượt | Full-duplex (cả 2 chiều) |
+| **Header overhead** | 200-500 bytes/request | 2-14 bytes/frame |
+| **Connection** | Mở/đóng mỗi lần | Persistent suốt cuộc gọi |
+| **Server push?** | Không thể | Bất cứ lúc nào |
+| **Audio 20ms chunks** | 50 req/s mỗi chiều | Frames liên tục, gần 0 overhead |
+
+#### Timeline: Gửi 1 giây audio (50 chunks × 20ms)
+
+**HTTP — Mỗi chunk là 1 request:**
+```
+Req 1 (header)  →  Res 1  ,  Req 2 (header)  →  Res 2  ,  ...×50
+[======50ms======] [20ms]     [======50ms======] [20ms]
+```
+
+**Thực tế:**
+- Mỗi chunk G.711 8kHz 20ms = ~320 bytes payload
+- HTTP header = ~200-500 bytes
+- Overhead = 50-150% ❌
+- Tổng cộng: 1 giây audio = 50 requests, mỗi request overhead hàng trăm ms
+
+**WebSocket — 1 connection, frames liên tục:**
+```
+Handshake (1 lần) → Frame 1 → Frame 2 → Frame 3 → ...liên tục (50 frames)
+[====50-150ms====] [2-14B]    [2-14B]    [2-14B]
+```
+
+**Thực tế:**
+- Handshake: 50-150ms (một lần duy nhất)
+- Mỗi chunk = 1 frame: 2-14 bytes header
+- Overhead = < 1% ✅
+- Tất cả 50 frames gửi liên tục, không chờ
+
+#### Ảnh hưởng đến latency budget
+
+Với latency budget tổng 300ms:
+
+**HTTP:** 
+- 50 requests × (handshake overhead) + header overhead = **100-200ms đã mất**
+- Chỉ còn 100-200ms cho AI xử lý
+- **Kết quả:** AI bị "kém cỏi" vì không có thời gian xử lý
+
+**WebSocket:**
+- Handshake một lần: 50-150ms (amortized = gần 0ms/frame)
+- Overhead per-frame: < 1ms
+- **Kết quả:** ~280ms còn cho AI xử lý, đủ để suy luận tốt
+
 ---
 
 ## Connection lifecycle — Từ mở đến đóng
@@ -248,6 +301,28 @@ Tại sao overhead thấp của WebSocket so với HTTP là yếu tố sống c�
 
 **5. Kiến trúc hai channel**
 Tại sao cùng một AI Core nhưng Browser channel (Direct WebSocket) và Phone channel (Double WebSocket) có kiến trúc hoàn toàn khác nhau.
+
+### Chi tiết sâu: Unified Server Pattern vs Distributed Architecture
+
+Nhiều engineer khi nhìn Pattern 2 (Phone Double WebSocket) sẽ tự nhiên nghĩ: *"Có thể tách thành 2 service riêng không? Một service nhận WS#1 từ Twilio, một service kết nối WS#2 đến AI Model, rồi sync qua Redis?"*
+
+**Kết quả:** Latency tăng 100-200ms chỉ vì sync qua Redis mỗi 20ms.
+
+**Lý do:**
+- Redis roundtrip: ~1-2ms per operation (local), ~5-10ms per operation (network)
+- Mỗi 20ms chunk audio → 1 write + 1 read = 2-4ms latency
+- Còn lại 16-18ms cho xử lý thực tế
+- Làm 50 lần/giây × 2-4ms = **100-200ms/giây overhead**
+
+Khi latency budget chỉ có 300ms, 100-200ms là **33-66% của toàn bộ budget**.
+
+**Giải pháp:** Unified Server Pattern (chủ đề 12) — gom HTTP + 2 WebSocket vào **cùng 1 Node.js process** để giao tiếp qua shared memory:
+- WS#1 → Buffer vòng (ring buffer, shared memory)
+- Processing thread đọc → transcode → ghi
+- WS#2 → Gửi ra
+- Tất cả trong 1 process → **latency < 1ms**
+
+**Đây là điểm mấu chốt:** Hiểu WebSocket không chỉ là hiểu protocol, mà là hiểu **tại sao kiến trúc server phải là sao** để tránh latency trap.
 
 ---
 
