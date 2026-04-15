@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser vs Phone: 2 Thế Giới Kết Nối</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #534AB7 0%, #378ADD 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .hero .subtitle {
+            font-size: 15px;
+            opacity: 0.85;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 24px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Section */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #378ADD;
+            font-weight: 700;
+        }
+
+        section h3 {
+            font-size: 22px;
+            color: #1f2937;
+            margin: 28px 0 18px 0;
+            font-weight: 600;
+        }
+
+        section p {
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        section ul, section ol {
+            margin: 16px 0 16px 20px;
+            color: #4b5563;
+        }
+
+        section li {
+            margin-bottom: 12px;
+        }
+
+        /* Cards Grid */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
+        .card-content {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .card-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .card-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Comparison Cards */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comp-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border-left: 4px solid #d1d5db;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .comp-card.browser {
+            border-left-color: #378ADD;
+        }
+
+        .comp-card.phone {
+            border-left-color: #1D9E75;
+        }
+
+        .comp-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comp-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .comp-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .comp-row:last-child {
+            border-bottom: none;
+        }
+
+        .comp-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .comp-value {
+            color: #111827;
+            font-weight: 600;
+            text-align: right;
+            max-width: 50%;
+        }
+
+        /* Pipeline Diagram */
+        .pipeline {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pipeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .pipeline-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-item {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1f2937;
+            flex: 1;
+        }
+
+        .step-item.highlight {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .step-item.processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .step-arrow {
+            color: #9ca3af;
+            font-size: 18px;
+            writing-mode: horizontal-tb;
+        }
+
+        /* Diagram */
+        .diagram {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .diagram-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .flow-node {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.3;
+            white-space: nowrap;
+        }
+
+        .flow-node.browser {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .flow-node.phone {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .flow-node.processing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .flow-node.ai {
+            background: #e9d5ff;
+            color: #6b21a8;
+        }
+
+        .flow-arrow {
+            color: #9ca3af;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Key Points */
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .point {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .point-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .point h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .point p {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 0;
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: #f0fdf4;
+            border-left: 4px solid #059669;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .highlight strong {
+            color: #059669;
+        }
+
+        /* Warning Box */
+        .warning {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .warning strong {
+            color: #dc2626;
+        }
+
+        /* Info Box */
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .info strong {
+            color: #1e40af;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #f3f4f6;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #111827;
+            font-size: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #f3f4f6;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #378ADD;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Browser vs Phone</h1>
+            <p>2 Thế Giới Kết Nối Hoàn Toàn Khác Nhau</p>
+            <p class="subtitle">Cùng một AI Model, nhưng audio quality, latency, và kiến trúc xử lý lại khác biệt hoàn toàn</p>
+
+            <div class="hero-stats">
+                <div class="stat-box">
+                    <span class="stat-number">48 kHz</span>
+                    <span class="stat-label">Browser Opus</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">8 kHz</span>
+                    <span class="stat-label">Phone G.711</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">6x</span>
+                    <span class="stat-label">Bandwidth Difference</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Browser Section -->
+        <section>
+            <h2>Thế Giới 1: Browser — WebRTC, Opus, Full Quality</h2>
+
+            <h3>Codec: Opus ở 48 kHz</h3>
+            <p>Browser native WebRTC mặc định dùng <strong>Opus codec</strong> — được thiết kế cho speech realtime.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-title">📊 Sampling Rate</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span><strong>48 kHz</strong> (phạm vi nghe của người)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>Hỗ trợ 5 tần suất: 8, 12, 16, 24, 48 kHz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎚️ Adaptive Bitrate</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>10 kbps → 128+ kbps (tự động điều chỉnh)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>TWCC: Thích ứng với tình trạng mạng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎙️ Quality Feel</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>MOS ~4.1-4.3 (toll-quality)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>Natural, nuanced, tự nhiên</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎵 Audio Bandwidth</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>~8,438 Hz (full speech frequencies)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>Breathiness, sibilants, tone color rõ ràng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">⚙️ Echo Cancellation</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>AEC3 (Google, tích hợp sẵn)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>Delay-agnostic, automatic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📡 Jitter Buffer</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>NetEQ (adaptive, self-tuning)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>15-120ms range, automatic</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Latency:</strong> 150-250ms end-to-end (một chiều) — do UDP peer-to-peer, optimize cho real-time
+            </div>
+
+            <h3>Adaptive Bitrate: TWCC</h3>
+            <p>Opus không fixed bitrate. WebRTC liên tục monitor mạng:</p>
+
+            <div class="info">
+                <strong>📊 TWCC (Transport-Wide Congestion Control):</strong> Receiver ước tính bandwidth khả dụng → gửi feedback về sender → sender điều chỉnh Opus bitrate (10 → 50 → 128 kbps). Kết quả: không "trơ" tiếng khi mạng yếu, không lãng phí bandwidth khi mạng tốt.
+            </div>
+
+            <h3>Architecture: Direct WebSocket</h3>
+            <p>Browser channel không qua server processing:</p>
+
+            <div class="diagram">
+                <div class="flow">
+                    <span class="flow-node browser">Browser</span>
+                    <span class="flow-arrow">═WSS═</span>
+                    <span class="flow-node ai">AI Model</span>
+                </div>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">Audio truyền trực tiếp 48 kHz Opus → Server không chạm → latency minimal</p>
+            </div>
+        </section>
+
+        <!-- Phone Section -->
+        <section>
+            <h2>Thế Giới 2: Phone — PSTN, G.711, Limited Quality</h2>
+
+            <h3>Codec: G.711 ở 8 kHz</h3>
+            <p>Khi user gọi vào số điện thoại, Twilio stream audio = <strong>G.711 μ-law ở 8 kHz</strong>.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-title">📊 Sampling Rate</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span><strong>8 kHz</strong> (thập niên 1970, PSTN legacy)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span>Hẹp: chỉ voice frequency (300-3400 Hz)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📈 Fixed Bitrate</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span><strong>64 kbps</strong> (không thay đổi)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span>Predictable nhưng không thích ứng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎙️ Quality Feel</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✓</span>
+                            <span>MOS ~4.1-4.3 (toll-quality)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span>Acceptable nhưng "tinny", không tự nhiên</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎵 Audio Bandwidth</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span>~3,969 Hz (speech intelligibility only)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">✗</span>
+                            <span>Thiếu breathiness, sibilants chi tiết</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔄 Echo Cancellation</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">⚠️</span>
+                            <span>PSTN hybrid echo (~64ms window)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">⚠️</span>
+                            <span>AI phải detect + suppress outbound echo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📡 Jitter Buffer</div>
+                    <div class="card-content">
+                        <div class="card-item">
+                            <span class="card-icon">⚠️</span>
+                            <span>Manual adaptive buffer (40-80ms)</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="card-icon">⚠️</span>
+                            <span>Complex tuning, tùy PSTN quality</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Vì Sao 8 kHz?</strong> PSTN thiết kế từ 1950s. 8 kHz = 16 kHz Nyquist frequency = đủ cho speech intelligibility. Dù bandwidth rẻ hôm nay, PSTN vẫn "bị tóc" ở 8 kHz vì backward compatibility.
+            </div>
+
+            <h3>Architecture: Double WebSocket + Transcode</h3>
+            <p>Phone channel phải đi qua server để xử lý:</p>
+
+            <div class="diagram">
+                <div class="flow">
+                    <span class="flow-node phone">Twilio<br>WS#1</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node processing">Server<br>Transcode</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node ai">AI Model<br>WS#2</span>
+                </div>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">Audio 8kHz → Server decode G.711 → upsample → process → downsample → encode → Twilio</p>
+            </div>
+
+            <div class="highlight">
+                <strong>Latency:</strong> 150-200ms (PSTN ~100ms + gateway buffer ~50-100ms) — dù network nhanh, server processing + codec conversion thêm latency
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section>
+            <h2>So Sánh Trực Tiếp: Browser vs Phone</h2>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tiêu chí</th>
+                            <th>Browser (WebRTC)</th>
+                            <th>Phone (PSTN)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Codec</strong></td>
+                            <td>Opus</td>
+                            <td>G.711 μ-law</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sample Rate</strong></td>
+                            <td>48 kHz</td>
+                            <td>8 kHz</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bitrate</strong></td>
+                            <td>Adaptive 10-128+ kbps</td>
+                            <td>Fixed 64 kbps + overhead</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bandwidth</strong></td>
+                            <td>~8,438 Hz (full speech)</td>
+                            <td>~3,969 Hz (speech only)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quality</strong></td>
+                            <td>Natural, nuanced</td>
+                            <td>Acceptable, but "tinny"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Network Adaptive</strong></td>
+                            <td>Yes (TWCC)</td>
+                            <td>No (fixed)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Echo Handling</strong></td>
+                            <td>AEC3 (automatic)</td>
+                            <td>PSTN hybrid + AI suppress</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Latency</strong></td>
+                            <td>150-250ms</td>
+                            <td>150-200ms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Architecture</strong></td>
+                            <td>Peer-to-peer (WSS direct)</td>
+                            <td>Gateway + transcode (double WSS)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Preprocessing Section -->
+        <section>
+            <h2>Preprocessing: Nơi Hai Thế Giới Gặp Nhau</h2>
+
+            <h3>Browser Path — Minimal Processing</h3>
+            <p>Audio từ browser đến AI Model:</p>
+
+            <div class="pipeline">
+                <div class="pipeline-title">🌐 Browser → AI Model</div>
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-item">Mic (48 kHz PCM)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item highlight">AEC3 + Noise Suppression (Browser)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item">Opus Encode (adaptive bitrate)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item processing">WebSocket → Server</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item">Opus Decode → 16 kHz PCM</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item highlight">AI Model (STT + LLM + TTS)</div>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Key point:</strong> Minimal preprocessing. Opus 48kHz → 16kHz, không cần đổi codec.</p>
+
+            <h3>Phone Path — Heavy Processing</h3>
+            <p>Audio từ phone đến AI Model:</p>
+
+            <div class="pipeline">
+                <div class="pipeline-title">☎️ Phone → AI Model</div>
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-item">Twilio WebSocket (G.711 μ-law 8 kHz)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item processing">G.711 Decode → PCM 8 kHz</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item highlight">Upsample 8 kHz → 16 kHz</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item">VAD: Voice Activity Detection</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item">Barge-in: Cut TTS if user speaking</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item highlight">AI Model (STT + LLM + TTS)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item highlight">Downsample 24 kHz → 8 kHz</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item processing">G.711 Encode → μ-law</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <span class="step-arrow">↓</span>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-item">Twilio WebSocket → Phone</div>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Key point:</strong> Heavy preprocessing. Receive 8kHz → upsample → AI → downsample → 8kHz. Mỗi resample = cơ hội tăng latency hoặc giảm chất lượng.</p>
+
+            <div class="info">
+                <strong>❓ Tại sao phải upsample 8 kHz → 16 kHz?</strong>
+                <ul style="margin: 12px 0 0 20px;">
+                    <li><strong>STT (Speech-to-Text):</strong> Whisper, Google STT expect 16 kHz. 8 kHz = thiếu consonant detail → WER (Word Error Rate) tăng.</li>
+                    <li><strong>TTS Quality:</strong> AI TTS model train ở 24 kHz. Nếu output 8 kHz, tiếng méo mó → phải upsample trước, downsample sau.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VAD and Barge-in Section -->
+        <section>
+            <h2>Voice Activity Detection & Barge-in</h2>
+
+            <h3>VAD — Phát Hiện Người Nói</h3>
+            <p>Khi nào user đang nói vs. đang nghe TTS?</p>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-title">⏱️ Latency</div>
+                    <div class="card-content">
+                        Real-time detection: ~20-100ms (tùy algorithm)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎯 Accuracy</div>
+                    <div class="card-content">
+                        ~85-95% (tùy noise level)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📱 Use Case</div>
+                    <div class="card-content">
+                        Detect user speech → cut TTS playback (barge-in)
+                    </div>
+                </div>
+            </div>
+
+            <h3>Barge-in — User Nói Chen Ngang</h3>
+            <p>Khi user nói trong khi AI đang nói TTS:</p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🔊</div>
+                    <h4>Inbound Audio Arrives</h4>
+                    <p>User speech detected in G.711 8 kHz input stream</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⚡</div>
+                    <h4>VAD Triggers</h4>
+                    <p>Voice activity detected → signal to stop TTS</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🎤</div>
+                    <h4>New Input to AI</h4>
+                    <p>User speech forwarded to STT/LLM, new response generated</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📊</div>
+                    <h4>Latency Budget</h4>
+                    <p>User speaks → VAD detects (20-50ms) → AI receives → AI cuts TTS → <600ms (natural)</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Challenge:</strong> Timing — user speaks → latency → AI detects → latency → AI stops TTS. Average 200-300ms. If VAD miss user speech or latency too high, overlap happens (bad experience).
+            </div>
+        </section>
+
+        <!-- Jitter Buffer Section -->
+        <section>
+            <h2>Jitter Buffer & Adaptive Playout</h2>
+
+            <h3>Problem: Network Jitter</h3>
+            <p>Network doesn't deliver packets uniformly:</p>
+
+            <div class="info">
+                <strong>Expected:</strong> Packet 1 at T, Packet 2 at T+20ms, Packet 3 at T+40ms<br>
+                <strong>Actual:</strong> Packet 1 at T, Packet 2 at T+45ms, Packet 3 at T+15ms<br>
+                <strong>Result:</strong> Audio gập gập, không mượt ❌
+            </div>
+
+            <h3>Solution: Jitter Buffer</h3>
+            <p>Collect packets vào buffer, phát theo regular schedule:</p>
+
+            <div class="comparison">
+                <div class="comp-card">
+                    <div class="comp-title">
+                        <span>❌ Fixed Buffer (cũ)</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Deterministic latency</span>
+                        <span class="comp-value">Pro</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">On heavy jitter</span>
+                        <span class="comp-value">Buffer overflow, dropouts</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Use case</span>
+                        <span class="comp-value">Stable network only</span>
+                    </div>
+                </div>
+
+                <div class="comp-card">
+                    <div class="comp-title">
+                        <span>✅ Adaptive Buffer (modern)</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Monitor packet arrival</span>
+                        <span class="comp-value">Dynamic adjust</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Handle variable jitter</span>
+                        <span class="comp-value">Minimize gaps, latency</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Typical range</span>
+                        <span class="comp-value">15-120ms</span>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>How:</strong> Monitor average arrival delay, expand buffer if delay increasing, shrink if stable. Compression/expansion (time-scaling) when packet missed.</p>
+
+            <div class="highlight">
+                <strong>Result:</strong> Natural playback dù network có jitter.
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section>
+            <h2>Tại Sao Kiến Trúc Phải Khác Nhau</h2>
+
+            <h3>Browser Channel — Direct WebSocket</h3>
+            <p>Audio truyền thẳng từ browser đến AI:</p>
+
+            <div class="diagram">
+                <div class="flow">
+                    <span class="flow-node browser">Browser</span>
+                    <span class="flow-arrow">═WSS═</span>
+                    <span class="flow-node ai">AI Model</span>
+                </div>
+                <p style="margin-top: 16px; color: #4b5563;">
+                    <strong>Ưu điểm:</strong> Audio 48 kHz direct, server không chạm → latency minimal. Client-side AEC → network không phải handle echo. Adaptive bitrate auto-adjust quality.
+                </p>
+            </div>
+
+            <h3>Phone Channel — Double WebSocket + Transcode</h3>
+            <p>Audio phải đi qua server để xử lý:</p>
+
+            <div class="diagram">
+                <div class="flow">
+                    <span class="flow-node phone">Phone (8 kHz)</span>
+                    <span class="flow-arrow">═WSS#1═</span>
+                    <span class="flow-node processing">Server<br>(Transcode, VAD, Echo)</span>
+                    <span class="flow-arrow">═WSS#2═</span>
+                    <span class="flow-node ai">AI Model<br>(16 kHz in)</span>
+                </div>
+                <p style="margin-top: 16px; color: #4b5563;">
+                    <strong>Tại sao:</strong> Audio format khác (8 kHz vs 16 kHz), server handle codec conversion, upsampling/downsampling, VAD, barge-in, echo suppression. Không thể bypass server.
+                </p>
+            </div>
+
+            <div class="highlight">
+                <strong>Insight:</strong> Hai channel không thể dùng cùng architecture vì audio format và processing pipeline quá khác nhau. Đây là lý do bài 04 sẽ giải thích "Unified Server Pattern" — cách triển khai 2 WebSocket + transcode mà không kill latency.
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section>
+            <h2>Tóm Tắt — Những Gì Cần Nhớ</h2>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🌐</div>
+                    <h4>Browser: High Quality</h4>
+                    <p>Opus 48 kHz adaptive, AEC3 automatic, 150-250ms latency, peer-to-peer simple.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">☎️</div>
+                    <h4>Phone: Legacy Standard</h4>
+                    <p>G.711 8 kHz fixed, PSTN echo path, 150-200ms latency, gateway required.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🔄</div>
+                    <h4>Processing Asymmetric</h4>
+                    <p>Browser minimal (Opus → 16 kHz). Phone heavy (8 kHz → upsample → AI → downsample → 8 kHz).</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🎤</div>
+                    <h4>VAD & Barge-in</h4>
+                    <p>Detect user speech in realtime, cut TTS if overlap. Target <600ms latency.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📡</div>
+                    <h4>Jitter Buffer</h4>
+                    <p>Adaptive buffer absorb network jitter, balance latency vs. audio smoothness.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🏗️</div>
+                    <h4>Architecture Implication</h4>
+                    <p>Unified Server Pattern (bài 04) essential for phone channel — single process, shared memory, no Redis latency trap.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong> · Tháng 4, 2026</p>
+        <div class="footer-links">
+            <a href="./README.md">← Roadmap</a>
+            <span style="color: #d1d5db;">·</span>
+            <a href="./02-websocket-realtime-communication.md">← Bài 02: WebSocket</a>
+            <span style="color: #d1d5db;">·</span>
+            <a href="./04-audio-bridge.md">Bài 04: Audio Bridge →</a>
+        </div>
+    </footer>
+</body>
+</html>
