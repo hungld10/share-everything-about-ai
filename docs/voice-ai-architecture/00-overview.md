@@ -362,16 +362,33 @@ Thành phần mà hầu hết tutorial bỏ qua hoàn toàn.
 
 Với channel browser, có một vấn đề bảo mật cơ bản: **WebSocket cần kết nối thẳng đến AI endpoint — nhưng không thể đặt API key trong client code vì bất kỳ ai cũng đọc được.**
 
-Pattern giải quyết bằng 2 plane tách biệt:
+**Pattern giải quyết bằng 2 plane tách biệt:**
 
 ```
-Control plane (qua server):
-  Browser → POST /api/live-token → Server → AI endpoint
-                                          ← ephemeral token (30min TTL)
-                                  ← token
-Data plane (direct):
-  Browser → WebSocket (ephemeral token) → AI
-         ←←← Bidirectional audio streaming →→→
+┌─────────────────────────────────────────────────────────────────┐
+│ CONTROL PLANE — Lấy token (qua HTTP server)                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Browser        Server              AI Endpoint                │
+│    │              │                       │                    │
+│    │─────────────>│ POST /api/live-token  │                    │
+│    │              ├──────────────────────>│                    │
+│    │              │                   (verify auth)             │
+│    │              │<─────────────────────┤                    │
+│    │<─────────────│ ephemeral token ✓     │                    │
+│    │  (30min TTL) │  (API key stays hidden in server)          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│ DATA PLANE — Stream audio (trực tiếp, KHÔNG qua server)       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Browser ◄──── WebSocket + ephemeral token ───► AI Model       │
+│           ◄─── Audio stream (bidirectional) ──►                │
+│          (zero server latency · real-time)                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 Kết quả:
@@ -387,13 +404,25 @@ Kết quả:
 Nhớ lại vấn đề thứ 5: 2–3 giây im lặng sau khi bắt máy. Pre-Connect Pattern giải quyết bằng cách **làm việc trong lúc điện thoại đang reo**.
 
 ```
-KHÔNG có pre-connect:
-  Bắt máy → [kết nối AI 800ms] → [load prompt 400ms] → [generate greeting 1.2s] → Nói
-             └──────────────── 2-3 giây im lặng ────────────────┘
+❌ KHÔNG CÓ PRE-CONNECT (Current state — chậm):
+┌──────────────────────────────────────────────────────────────┐
+│  Bắt máy   → Connect AI      → Load prompt  → Generate voice │
+│             (800ms)           (400ms)         (1200ms)        │
+│             └─────────────────────────────────────────────┘   │
+│                     2-3 giây im lặng                         │
+└──────────────────────────────────────────────────────────────┘
 
-CÓ pre-connect:
-  Đang reo → [kết nối AI] → [load prompt] → [cache greeting]   ← song song với tiếng reo
-  Bắt máy  → Play cached greeting ← UNDER 100ms
+✅ CÓ PRE-CONNECT (Optimized — nhanh):
+┌──────────────────────────────────────────────────────────────┐
+│  Phone reo   → [All work happens here]                       │
+│  (khi user   │ • Connect AI      (800ms)                      │
+│   chưa bắt)  │ • Load prompt     (400ms)                      │
+│              │ • Cache greeting  (1200ms)                     │
+│              └────────────────── (song song với tiếng reo)   │
+│                                                              │
+│  User bắt máy → ▶ Play greeting (100ms only)                │
+│                 ✓ Conversation starts immediately           │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 **Không phải model nhanh hơn. Là làm sớm hơn.** → Chi tiết: [Bài 13 — Optimization Patterns](./13-optimization-patterns.md)
@@ -630,23 +659,63 @@ Gom HTTP + WebSocket + audio bridge vào cùng 1 process. Nghe "sai" theo conven
 
 ### Speculative Tool Calling — Che latency bằng parallelism
 
+Khi AI nhận diện được user sắp cần một action (flight booking), thay vì chờ user nói xong rồi gọi API, AI **bắt đầu gọi API song song** (speculative) trong khi user vẫn đang nói.
+
 ```
-User đang nói: "Tôi muốn đặt vé máy bay từ Hà Nội..."
-                                                        ↑
-                              AI đã bắt đầu gọi flight API ở đây
-User nói xong: "...đến TP.HCM ngày mai"
-AI respond: "Tôi thấy có 3 chuyến..." ← data đã có sẵn, near-zero tool latency
+┌─────────────────────────────────────────────────────────────────┐
+│  User nói:    "Tôi muốn đặt vé máy bay từ Hà Nội..."         │
+│                                                        ↓        │
+│ AI nhận diện intent: BOOKING_FLIGHT                           │
+│ → 🚀 Bắt đầu gọi flight API (NGAY đây, không chờ)            │
+│                                                                │
+│  User tiếp:   "...đến TP.HCM ngày mai"                        │
+│               [AI API call vẫn đang chạy...]                  │
+│                                                                │
+│  User nói xong: "✓ Tìm kiếm cho tôi"                          │
+│                 └─ Lúc này API đã có kết quả sẵn              │
+│                                                                │
+│  AI respond ngay: "Tôi thấy có 3 chuyến..."                   │
+│                   ✓ Near-zero tool latency                    │
+│                                                                │
+│  Benefit: Latency bị "che" bằng user's speaking time          │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+**Kết quả:** User không cảm thấy bất kỳ delay nào, vì API được gọi *trong lúc user đang nói*.
 
 ### Barge-in State Machine — User có quyền ngắt lời
 
+Hệ thống phải có state machine để xử lý khi user ngắt lời AI (interrupt/barge-in):
+
 ```
-States: LISTENING → PROCESSING → SPEAKING
-                                    ↑
-                          Nếu VAD detect user nói:
-                          → Cancel TTS stream ngay lập tức
-                          → Transition về LISTENING
-                          → Không để AI "nói đè"
+┌──────────────┐
+│  LISTENING   │◄──────────────────┐
+│ (nhận input) │                   │
+└──────┬───────┘                   │
+       │ User nói                  │
+       ▼                           │
+┌──────────────┐                   │
+│ PROCESSING   │                   │
+│ (STT decode) │                   │
+└──────┬───────┘                   │
+       │ User nói xong             │
+       ▼                           │
+┌──────────────┐                   │
+│  SPEAKING    │                   │
+│ (TTS stream) │                   │
+└──────┬───────┘                   │
+       │                           │
+       │ 🚨 VAD detect: User nói lại!
+       │                           │
+       ├─────────────────────────>─┘
+       │ (Cancel TTS ngay lập tức)
+       │ (Transition về LISTENING)
+       │ (Không nói đè)
+       ▼
+   [Interrupt handled]
+
+⚠️ Lỗi phổ biến: Chờ AI nói xong → QUÁN LẠC → User cúp máy
+✓ Cách đúng: Cancel TTS stream = NGAY TỨC KHI user nói lại
 ```
 
 > ⚠️ **Lỗi phổ biến:** Xử lý barge-in bằng cách chờ AI nói xong rồi mới process interrupt. User đã cúp máy lâu rồi.
