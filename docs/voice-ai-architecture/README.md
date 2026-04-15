@@ -36,9 +36,9 @@ Nếu chưa quen với audio số và realtime communication, đây là điểm 
 
 | # | Bài viết | Khái niệm cốt lõi |
 |---|----------|-------------------|
-| 01 | [Audio Fundamentals](./01-audio-fundamentals.md) | PCM, sample rate, G.711, Opus |
-| 02 | [WebSocket & Realtime Communication](./02-websocket-realtime.md) | WebSocket vs HTTP, streaming, backpressure |
-| 03 | [Browser vs Phone — 2 Thế Giới Kết Nối](./03-browser-vs-phone.md) | WebRTC/Opus vs PSTN/G.711, adapter pattern |
+| 01 | [Audio Fundamentals](./01-audio-fundamentals.md) ✅ | PCM, sample rate, G.711, Opus |
+| 02 | WebSocket & Realtime Communication | WebSocket vs HTTP, streaming, backpressure |
+| 03 | Browser vs Phone — 2 Thế Giới Kết Nối | WebRTC/Opus vs PSTN/G.711, adapter pattern |
 
 ### Tầng 2 — Audio Engineering
 
@@ -46,9 +46,9 @@ Phần mà bài viết kỹ thuật phổ thông thường bỏ qua. Đây là l
 
 | # | Bài viết | Khái niệm cốt lõi |
 |---|----------|-------------------|
-| 04 | [Audio Bridge — Demo vs Production](./04-audio-bridge.md) | Codec chaining, quality loss, unified bridge |
-| 05 | [Inbound & Outbound Audio Pipeline](./05-inbound-outbound-pipeline.md) | Upsample/downsample, buffer asymmetry |
-| 06 | [Latency Budget](./06-latency-budget.md) | Latency breakdown, P95, budget allocation |
+| 04 | Audio Bridge — Demo vs Production | Codec chaining, quality loss, unified bridge |
+| 05 | Inbound & Outbound Audio Pipeline | Upsample/downsample, buffer asymmetry |
+| 06 | Latency Budget | Latency breakdown, P95, budget allocation |
 
 ### Tầng 3 — AI Pipeline
 
@@ -56,10 +56,10 @@ Phần mọi người thường biết nhưng chưa đủ sâu — đặc biệt
 
 | # | Bài viết | Khái niệm cốt lõi |
 |---|----------|-------------------|
-| 07 | [4 Kiến Trúc AI Pipeline](./07-ai-pipeline-architectures.md) | Cascaded, Speech-Native, Thinker-Talker, LLM+Codec |
-| 08 | [STT Deep Dive](./08-stt-deep-dive.md) | Streaming vs batch, WER, Whisper vs Deepgram |
-| 09 | [TTS Deep Dive](./09-tts-deep-dive.md) | Streaming TTS, TTFB, voice cloning |
-| 10 | [VAD & Barge-in State Machine](./10-vad-barge-in.md) | Voice Activity Detection, interrupt handling |
+| 07 | 4 Kiến Trúc AI Pipeline | Cascaded, Speech-Native, Thinker-Talker, LLM+Codec |
+| 08 | STT Deep Dive | Streaming vs batch, WER, Whisper vs Deepgram |
+| 09 | TTS Deep Dive | Streaming TTS, TTFB, voice cloning |
+| 10 | VAD & Barge-in State Machine | Voice Activity Detection, interrupt handling |
 
 ### Tầng 4 — System Architecture
 
@@ -67,36 +67,24 @@ Tầng ghép mọi thứ lại thành hệ thống production. Đọc sau khi đ
 
 | # | Bài viết | Khái niệm cốt lõi |
 |---|----------|-------------------|
-| 11 | [Ephemeral Token & Security](./11-ephemeral-token-security.md) | Token flow, API key isolation, TTL |
-| 12 | [Unified Server Pattern](./12-unified-server-pattern.md) | Anti-microservices, in-memory state, why it works |
-| 13 | [Optimization Patterns](./13-optimization-patterns.md) | Pre-connect, speculative tool calling, semantic cache |
-| 14 | [Observability & Monitoring](./14-observability.md) | P95 latency, WER tracking, Langfuse |
-| 15 | [Cost Analysis](./15-cost-analysis.md) | $0.10–0.22/min vs $4–10/min, cost roadmap |
+| 11 | Ephemeral Token & Security | Token flow, API key isolation, TTL |
+| 12 | Unified Server Pattern | Anti-microservices, in-memory state, why it works |
+| 13 | Optimization Patterns | Pre-connect, speculative tool calling, semantic cache |
+| 14 | Observability & Monitoring | P95 latency, WER tracking, Langfuse |
+| 15 | Cost Analysis | $0.10–0.22/min vs $4–10/min, cost roadmap |
 
 ---
 
 ## Sơ đồ kiến trúc tổng thể
 
-*(Thêm hình architecture-overview.png khi có)*
+![Voice AI Production System Architecture — 4 tầng: Client (Browser + Phone) → Gateway (Token API + WSS Stream) → AI Core (Voice Model + Services) → Data Layer (Security + Cache + Database)](./images/architecture-overview.png)
 
-Hệ thống Voice AI production chia làm 4 tầng:
+**4 tầng hệ thống:**
 
-```
-CLIENT LAYER
-  Browser (WebRTC, Opus 48kHz) ──────────────────────────────────┐
-  Phone (PSTN, G.711 8kHz) → Twilio/Telnyx → Audio Transcode ───┤
-                                                                  ▼
-GATEWAY LAYER                                          Token API / WSS Stream
-                                                                  │
-AI CORE                                         Real-time Voice Model
-                                          (PCM 16kHz in / PCM 24kHz out)
-                                    ┌─────────────┼─────────────────┐
-                              Template Svc   Session Svc    Observability
-                                                                  │
-APPLICATION SERVICES              Security Layer · Analysis · Post-call
-                                                                  │
-DATA LAYER                Redis Cache · PostgreSQL · Template Store
-```
+- **CLIENT LAYER**: Browser (WebRTC, Opus 48kHz) + Phone (PSTN, G.711 8kHz via Twilio/Telnyx)
+- **GATEWAY LAYER**: Token API (ephemeral keys) + WSS Stream (audio bridge)
+- **AI CORE**: Real-time Voice Model (PCM 16kHz in / 24kHz out) + Template Service + Session Service + Observability
+- **DATA LAYER**: Security Layer + Redis Cache + PostgreSQL Database
 
 ---
 

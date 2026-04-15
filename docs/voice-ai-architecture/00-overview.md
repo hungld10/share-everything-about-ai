@@ -655,7 +655,7 @@ States: LISTENING → PROCESSING → SPEAKING
 
 Không hardcode conversation flow trong code. Persona, prompt, flow config đều là dữ liệu trong Template Store — thay đổi behavior của AI mà không cần deploy lại code.
 
-→ Chi tiết: [Bài 12 — Unified Server](./12-unified-server-pattern.md) · [Bài 13 — Optimization Patterns](./13-optimization-patterns.md)
+→ Chi tiết: Bài 12 — Unified Server Pattern · Bài 13 — Optimization Patterns (sắp ra)
 
 ---
 
@@ -673,20 +673,20 @@ Nhìn lại toàn bộ bài viết: Audio Bridge, Ephemeral Token, Pre-Connect, 
 
 **Bạn mới với Voice AI** → Bắt đầu tuần tự từ Tầng 1:
 
-→ **[Bài 01 — Audio Fundamentals](./01-audio-fundamentals.md)**
+→ **[Bài 01 — Audio Fundamentals](./01-audio-fundamentals.md)** ✅
 Hiểu PCM, sample rate, G.711, Opus — nền tảng để đọc mọi thứ còn lại
 
 ---
 
 **Bạn đang debug production** → Đọc 3 bài này trước:
 
-→ [Bài 04 — Audio Bridge](./04-audio-bridge.md) · [Bài 06 — Latency Budget](./06-latency-budget.md) · [Bài 14 — Observability](./14-observability.md)
+→ Bài 04 — Audio Bridge · Bài 06 — Latency Budget · Bài 14 — Observability (sắp ra)
 
 ---
 
 **Bạn đang chọn kiến trúc cho dự án mới** → 2 bài quyết định:
 
-→ [Bài 07 — 4 AI Pipeline Architectures](./07-ai-pipeline-architectures.md) · [Bài 15 — Cost Analysis](./15-cost-analysis.md)
+→ Bài 07 — 4 AI Pipeline Architectures · Bài 15 — Cost Analysis (sắp ra)
 
 ---
 
@@ -694,4 +694,4 @@ Hiểu PCM, sample rate, G.711, Opus — nền tảng để đọc mọi thứ c
 
 ---
 
-*Bài 1/15 · [Bài 01 — Audio Fundamentals →](./01-audio-fundamentals.md) · [Roadmap](./README.md)*
+*Tổng quan (0/15) · [Bài 01 — Audio Fundamentals →](./01-audio-fundamentals.md) · [Roadmap](./README.md)*

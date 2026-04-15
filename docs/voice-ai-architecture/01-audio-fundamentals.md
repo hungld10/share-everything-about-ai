@@ -415,8 +415,8 @@ Audio fundamentals là nền tảng để tránh class of bugs này:
 
 Bài 01 giải thích *cái gì* đang được truyền — dãy số PCM, đóng gói bởi G.711 hoặc Opus.
 
-**[Bài 02 — WebSocket & Realtime Communication](./02-websocket-realtime.md)** giải thích *truyền bằng cách nào*. Cụ thể: tại sao HTTP request/response không dùng được cho audio streaming, WebSocket lifecycle hoạt động ra sao, và một khái niệm ít được nhắc đến nhưng gây nhiều bug production: **backpressure** — điều gì xảy ra khi AI sinh audio nhanh hơn tốc độ network có thể gửi đi?
+**Bài 02 — WebSocket & Realtime Communication** (sắp ra) giải thích *truyền bằng cách nào*. Cụ thể: tại sao HTTP request/response không dùng được cho audio streaming, WebSocket lifecycle hoạt động ra sao, và một khái niệm ít được nhắc đến nhưng gây nhiều bug production: **backpressure** — điều gì xảy ra khi AI sinh audio nhanh hơn tốc độ network có thể gửi đi?
 
 ---
 
-*Bài 2/15 · ← [Tổng quan](./00-overview.md) · [Bài 02 →](./02-websocket-realtime.md) · [Roadmap](./README.md)*
+*Bài 1/15 · ← [Tổng quan](./00-overview.md) · [Roadmap](./README.md)*
