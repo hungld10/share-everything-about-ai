@@ -1547,8 +1547,6 @@ Browser → Server #1 (receives audio)
   </div>
 </div>
 
-</div>
-
 ---
 
 ## Tóm tắt — Những gì cần nhớ
