@@ -682,6 +682,40 @@
                 <strong>Lý do Double WebSocket:</strong> Twilio gửi audio qua WS#1, server xử lý/transcode, rồi forward qua WS#2 đến AI. Hai WebSocket này phải giao tiếp qua <strong>shared memory của 1 process</strong> — đây là lý do Unified Server pattern (chủ đề 12) quan trọng.
             </div>
 
+            <h3 style="margin-top: 40px;">Connection Lifecycle — Happy Path + Failure Scenarios</h3>
+
+            <div class="diagram" style="background: white; border: 1px solid #e5e7eb;">
+                <div class="diagram-title" style="margin-bottom: 24px;"><strong>Happy Path</strong> — Normal connection flow</div>
+                <div class="flow" style="justify-content: flex-start; gap: 6px;">
+                    <span class="flow-node blue" style="background: #dbeafe; padding: 8px 12px;">Opening<br>Handshake<br>~100ms</span>
+                    <span class="flow-arrow" style="font-size: 16px;">→</span>
+                    <span class="flow-node" style="background: #f3f4f6; padding: 8px 12px;">Active<br>Frames<br>20ms-hours</span>
+                    <span class="flow-arrow" style="font-size: 16px;">⟷</span>
+                    <span class="flow-node" style="background: #fef3c7; padding: 8px 12px;">Ping/Pong<br>Heartbeat<br>5-10s</span>
+                    <span class="flow-arrow" style="font-size: 16px;">→</span>
+                    <span class="flow-node green" style="padding: 8px 12px;">Close<br>Frame<br>1s</span>
+                </div>
+                <p style="margin-top: 16px; font-size: 13px; color: #6b7280;"><strong>Flow:</strong> Handshake once, stream audio continuously, periodic heartbeat, graceful close</p>
+            </div>
+
+            <div class="diagram" style="background: #fef2f2; border: 1px solid #fecaca; margin-top: 20px;">
+                <div class="diagram-title" style="margin-bottom: 24px; color: #991b1b;"><strong>Failure Scenarios</strong> — Recovery patterns</div>
+                <div style="font-size: 12px; color: #6b7280; line-height: 1.8;">
+                    <div style="margin-bottom: 12px; padding: 12px; background: white; border-left: 3px solid #dc2626; border-radius: 4px;">
+                        <strong style="color: #991b1b;">1. Network Disconnect:</strong> Packet loss detected → Backoff 1s → Exponential backoff (1s, 2s, 4s...) → Reconnect
+                    </div>
+                    <div style="margin-bottom: 12px; padding: 12px; background: white; border-left: 3px solid #dc2626; border-radius: 4px;">
+                        <strong style="color: #991b1b;">2. AI Crash:</strong> Model error → Server sends close code 1011 (Server Error) → Client recognizes 1011 → Auto-reconnect
+                    </div>
+                    <div style="margin-bottom: 12px; padding: 12px; background: white; border-left: 3px solid #dc2626; border-radius: 4px;">
+                        <strong style="color: #991b1b;">3. Ping/Pong Timeout:</strong> Server waits for pong → No pong after 30s → Assume connection dead → Close & Reconnect
+                    </div>
+                    <div style="padding: 12px; background: white; border-left: 3px solid #dc2626; border-radius: 4px;">
+                        <strong style="color: #991b1b;">4. Server Restart:</strong> SIGTERM → Graceful drain (30s) → Send close code 1001 (Going Away) to all connections → Load balancer routes to new server
+                    </div>
+                </div>
+            </div>
+
             <h3 style="margin-top: 40px;">Timeline chi tiết: Gửi 1 giây audio (50 chunks × 20ms)</h3>
 
             <div class="diagram">
@@ -712,6 +746,10 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                         <span class="comp-label">50 requests overhead</span>
                         <span class="comp-value">100-200ms</span>
                     </div>
+                    <div style="margin: 12px 0; background: #fee2e2; border-radius: 4px; height: 24px; display: flex; align-items: center; overflow: hidden;">
+                        <div style="background: #dc2626; height: 100%; width: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: 600;">33-66%</div>
+                        <div style="flex: 1;"></div>
+                    </div>
                     <div class="comp-row">
                         <span class="comp-label">Còn cho AI xử lý</span>
                         <span class="comp-value">100-200ms</span>
@@ -722,7 +760,7 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                     </div>
                     <div class="comp-row">
                         <span class="comp-label">Kết quả</span>
-                        <span class="comp-value">AI không thể suy luận</span>
+                        <span class="comp-value" style="color: #dc2626; font-weight: 700;">AI không thể suy luận</span>
                     </div>
                 </div>
 
@@ -735,9 +773,13 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                         <span class="comp-label">Handshake overhead</span>
                         <span class="comp-value">50-150ms (1 lần)</span>
                     </div>
+                    <div style="margin: 12px 0; background: #d1fae5; border-radius: 4px; height: 24px; display: flex; align-items: center; overflow: hidden;">
+                        <div style="background: #059669; height: 100%; width: 20%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: 600;">20%</div>
+                        <div style="flex: 1;"></div>
+                    </div>
                     <div class="comp-row">
                         <span class="comp-label">Còn cho AI xử lý</span>
-                        <span class="comp-value">~280ms</span>
+                        <span class="comp-value" style="color: #059669; font-weight: 700;">~280ms</span>
                     </div>
                     <div class="comp-row">
                         <span class="comp-label">Phần trăm mất đi</span>
@@ -745,7 +787,7 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                     </div>
                     <div class="comp-row">
                         <span class="comp-label">Kết quả</span>
-                        <span class="comp-value">AI có đủ thời gian tư duy</span>
+                        <span class="comp-value" style="color: #059669; font-weight: 700;">AI có đủ thời gian</span>
                     </div>
                 </div>
             </div>
@@ -789,16 +831,54 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                 </div>
             </div>
 
-            <h3 style="margin-top: 32px;">Giải pháp: Unified Server Pattern</h3>
+            <h3 style="margin-top: 32px;">⚠️ Redis Sync Catastrophe — Đây là lỗi phổ biến</h3>
 
-            <p><strong>Gom HTTP + 2 WebSocket vào cùng 1 Node.js process</strong> để giao tiếp qua shared memory:</p>
+            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #dc2626; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <strong style="color: #991b1b; font-size: 16px;">Tại sao không tách thành 2 service riêng + Redis?</strong>
+                <div style="margin-top: 12px; font-size: 14px; color: #6b7280; line-height: 1.8;">
+                    Khi mỗi audio chunk 20ms, server phải:
+                    <ol style="margin: 12px 0 0 20px;">
+                        <li>Receive từ Twilio (WS#1)</li>
+                        <li><strong style="color: #dc2626;">Redis PUT state</strong> (network round-trip: 15-30ms)</li>
+                        <li>Forward đến AI (WS#2)</li>
+                        <li><strong style="color: #dc2626;">Redis GET response</strong> (network round-trip: 15-30ms)</li>
+                    </ol>
+                    <strong style="color: #dc2626; display: block; margin-top: 12px;">= 60-90ms overhead mỗi 20ms chunk</strong>
+                </div>
+            </div>
+
+            <div class="diagram" style="border: 2px solid #dc2626; background: #fff5f5;">
+                <div class="diagram-title" style="color: #991b1b;">❌ FAILED: Microservices + Redis</div>
+                <div style="padding: 16px; font-size: 12px; color: #6b7280; background: white; border-radius: 4px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #fecaca;">
+                        <span><strong>Latency Budget:</strong></span>
+                        <span style="color: #111827;">300ms</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Redis overhead:</span>
+                        <span style="color: #dc2626; font-weight: 700;">60-90ms</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Network RTT:</span>
+                        <span>30-50ms</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #fecaca; color: #dc2626; font-weight: 700;">
+                        <span><strong>AI Processing Left:</strong></span>
+                        <span>75-105ms (40% worse!)</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">✅ Giải pháp: Unified Server Pattern</h3>
+
+            <p><strong>Gom HTTP + 2 WebSocket vào cùng 1 Node.js process</strong> để giao tiếp qua shared memory (không Redis):</p>
 
             <div class="diagram">
-                <div class="diagram-title">Kiến trúc Unified Server (Bài 12)</div>
+                <div class="diagram-title">✅ SOLUTION: Unified Server (Bài 12)</div>
                 <div class="flow">
                     <span class="flow-node purple">Twilio<br>WS#1</span>
                     <span class="flow-arrow">→</span>
-                    <span class="flow-node gray">Ring Buffer<br>(Shared Memory)</span>
+                    <span class="flow-node gray">Ring Buffer<br>(Shared Memory<br>&lt;0.1ms)</span>
                     <span class="flow-arrow">→</span>
                     <span class="flow-node gray">Processing<br>Thread</span>
                     <span class="flow-arrow">→</span>
@@ -806,17 +886,93 @@ Kết quả: Handshake amortized + minimal overhead = <strong style="color: #059
                 </div>
             </div>
 
-            <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 20px; border-radius: 8px; margin-top: 20px;">
-                <strong style="color: #059669;">Kết quả:</strong>
-                <ul style="margin: 12px 0 0 20px;">
-                    <li><strong>Latency per-chunk:</strong> &lt; 1ms (shared memory, không Redis)</li>
-                    <li><strong>Overhead tổng:</strong> &lt;5% thay vì 33-66%</li>
-                    <li><strong>AI xử lý:</strong> Có ~280ms đủ để suy luận tốt</li>
-                </ul>
+            <div style="background: #f0fdf4; border: 2px solid #059669; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <strong style="color: #059669; font-size: 14px;">✅ Kết quả: Shared Memory (không Redis)</strong>
+                <div style="margin-top: 12px; font-size: 13px; color: #6b7280;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Latency per-chunk:</span>
+                        <span style="color: #059669; font-weight: 700;">&lt;0.1ms</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Overhead:</span>
+                        <span style="color: #059669; font-weight: 700;">&lt;5%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>AI Processing:</span>
+                        <span style="color: #059669; font-weight: 700;">~280ms (enough!)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #a7f3d0;">
+                        <span><strong>Quality improvement:</strong></span>
+                        <span style="color: #059669; font-weight: 700;">+40% better!</span>
+                    </div>
+                </div>
             </div>
 
             <div class="highlight" style="margin-top: 24px;">
-                <strong>Đây là điểm mấu chốt:</strong> Hiểu WebSocket không chỉ là hiểu protocol, mà là hiểu <strong>tại sao kiến trúc server phải là sao</strong> để tránh latency trap. Pattern 2 (Double WebSocket) chỉ hoạt động tốt khi triển khai qua Unified Server.
+                <strong>Điểm mấu chốt:</strong> Hiểu WebSocket không chỉ là hiểu protocol, mà là hiểu <strong>tại sao kiến trúc server phải như thế nào</strong> để tránh latency trap. Pattern 2 (Double WebSocket) chỉ hoạt động tốt khi triển khai qua Unified Server, KHÔNG phải microservices + Redis.
+            </div>
+        </section>
+
+        <!-- Frame Structure Section -->
+        <section>
+            <h2>WebSocket Frame Structure — Tại sao chỉ 2-14 bytes?</h2>
+
+            <p>Mỗi WebSocket frame bao gồm một <strong>header tối thiểu</strong> rồi payload. Độ dài header phụ thuộc vào kích thước payload và loại frame.</p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">1️⃣</div>
+                    <h4>Minimum Frame (2 bytes)</h4>
+                    <p><strong>Unmasked, Server→Browser</strong> (300-byte audio)<br>Byte 0: FIN|RSV|Opcode<br>Byte 1: MASK|Length<br><strong>Overhead: 0.6%</strong></p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">2️⃣</div>
+                    <h4>Extended Frame (8 bytes)</h4>
+                    <p><strong>Masked, Browser→Server</strong> (300-byte audio)<br>Bytes 0-1: Header<br>Bytes 2-3: Payload length<br>Bytes 4-7: Masking key<br><strong>Overhead: 2.5%</strong></p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">3️⃣</div>
+                    <h4>64-bit Frame (14 bytes)</h4>
+                    <p><strong>Rare, >65KB payload</strong><br>Not used for Voice AI (payload ~300 bytes)<br>Bytes 0-1: Header<br>Bytes 2-9: 64-bit length<br>Bytes 10-13: Masking key<br><strong>Overhead: negligible</strong></p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Tại sao 2-14 bytes?</strong>
+                <ul style="margin: 12px 0 0 20px; font-size: 14px;">
+                    <li><strong>FIN bit:</strong> 1=final fragment, 0=more fragments. Cho phép split payload lớn</li>
+                    <li><strong>Opcode:</strong> text(1), binary(2), close(8), ping(9), pong(10)</li>
+                    <li><strong>MASK bit:</strong> Browser phải mask (RFC 6455), server không. Tránh cache poisoning attack</li>
+                    <li><strong>Payload length:</strong> 7 bits (0-125), 16 bits, hoặc 64 bits tùy kích thước</li>
+                </ul>
+            </div>
+
+            <div class="diagram" style="background: #f3f4f6; border-left: 4px solid #378ADD;">
+                <div class="diagram-title">So sánh với HTTP (gửi audio 320 bytes)</div>
+                <div style="margin-top: 16px;">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 12px; font-weight: 600; color: #111827; margin-bottom: 8px;">HTTP Request:</div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px;">
+                            <div style="background: #fee2e2; color: #991b1b; padding: 8px 12px; border-radius: 4px; font-weight: 600;">Header 300B</div>
+                            <span style="color: #9ca3af; font-weight: bold;">+</span>
+                            <div style="background: #fecaca; color: #991b1b; padding: 8px 12px; border-radius: 4px; font-weight: 600;">Payload 320B</div>
+                            <span style="color: #9ca3af; font-weight: bold;">=</span>
+                            <div style="background: #fecaca; color: #991b1b; padding: 8px 12px; border-radius: 4px; font-weight: 700;">620B (50% overhead)</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: #111827; margin-bottom: 8px;">WebSocket Frame:</div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px;">
+                            <div style="background: #d1fae5; color: #065f46; padding: 8px 12px; border-radius: 4px; font-weight: 600;">Header 2B</div>
+                            <span style="color: #9ca3af; font-weight: bold;">+</span>
+                            <div style="background: #d1fae5; color: #065f46; padding: 8px 12px; border-radius: 4px; font-weight: 600;">Payload 320B</div>
+                            <span style="color: #9ca3af; font-weight: bold;">=</span>
+                            <div style="background: #d1fae5; color: #065f46; padding: 8px 12px; border-radius: 4px; font-weight: 700;">322B (&lt;1% overhead)</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
