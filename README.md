@@ -12,6 +12,7 @@ Mục tiêu:
 ## 📚 Nội dung chính
 
 ### 🧠 AI System & Framework
+- [Voice AI System Architecture](./docs/voice-ai-architecture/README.md) — Production challenges, 4 AI pipeline architectures, audio engineering
 - [Skill System](./docs/skill-system/skill-system.md) · [🎨 Visual](./docs/skill-system/skill-system-visual.html)
 - [Claude Code Agent Skills](./docs/claude-code-skills-huong-dan-truc-quan.html)
 - AI Workflow Design

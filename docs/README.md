@@ -10,6 +10,9 @@ Thư mục này chứa các tài liệu hệ thống hoá về AI.
 - [Skill System Guide](./skill-system/skill-system.md) · [🎨 Visual](./skill-system/skill-system-visual.html)
 - [Claude Code Agent Skills — Hướng dẫn trực quan cho người mới](./claude-code-skills-huong-dan-truc-quan.html)
 
+### 🎙️ Voice AI
+- [Voice AI System Architecture — Series 15 bài từ nền tảng đến production](./voice-ai-architecture/README.md)
+
 ### ⚙️ Claude Configuration
 - [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](./claude-personal-preferences/claude-personal-preferences-visual.html)
 

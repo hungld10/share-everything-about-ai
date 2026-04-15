@@ -1,0 +1,163 @@
+
+<h2 class="sr-only">4 sample rate quan trọng trong Voice AI pipeline — 8kHz, 16kHz, 24kHz, 48kHz</h2>
+<style>
+  .sr-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
+  .sr-title{font-size:14px;font-weight:500;color:#e2e8f0;margin:0 0 12px}
+  .sr-blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 10px}
+  .sr-block{border-radius:10px;padding:14px 12px;border:.5px solid #2d3f55;background:#1e293b;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+
+  /* Colored top accent bar */
+  .sr-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .sr-block-8::before{background:#6b7280}
+  .sr-block-16::before{background:#3b82f6}
+  .sr-block-24::before{background:#10b981}
+  .sr-block-48::before{background:#8b5cf6}
+
+  .sr-icon{font-size:18px;line-height:1}
+  .sr-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+  .sr-label-8{color:#9ca3af}
+  .sr-label-16{color:#60a5fa}
+  .sr-label-24{color:#34d399}
+  .sr-label-48{color:#a78bfa}
+
+  .sr-freq{font-size:22px;font-weight:700;font-family:ui-monospace,'Cascadia Code',monospace;line-height:1.1}
+  .sr-freq-8{color:#9ca3af}
+  .sr-freq-16{color:#60a5fa}
+  .sr-freq-24{color:#34d399}
+  .sr-freq-48{color:#a78bfa}
+  .sr-unit{font-size:12px;font-weight:400}
+
+  .sr-note{font-size:11px;color:#94a3b8;line-height:1.4}
+  .sr-context{font-size:10px;color:#475569;font-family:ui-monospace,'Cascadia Code',monospace}
+
+  .sr-codec{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.03em}
+  .codec-8{background:rgba(107,114,128,.2);color:#9ca3af}
+  .codec-16{background:rgba(59,130,246,.2);color:#60a5fa}
+  .codec-24{background:rgba(16,185,129,.2);color:#34d399}
+  .codec-48{background:rgba(139,92,246,.2);color:#a78bfa}
+
+  .sr-quality{margin:2px 0 0}
+  .sr-quality-label{font-size:10px;color:#475569;margin:0 0 4px}
+  .sr-quality-track{height:4px;border-radius:2px;background:#0f172a;overflow:hidden}
+  .sr-quality-fill{height:100%;border-radius:2px}
+  .fill-8{width:25%;background:#6b7280}
+  .fill-16{width:50%;background:#3b82f6}
+  .fill-24{width:75%;background:#10b981}
+  .fill-48{width:100%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+
+  /* Conversion bridge */
+  .sr-bridge-wrap{background:#1e293b;border-radius:8px;padding:12px 14px;margin:0 0 8px}
+  .sr-bridge-title{font-size:12px;font-weight:500;color:#e2e8f0;margin:0 0 10px}
+  .sr-bridge{display:flex;align-items:center;gap:4px;overflow-x:auto}
+  .sr-bridge-step{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:50px}
+  .sr-bridge-khz{font-size:13px;font-weight:700;font-family:ui-monospace,'Cascadia Code',monospace}
+  .sr-bridge-who{font-size:9px;color:#64748b;text-align:center;line-height:1.3}
+  .sr-bridge-arr{font-size:13px;color:#334155;flex-shrink:0}
+  .sr-bridge-op{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+  .sr-bridge-op-label{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px}
+  .op-up{background:rgba(59,130,246,.2);color:#60a5fa}
+  .op-down{background:rgba(249,115,22,.2);color:#fb923c}
+
+  .note-box{background:rgba(59,130,246,.1);border-radius:8px;padding:10px 14px;font-size:12px;color:#93c5fd;line-height:1.5}
+
+  @media(max-width:520px){
+    .sr-blocks{grid-template-columns:repeat(2,1fr)}
+    .sr-freq{font-size:18px}
+  }
+</style>
+<div class="sr-wrap">
+  <div class="sr-title">4 sample rate trong Voice AI — mỗi con số đều có lý do kỹ thuật</div>
+
+  <div class="sr-blocks">
+    <div class="sr-block sr-block-8">
+      <div class="sr-icon">📞</div>
+      <div>
+        <div class="sr-label sr-label-8">PSTN · Phone</div>
+        <div class="sr-freq sr-freq-8">8<span class="sr-unit"> kHz</span></div>
+      </div>
+      <div class="sr-note">Narrowband — chuẩn điện thoại từ 1972</div>
+      <span class="sr-codec codec-8">G.711 µ-law</span>
+      <div class="sr-quality">
+        <div class="sr-quality-label">Quality</div>
+        <div class="sr-quality-track"><div class="sr-quality-fill fill-8"></div></div>
+      </div>
+      <div class="sr-context">4 kHz max freq</div>
+    </div>
+
+    <div class="sr-block sr-block-16">
+      <div class="sr-icon">🧠</div>
+      <div>
+        <div class="sr-label sr-label-16">AI Model · Input</div>
+        <div class="sr-freq sr-freq-16">16<span class="sr-unit"> kHz</span></div>
+      </div>
+      <div class="sr-note">Wideband — chuẩn STT &amp; voice model</div>
+      <span class="sr-codec codec-16">PCM 16-bit</span>
+      <div class="sr-quality">
+        <div class="sr-quality-label">Quality</div>
+        <div class="sr-quality-track"><div class="sr-quality-fill fill-16"></div></div>
+      </div>
+      <div class="sr-context">8 kHz max freq</div>
+    </div>
+
+    <div class="sr-block sr-block-24">
+      <div class="sr-icon">🔊</div>
+      <div>
+        <div class="sr-label sr-label-24">AI Model · Output</div>
+        <div class="sr-freq sr-freq-24">24<span class="sr-unit"> kHz</span></div>
+      </div>
+      <div class="sr-note">Chuẩn TTS hiện đại — giọng tự nhiên</div>
+      <span class="sr-codec codec-24">PCM 16-bit</span>
+      <div class="sr-quality">
+        <div class="sr-quality-label">Quality</div>
+        <div class="sr-quality-track"><div class="sr-quality-fill fill-24"></div></div>
+      </div>
+      <div class="sr-context">12 kHz max freq</div>
+    </div>
+
+    <div class="sr-block sr-block-48">
+      <div class="sr-icon">🌐</div>
+      <div>
+        <div class="sr-label sr-label-48">Browser · WebRTC</div>
+        <div class="sr-freq sr-freq-48">48<span class="sr-unit"> kHz</span></div>
+      </div>
+      <div class="sr-note">Chất lượng cao nhất trong pipeline</div>
+      <span class="sr-codec codec-48">Opus (RFC 6716)</span>
+      <div class="sr-quality">
+        <div class="sr-quality-label">Quality</div>
+        <div class="sr-quality-track"><div class="sr-quality-fill fill-48"></div></div>
+      </div>
+      <div class="sr-context">24 kHz max freq</div>
+    </div>
+  </div>
+
+  <div class="sr-bridge-wrap">
+    <div class="sr-bridge-title">Luồng chuyển đổi khi Phone gọi vào hệ thống</div>
+    <div class="sr-bridge">
+      <div class="sr-bridge-step">
+        <span class="sr-bridge-khz sr-freq-8">8kHz</span>
+        <span class="sr-bridge-who">Phone<br>G.711</span>
+      </div>
+      <span class="sr-bridge-arr">→</span>
+      <div class="sr-bridge-op"><span class="sr-bridge-op-label op-up">↑ upsample</span></div>
+      <span class="sr-bridge-arr">→</span>
+      <div class="sr-bridge-step">
+        <span class="sr-bridge-khz sr-freq-16">16kHz</span>
+        <span class="sr-bridge-who">AI input<br>PCM</span>
+      </div>
+      <span class="sr-bridge-arr">→</span>
+      <div class="sr-bridge-step">
+        <span class="sr-bridge-khz sr-freq-24">24kHz</span>
+        <span class="sr-bridge-who">AI output<br>PCM</span>
+      </div>
+      <span class="sr-bridge-arr">→</span>
+      <div class="sr-bridge-op"><span class="sr-bridge-op-label op-down">↓ downsample</span></div>
+      <span class="sr-bridge-arr">→</span>
+      <div class="sr-bridge-step">
+        <span class="sr-bridge-khz sr-freq-8">8kHz</span>
+        <span class="sr-bridge-who">Phone<br>G.711</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">Sự không khớp giữa 4 con số này là toàn bộ lý do tồn tại của Audio Bridge. Browser channel (48kHz) có thể bypass conversion bằng direct WebSocket — Phone channel (8kHz) thì không.</div>
+</div>

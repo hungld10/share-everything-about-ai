@@ -1,0 +1,100 @@
+
+<h2 class="sr-only">So sánh thông số kỹ thuật giữa các codec và sample rate trong Voice AI pipeline</h2>
+<style>
+  .wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
+  .section{margin:0 0 1.5rem}
+  .section-title{font-size:14px;font-weight:500;color:#e2e8f0;margin:0 0 10px}
+  .row{display:flex;gap:8px;margin:0 0 8px}
+  .col{flex:1;background:#1e293b;border-radius:8px;padding:12px 14px}
+  .col-label{font-size:11px;color:#64748b;margin:0 0 4px;letter-spacing:.03em;text-transform:uppercase;font-weight:600;font-size:10px}
+  .col-val{font-size:16px;font-weight:700;color:#e2e8f0;margin:0;font-family:ui-monospace,'Cascadia Code',monospace}
+  .col-note{font-size:11px;color:#94a3b8;margin:4px 0 0;line-height:1.4}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
+  .vs-card{border-radius:10px;padding:14px 16px;border:.5px solid #334155;background:#1e293b}
+  .vs-h{font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 10px}
+  .vs-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:.5px solid #2d3f55}
+  .vs-row:first-of-type{border-top:none}
+  .vs-k{color:#94a3b8}
+  .vs-v{color:#e2e8f0;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace;font-size:11px}
+  .pipeline{display:flex;align-items:center;gap:0;margin:8px 0}
+  .pipe-step{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#94a3b8;line-height:1.4;border-radius:8px;background:#1e293b}
+  .pipe-step strong{display:block;font-size:12px;color:#e2e8f0;font-weight:600}
+  .pipe-arr{font-size:14px;color:#475569;padding:0 3px;flex-shrink:0}
+  .note-box{background:rgba(59,130,246,.1);border-radius:8px;padding:10px 14px;font-size:12px;color:#93c5fd;line-height:1.5;margin:10px 0 0}
+  @media(max-width:480px){.vs{grid-template-columns:1fr}.row{flex-direction:column}}
+</style>
+<div class="wrap">
+
+<div class="section">
+  <div class="section-title">Sample rate trong Voice AI pipeline</div>
+  <div class="row">
+    <div class="col">
+      <div class="col-label">PSTN / Điện thoại</div>
+      <div class="col-val">8 kHz</div>
+      <div class="col-note">G.711, narrowband, chuẩn từ 1972</div>
+    </div>
+    <div class="col">
+      <div class="col-label">AI model input</div>
+      <div class="col-val">16 kHz</div>
+      <div class="col-note">Wideband, chuẩn cho hầu hết STT/voice model</div>
+    </div>
+    <div class="col">
+      <div class="col-label">AI model output</div>
+      <div class="col-val">24 kHz</div>
+      <div class="col-note">Giọng nói tự nhiên, chuẩn TTS hiện đại</div>
+    </div>
+    <div class="col">
+      <div class="col-label">Browser / WebRTC</div>
+      <div class="col-val">48 kHz</div>
+      <div class="col-note">Opus codec, chất lượng cao nhất</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">G.711 vs Opus</div>
+  <div class="vs">
+    <div class="vs-card">
+      <div class="vs-h">G.711 µ-law</div>
+      <div class="vs-row"><span class="vs-k">Ra đời</span><span class="vs-v">1972</span></div>
+      <div class="vs-row"><span class="vs-k">Dùng cho</span><span class="vs-v">PSTN / Phone</span></div>
+      <div class="vs-row"><span class="vs-k">Sample rate</span><span class="vs-v">8 kHz</span></div>
+      <div class="vs-row"><span class="vs-k">Bitrate</span><span class="vs-v">64 kbps cố định</span></div>
+      <div class="vs-row"><span class="vs-k">Nén</span><span class="vs-v">Logarithmic (µ-law)</span></div>
+      <div class="vs-row"><span class="vs-k">Chống mất gói</span><span class="vs-v">Không</span></div>
+      <div class="vs-row"><span class="vs-k">Algorithmic delay</span><span class="vs-v">~0ms</span></div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-h">Opus (RFC 6716)</div>
+      <div class="vs-row"><span class="vs-k">Ra đời</span><span class="vs-v">2012</span></div>
+      <div class="vs-row"><span class="vs-k">Dùng cho</span><span class="vs-v">WebRTC / Browser</span></div>
+      <div class="vs-row"><span class="vs-k">Sample rate</span><span class="vs-v">8–48 kHz</span></div>
+      <div class="vs-row"><span class="vs-k">Bitrate</span><span class="vs-v">6–510 kbps adaptive</span></div>
+      <div class="vs-row"><span class="vs-k">Nén</span><span class="vs-v">SILK + CELT hybrid</span></div>
+      <div class="vs-row"><span class="vs-k">Chống mất gói</span><span class="vs-v">FEC tích hợp</span></div>
+      <div class="vs-row"><span class="vs-k">Algorithmic delay</span><span class="vs-v">2.5–20ms</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Luồng chuyển đổi: Phone → AI → Phone</div>
+  <div class="pipeline">
+    <div class="pipe-step"><strong>Phone</strong>G.711 µ-law<br>8kHz, 8-bit</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>Decode</strong>G.711 →<br>Linear PCM</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>Upsample</strong>8kHz →<br>16kHz</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>AI Model</strong>PCM 16kHz in<br>24kHz out</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>Downsample</strong>24kHz →<br>8kHz</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>Encode</strong>Linear PCM →<br>G.711</div>
+    <span class="pipe-arr">→</span>
+    <div class="pipe-step"><strong>Phone</strong>G.711 µ-law<br>8kHz</div>
+  </div>
+  <div class="note-box">Mỗi bước chuyển đổi đều tốn latency và có thể mất chất lượng. Đây là lý do Audio Bridge (bài 04) là thành phần phức tạp nhất của Voice AI production.</div>
+</div>
+
+</div>

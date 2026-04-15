@@ -1,0 +1,206 @@
+
+<h2 class="sr-only">So sánh 4 kiến trúc AI pipeline trong Voice AI — Cascaded, Speech-Native, Thinker-Talker, LLM + Neural Codec</h2>
+<style>
+  .pl-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
+  .pl-title{font-size:14px;font-weight:500;color:#e2e8f0;margin:0 0 12px}
+  .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
+  .pl-card{border-radius:10px;padding:14px 16px;border:.5px solid #2d3f55;background:#1e293b;display:flex;flex-direction:column;gap:10px}
+
+  .pl-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .pl-name{font-size:13px;font-weight:600;color:#e2e8f0}
+  .pl-badge{font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:20px;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+  .badge-standard{background:rgba(59,130,246,.2);color:#60a5fa}
+  .badge-low-lat{background:rgba(16,185,129,.2);color:#34d399}
+  .badge-emerging{background:rgba(139,92,246,.2);color:#a78bfa}
+  .badge-cheapest{background:rgba(245,158,11,.2);color:#fbbf24}
+
+  .pl-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .pl-metric{background:#0f172a;border-radius:6px;padding:7px 9px}
+  .pl-metric-label{font-size:10px;color:#64748b;margin:0 0 2px;letter-spacing:.03em}
+  .pl-metric-val{font-size:13px;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace}
+  .latency-slow{color:#fb923c}
+  .latency-ok{color:#fbbf24}
+  .latency-fast{color:#34d399}
+  .cost-high{color:#94a3b8}
+  .cost-mid{color:#94a3b8}
+  .cost-low{color:#34d399;font-weight:700}
+
+  .pl-flow{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;overflow:hidden}
+  .pl-flow-step{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+  .flow-blue{background:rgba(59,130,246,.2);color:#60a5fa}
+  .flow-green{background:rgba(16,185,129,.2);color:#34d399}
+  .flow-purple{background:rgba(139,92,246,.2);color:#a78bfa}
+  .flow-orange{background:rgba(249,115,22,.2);color:#fb923c}
+  .flow-yellow{background:rgba(245,158,11,.2);color:#fbbf24}
+  .pl-flow-arr{font-size:11px;color:#475569;flex-shrink:0}
+  .pl-flow-single{font-size:10px;font-weight:500;padding:3px 10px;border-radius:4px;flex:1;text-align:center}
+
+  .pl-usecase{font-size:11px;color:#64748b;padding-top:6px;border-top:.5px solid #2d3f55;line-height:1.5}
+  .pl-usecase-label{font-weight:600;color:#94a3b8}
+
+  /* Comparison footer */
+  .pl-footer{background:#1e293b;border-radius:8px;padding:12px 14px}
+  .pl-footer-title{font-size:12px;font-weight:500;color:#e2e8f0;margin:0 0 10px}
+  .pl-compare-grid{display:grid;grid-template-columns:90px repeat(4,1fr);gap:4px}
+  .pl-col-header{font-size:10px;font-weight:700;color:#64748b;letter-spacing:.04em;text-align:center;padding:4px 2px}
+  .pl-row-label{font-size:11px;color:#94a3b8;font-weight:500;padding:5px 0;display:flex;align-items:center}
+  .pl-dots{text-align:center;font-size:12px;letter-spacing:1px;padding:5px 2px;line-height:1}
+  .dot-row{border-top:.5px solid #1e2d3d}
+  .dots-green{color:#34d399}
+  .dots-yellow{color:#fbbf24}
+  .dots-orange{color:#fb923c}
+  .dots-gray{color:#334155}
+
+  @media(max-width:520px){
+    .pl-grid{grid-template-columns:1fr}
+    .pl-compare-grid{grid-template-columns:70px repeat(4,1fr)}
+    .pl-col-header{font-size:9px}
+  }
+</style>
+<div class="pl-wrap">
+  <div class="pl-title">4 kiến trúc AI pipeline — mỗi lựa chọn là trade-off</div>
+
+  <div class="pl-grid">
+
+    <!-- Cascaded -->
+    <div class="pl-card">
+      <div class="pl-header">
+        <div class="pl-name">Cascaded Pipeline</div>
+        <span class="pl-badge badge-standard">Production Standard</span>
+      </div>
+      <div class="pl-metrics">
+        <div class="pl-metric">
+          <div class="pl-metric-label">LATENCY</div>
+          <div class="pl-metric-val latency-slow">600ms – 1.5s</div>
+        </div>
+        <div class="pl-metric">
+          <div class="pl-metric-label">COST / MIN</div>
+          <div class="pl-metric-val cost-high">$0.10 – 0.22</div>
+        </div>
+      </div>
+      <div class="pl-flow">
+        <span class="pl-flow-step flow-blue">STT</span>
+        <span class="pl-flow-arr">→</span>
+        <span class="pl-flow-step flow-purple">LLM</span>
+        <span class="pl-flow-arr">→</span>
+        <span class="pl-flow-step flow-green">TTS</span>
+      </div>
+      <div class="pl-usecase">
+        <span class="pl-usecase-label">Phù hợp: </span>Healthcare · Legal · Enterprise — 128K+ context, audit trail
+      </div>
+    </div>
+
+    <!-- Speech-Native -->
+    <div class="pl-card">
+      <div class="pl-header">
+        <div class="pl-name">Speech-Native</div>
+        <span class="pl-badge badge-low-lat">Lowest Latency</span>
+      </div>
+      <div class="pl-metrics">
+        <div class="pl-metric">
+          <div class="pl-metric-label">LATENCY</div>
+          <div class="pl-metric-val latency-fast">160 – 400ms</div>
+        </div>
+        <div class="pl-metric">
+          <div class="pl-metric-label">COST / MIN</div>
+          <div class="pl-metric-val cost-mid">$0.06 – 0.15</div>
+        </div>
+      </div>
+      <div class="pl-flow">
+        <span class="pl-flow-step flow-green pl-flow-single">Single Model: Listen + Reason + Speak</span>
+      </div>
+      <div class="pl-usecase">
+        <span class="pl-usecase-label">Phù hợp: </span>Consumer apps · UX-first — GPT-4o Realtime, Gemini Live
+      </div>
+    </div>
+
+    <!-- Thinker-Talker -->
+    <div class="pl-card">
+      <div class="pl-header">
+        <div class="pl-name">Thinker-Talker</div>
+        <span class="pl-badge badge-emerging">Emerging 2025</span>
+      </div>
+      <div class="pl-metrics">
+        <div class="pl-metric">
+          <div class="pl-metric-label">LATENCY</div>
+          <div class="pl-metric-val latency-fast">~257ms</div>
+        </div>
+        <div class="pl-metric">
+          <div class="pl-metric-label">COST / MIN</div>
+          <div class="pl-metric-val cost-mid">$0.08 – 0.18</div>
+        </div>
+      </div>
+      <div class="pl-flow">
+        <span class="pl-flow-step flow-purple">Thinker</span>
+        <span class="pl-flow-arr">→</span>
+        <span class="pl-flow-step flow-orange">Talker</span>
+      </div>
+      <div class="pl-usecase">
+        <span class="pl-usecase-label">Phù hợp: </span>New projects 2025+ — full LLM ecosystem, latency thấp hơn cascaded
+      </div>
+    </div>
+
+    <!-- LLM + Neural Codec -->
+    <div class="pl-card">
+      <div class="pl-header">
+        <div class="pl-name">LLM + Neural Codec</div>
+        <span class="pl-badge badge-cheapest">Cheapest</span>
+      </div>
+      <div class="pl-metrics">
+        <div class="pl-metric">
+          <div class="pl-metric-label">LATENCY</div>
+          <div class="pl-metric-val latency-fast">&lt; 50ms stream</div>
+        </div>
+        <div class="pl-metric">
+          <div class="pl-metric-label">COST / MIN</div>
+          <div class="pl-metric-val cost-low">&lt; $0.012</div>
+        </div>
+      </div>
+      <div class="pl-flow">
+        <span class="pl-flow-step flow-purple">LLM</span>
+        <span class="pl-flow-arr">→</span>
+        <span class="pl-flow-step flow-yellow">Neural Codec</span>
+      </div>
+      <div class="pl-usecase">
+        <span class="pl-usecase-label">Phù hợp: </span>High-volume · Self-hosted — Orpheus, Sesame CSM
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Comparison matrix -->
+  <div class="pl-footer">
+    <div class="pl-footer-title">So sánh nhanh</div>
+    <div class="pl-compare-grid">
+      <div></div>
+      <div class="pl-col-header">Cascaded</div>
+      <div class="pl-col-header">Speech-Native</div>
+      <div class="pl-col-header">Thinker-Talker</div>
+      <div class="pl-col-header">Neural Codec</div>
+
+      <div class="pl-row-label dot-row">Latency</div>
+      <div class="pl-dots dot-row dots-orange">●●○○</div>
+      <div class="pl-dots dot-row dots-green">●●●●</div>
+      <div class="pl-dots dot-row dots-green">●●●○</div>
+      <div class="pl-dots dot-row dots-green">●●●●</div>
+
+      <div class="pl-row-label dot-row">Control</div>
+      <div class="pl-dots dot-row dots-green">●●●●</div>
+      <div class="pl-dots dot-row dots-orange">●●○○</div>
+      <div class="pl-dots dot-row dots-green">●●●○</div>
+      <div class="pl-dots dot-row dots-yellow">●●○○</div>
+
+      <div class="pl-row-label dot-row">Cost</div>
+      <div class="pl-dots dot-row dots-yellow">●●○○</div>
+      <div class="pl-dots dot-row dots-yellow">●●●○</div>
+      <div class="pl-dots dot-row dots-yellow">●●○○</div>
+      <div class="pl-dots dot-row dots-green">●●●●</div>
+
+      <div class="pl-row-label dot-row">Maturity</div>
+      <div class="pl-dots dot-row dots-green">●●●●</div>
+      <div class="pl-dots dot-row dots-green">●●●○</div>
+      <div class="pl-dots dot-row dots-yellow">●●○○</div>
+      <div class="pl-dots dot-row dots-orange">●○○○</div>
+    </div>
+  </div>
+</div>
