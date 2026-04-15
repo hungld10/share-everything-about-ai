@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice AI System Architecture — Tổng quan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #534AB7 0%, #378ADD 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .content h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .card-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #534AB7;
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Problems Section */
+        .problems {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 80px;
+            border-left: 4px solid #d97706;
+        }
+
+        .problems h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+        }
+
+        .problem-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .problem-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .problem-icon {
+            font-size: 24px;
+            min-width: 40px;
+        }
+
+        .problem-text h4 {
+            font-size: 18px;
+            color: #111827;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .problem-text p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Architecture Diagram */
+        .arch-section {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 80px;
+        }
+
+        .arch-section h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+        }
+
+        .diagram-container {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 40px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: linear-gradient(135deg, rgba(83, 74, 183, 0.05) 0%, rgba(55, 138, 221, 0.05) 100%);
+            border-left: 4px solid #534AB7;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .highlight strong {
+            color: #534AB7;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 59px;
+            top: 40px;
+            bottom: -40px;
+            width: 2px;
+            background: #d1d5db;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 120px;
+            height: 40px;
+            background: white;
+            border: 3px solid #534AB7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #534AB7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-content h3 {
+            font-size: 18px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #534AB7;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .cost-high {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .cost-low {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        /* Section Title */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #534AB7;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 48px 20px;
+            margin-top: 80px;
+            color: #6b7280;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-author {
+            margin-bottom: 16px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .content h2 {
+                font-size: 24px;
+            }
+
+            section h2 {
+                font-size: 24px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <h1>Voice AI System Architecture</h1>
+            <p>Tổng quan về kiến trúc hệ thống Voice AI production — từ client đến core, từ audio pipeline đến optimization patterns</p>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number">20%</span>
+                    <span class="stat-label">Model optimization</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">80%</span>
+                    <span class="stat-label">System engineering</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">20-100x</span>
+                    <span class="stat-label">Cost saving vs human agent</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section>
+            <div class="content">
+                <div>
+                    <h2>Tại sao đây là bài toán kiến trúc?</h2>
+                    <p>Phần lớn tài liệu về Voice AI tập trung vào 20% — chọn model nào, prompt thế nào, fine-tune ra sao. Nhưng 80% còn lại — system engineering — là yếu tố quyết định liệu hệ thống có sống được ngoài môi trường production.</p>
+                    <p>Một startup healthcare đã demo Voice AI ấn tượng với latency 280ms. Ba tuần sau, khi launch thật, cuộc gọi đầu tiên bị: 2 giây im lặng, tiếng vỡ, AI ngắt lời user. Không phải vấn đề model — vấn đề là thiếu hiểu biết về G.711, ephemeral token, barge-in state machine, pre-connect.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #1D9E75 0%, #378ADD 100%); border-radius: 12px; padding: 40px; color: white; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">80%</div>
+                        <div style="font-size: 18px;">Kiến trúc hệ thống<br>quyết định thành bại</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5 Problems Section -->
+        <section class="problems">
+            <h2>5 lý do Voice AI chết ở production</h2>
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Không phải vì model. Là vì kiến trúc hệ thống.</p>
+
+            <div class="problem-item">
+                <div class="problem-icon">🔊</div>
+                <div class="problem-text">
+                    <h4>1. Audio codec không khớp</h4>
+                    <p>User gọi từ điện thoại → audio đến server ở G.711 8kHz. AI model cần PCM 16kHz. Nếu conversion sai → tiếng vỡ, AI nhận diện sai.</p>
+                </div>
+            </div>
+
+            <div class="problem-item">
+                <div class="problem-icon">⏱️</div>
+                <div class="problem-text">
+                    <h4>2. Latency tích lũy</h4>
+                    <p>STT 280ms + LLM 420ms + TTS 180ms = 940ms. User cảm thấy "chậm" ở 400ms. Mỗi bước tưởng "chấp nhận được" nhưng cộng lại vượt ngưỡng.</p>
+                </div>
+            </div>
+
+            <div class="problem-item">
+                <div class="problem-icon">💾</div>
+                <div class="problem-text">
+                    <h4>3. Session state mất khi disconnect</h4>
+                    <p>User nghe vùng sóng yếu, call drop rồi gọi lại. Nếu session không persist → AI không nhớ conversation trước, phải bắt đầu lại.</p>
+                </div>
+            </div>
+
+            <div class="problem-item">
+                <div class="problem-icon">🗣️</div>
+                <div class="problem-text">
+                    <h4>4. Barge-in không hoạt động</h4>
+                    <p>AI đang đọc dài. User ngắt lời. AI tiếp tục nói đè lên user. Lỗi state machine, không phải lỗi model.</p>
+                </div>
+            </div>
+
+            <div class="problem-item">
+                <div class="problem-icon">🔇</div>
+                <div class="problem-text">
+                    <h4>5. 2–3 giây im lặng sau khi bắt máy</h4>
+                    <p>Server phải kết nối AI, load system prompt, generate lời chào → mất 2–3 giây. User nghĩ cuộc gọi bị lỗi → cúp máy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Overview -->
+        <section class="arch-section">
+            <h2>Kiến trúc tổng thể — 2 Channel, 1 Core</h2>
+
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Hệ thống Voice AI production chia làm <strong>4 tầng</strong>, với nguyên tắc cốt lõi: <strong>2 channel đầu vào hoàn toàn khác nhau — hội tụ về cùng 1 AI Core.</strong></p>
+
+            <div class="highlight">
+                <strong>Insight cốt lõi:</strong> Channel chỉ là adapter — Core mới là bộ não. Browser và Phone là 2 thế giới hoàn toàn khác nhau về codec, protocol, và latency profile. Phần lớn bug production nằm ở lớp adapter này.
+            </div>
+
+            <div class="diagram-container" style="min-height: 400px; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+                <div style="text-align: center;">
+                    <p>📊 Embedded architecture diagram (từ 00-overview.md)</p>
+                    <p style="font-size: 12px; margin-top: 16px;">Xem file HTML gốc hoặc 00-overview.md để xem sơ đồ kiến trúc 4 tầng chi tiết</p>
+                </div>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Tầng</th>
+                        <th>Thành phần</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color: #1e40af;">CLIENT</strong></td>
+                        <td>Browser + Phone</td>
+                        <td>2 channel đầu vào: WebRTC (48kHz Opus) vs PSTN (8kHz G.711)</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #5b21b6;">GATEWAY</strong></td>
+                        <td>Token API + WSS Stream</td>
+                        <td>Quản lý authentication, stream audio từ phone/browser</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #065f46;">AI CORE</strong></td>
+                        <td>Real-time Voice Model</td>
+                        <td>PCM 16kHz in → PCM 24kHz out, sub-300ms latency</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #374151;">DATA</strong></td>
+                        <td>Security + Cache + Database</td>
+                        <td>PII masking, Redis cache, PostgreSQL sessions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Audio Pipeline -->
+        <section>
+            <h2>Audio Pipeline — Nguyên tắc bất đối xứng</h2>
+
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Thành phần mà hầu hết tutorial bỏ qua: inbound và outbound audio pipeline không phải là mirror image của nhau.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">Inbound</div>
+                    <div class="timeline-content">
+                        <h3>📱 Phone → AI · Buffer được</h3>
+                        <p><strong>60ms buffer</strong> nằm dưới ngưỡng perception (~80ms). Gom đủ chunk trước khi xử lý giúp model chính xác hơn. Audio từ phone (8kHz G.711) → decode → upsample → buffer → AI input (16kHz PCM).</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">Outbound</div>
+                    <div class="timeline-content">
+                        <h3>🔊 AI → Phone · Zero buffer</h3>
+                        <p><strong>Bất kỳ delay nào</strong> ở output đều cảm nhận được ngay lập tức. Buffer output = tiếng nói bị "giật". AI output (24kHz PCM) → downsample → encode → phone output (8kHz G.711) — tất cả phải immediate.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight" style="border-left-color: #d97706; background: linear-gradient(135deg, rgba(217, 119, 6, 0.05) 0%, rgba(217, 119, 6, 0.02) 100%);">
+                <strong style="color: #d97706;">⚠️ Lỗi phổ biến:</strong> Apply cùng buffer strategy cho cả 2 chiều. Kết quả là AI nghe "lag" dù metrics P95 vẫn ổn — vì buffer outbound không xuất hiện trong latency measurement.
+            </div>
+        </section>
+
+        <!-- Ephemeral Token -->
+        <section>
+            <h2>Ephemeral Token — Tại sao API key không được vào browser</h2>
+
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Với channel browser, có một vấn đề bảo mật cơ bản: WebSocket cần kết nối thẳng đến AI endpoint — nhưng không thể đặt API key trong client code vì bất kỳ ai cũng đọc được.</p>
+
+            <div class="cards">
+                <div class="card" style="border-left: 4px solid #1e40af;">
+                    <div style="font-size: 20px; font-weight: 700; color: #1e40af; margin-bottom: 12px;">CONTROL PLANE</div>
+                    <p><strong>Lấy token qua HTTP server</strong></p>
+                    <ul style="margin-top: 12px; padding-left: 20px;">
+                        <li>Browser → Server POST /api/live-token</li>
+                        <li>Server verify auth, lấy API key từ environment</li>
+                        <li>Return ephemeral token (30min TTL)</li>
+                        <li>API key LUÔN ở server, không bao giờ expose</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 4px solid #059669;">
+                    <div style="font-size: 20px; font-weight: 700; color: #059669; margin-bottom: 12px;">DATA PLANE</div>
+                    <p><strong>Stream audio trực tiếp (zero server latency)</strong></p>
+                    <ul style="margin-top: 12px; padding-left: 20px;">
+                        <li>Browser ↔ AI Model (WebSocket direct)</li>
+                        <li>Sử dụng ephemeral token từ control plane</li>
+                        <li>Server không bao giờ chạm vào audio</li>
+                        <li>Real-time, bidirectional stream</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pre-Connect -->
+        <section>
+            <h2>Pre-Connect — Giải quyết vấn đề 2–3 giây im lặng</h2>
+
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Pre-Connect Pattern giải quyết bằng cách <strong>làm việc trong lúc điện thoại đang reo</strong>.</p>
+
+            <div class="cards">
+                <div class="card" style="border: 2px solid #d97706; background: #fffbeb;">
+                    <div style="color: #d97706; font-weight: 700; margin-bottom: 12px;">❌ KHÔNG CÓ PRE-CONNECT (chậm)</div>
+                    <p><strong>Timeline tuần tự:</strong></p>
+                    <div style="font-family: monospace; margin-top: 12px; font-size: 12px; color: #6b7280;">
+                        Bắt máy<br>
+                        ├─ Connect AI (800ms)<br>
+                        ├─ Load prompt (400ms)<br>
+                        └─ Generate voice (1200ms)<br>
+                        <span style="color: #d97706; font-weight: 600;">= 2-3 giây im lặng 🔇</span>
+                    </div>
+                </div>
+
+                <div class="card" style="border: 2px solid #059669; background: #f0fdf4;">
+                    <div style="color: #059669; font-weight: 700; margin-bottom: 12px;">✅ CÓ PRE-CONNECT (nhanh)</div>
+                    <p><strong>Timeline song song:</strong></p>
+                    <div style="font-family: monospace; margin-top: 12px; font-size: 12px; color: #6b7280;">
+                        Phone reo<br>
+                        ├─ Connect AI (800ms) 🔄<br>
+                        ├─ Load prompt (400ms) 🔄<br>
+                        └─ Cache greeting (1200ms) 🔄<br>
+                        <span style="color: #059669; font-weight: 600;">▶ Play greeting khi bắt (100ms) ✓</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight" style="margin-top: 32px;">
+                <strong>Không phải model nhanh hơn. Là làm sớm hơn.</strong> Qua bài 13, sẽ đi sâu vào các optimization patterns khác.
+            </div>
+        </section>
+
+        <!-- 4 Pipeline Architectures -->
+        <section>
+            <h2>4 Kiến trúc AI Pipeline — Trade-off</h2>
+
+            <p style="color: #6b7280; margin-bottom: 32px; font-size: 16px;">Đây là quyết định kiến trúc quan trọng nhất — và không có "đúng/sai" tuyệt đối, chỉ có trade-off.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Pipeline</th>
+                        <th>Latency</th>
+                        <th>Cost/min</th>
+                        <th>Maturity</th>
+                        <th>Phù hợp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cascaded</strong></td>
+                        <td>600ms – 1.5s</td>
+                        <td class="cost-high">$0.10–0.22</td>
+                        <td>⭐⭐⭐⭐</td>
+                        <td>Healthcare, Legal, Enterprise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speech-Native</strong></td>
+                        <td>160–400ms</td>
+                        <td class="cost-low">$0.06–0.15</td>
+                        <td>⭐⭐⭐⭐</td>
+                        <td>Consumer apps (GPT-4o Realtime)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thinker-Talker</strong></td>
+                        <td>~257ms</td>
+                        <td class="cost-low">$0.08–0.18</td>
+                        <td>⭐⭐⭐</td>
+                        <td>New projects 2025+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LLM + Neural Codec</strong></td>
+                        <td>&lt;50ms stream</td>
+                        <td class="cost-low">&lt;$0.012</td>
+                        <td>⭐⭐</td>
+                        <td>High-volume, self-hosted</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section>
+            <h2>Key Takeaways</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">📐</div>
+                    <h3>Voice AI = 20% Model + 80% Architecture</h3>
+                    <p>Model không quyết định tất cả. System architecture — từ audio codec, latency budget, session management đến barge-in logic — mới là yếu tố chính.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔌</div>
+                    <h3>2 Channel, 1 Core</h3>
+                    <p>Browser (48kHz Opus) và Phone (8kHz G.711) là 2 thế giới khác nhau. Channel chỉ là adapter. Core là bộ não duy nhất.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">⚖️</div>
+                    <h3>Bất đối xứng là quy tắc</h3>
+                    <p>Inbound pipeline có thể buffer (60ms), outbound phải zero-buffer. Latency được đo từ inbound, nhưng outbound delay cảm nhận được ngay.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔐</div>
+                    <h3>Tách control plane & data plane</h3>
+                    <p>Control plane: HTTP (auth, token). Data plane: WebSocket (audio). API key LUÔN ở server, client chỉ thấy token tạm.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">⏱️</div>
+                    <h3>Latency budget là ràng buộc</h3>
+                    <p>STT + LLM + TTS không phải cộng tuyến tính. Mỗi bước tưởng chấp nhận (280ms, 420ms) nhưng cộng lại vượt ngưỡng (400ms).</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🎯</div>
+                    <h3>Pre-connect làm sớm, không phải làm nhanh</h3>
+                    <p>Giải quyết 2–3 giây im lặng bằng cách bắt đầu setup từ lúc phone reo, không phải từ lúc user bắt máy.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-author">
+                ✍️ Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong>
+            </div>
+            <p>Bài viết này tổng hợp từ kinh nghiệm thực tế xây dựng các hệ thống Voice AI production, kết hợp với best practices từ cộng đồng</p>
+            <p style="margin-top: 16px; color: #9ca3af; font-size: 12px;">
+                📌 Cập nhật: Tháng 4, 2026 ·
+                📖 Phần của Series: Voice AI System Architecture (15 bài) ·
+                🔗 Nguồn: <a href="https://github.com/hungld10/share-everything-about-ai" style="color: #534AB7; text-decoration: none;">GitHub</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

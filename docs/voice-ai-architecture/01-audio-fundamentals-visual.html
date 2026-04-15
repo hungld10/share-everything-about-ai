@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Fundamentals — Nền tảng Voice AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1D9E75 0%, #378ADD 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Key Stat */
+        .key-stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 64px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .content h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* Section Title */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #1D9E75;
+        }
+
+        section h3 {
+            font-size: 22px;
+            color: #1f2937;
+            margin-bottom: 16px;
+            margin-top: 24px;
+        }
+
+        section p {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        section ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        section li {
+            margin-bottom: 12px;
+            color: #4b5563;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #111827;
+            margin: 0 0 12px 0;
+            font-weight: 600;
+        }
+
+        .card .frequency {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .card .note {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .card .codec {
+            display: inline-block;
+            background: #f3f4f6;
+            color: #374151;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Quality bar */
+        .quality-bar {
+            margin-top: 12px;
+        }
+
+        .quality-label {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1D9E75, #378ADD);
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: linear-gradient(135deg, rgba(29, 158, 117, 0.05) 0%, rgba(55, 138, 221, 0.05) 100%);
+            border-left: 4px solid #1D9E75;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .highlight strong {
+            color: #1D9E75;
+        }
+
+        .highlight em {
+            color: #534AB7;
+            font-style: italic;
+        }
+
+        /* Warning Box */
+        .warning {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.05) 0%, rgba(217, 119, 6, 0.02) 100%);
+            border-left: 4px solid #d97706;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .warning strong {
+            color: #d97706;
+        }
+
+        /* Conversion Box */
+        .conversion-box {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+        }
+
+        .conversion-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .conversion-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-size: 13px;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+        }
+
+        .conversion-step {
+            background: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .arrow {
+            color: #9ca3af;
+            font-weight: bold;
+        }
+
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 32px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-table th {
+            background: #1D9E75;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .comparison-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .label-row {
+            background: #f9fafb;
+            font-weight: 500;
+        }
+
+        /* Real Case Study */
+        .case-study {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border-left: 4px solid #534AB7;
+            margin: 32px 0;
+        }
+
+        .case-study h4 {
+            font-size: 18px;
+            color: #111827;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .case-study p {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .case-study .problem {
+            background: #ffe0e0;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #7a2a2a;
+        }
+
+        .case-study .solution {
+            background: #e0ffe0;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #2a7a2a;
+        }
+
+        /* Key Points */
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .point {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .point-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .point h4 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .point p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 48px 20px;
+            margin-top: 80px;
+            color: #6b7280;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-author {
+            margin-bottom: 16px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            section h2 {
+                font-size: 24px;
+            }
+
+            .stat-value {
+                font-size: 48px;
+            }
+
+            .conversion-flow {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <h1>Audio Fundamentals</h1>
+            <p>Nền tảng để hiểu tại sao Voice AI phone channel phức tạp hơn browser</p>
+            <p class="subtitle">Và tại sao mỗi bước trong pipeline đều có "giá" latency</p>
+
+            <div class="key-stat">
+                <span class="stat-value">8.000</span>
+                <span class="stat-label">Số lần mỗi giây mà hệ thống điện thoại "chụp ảnh" âm thanh — chuẩn từ 1972, vẫn chưa thay đổi</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section>
+            <div class="content">
+                <div>
+                    <h2>Tại sao giọng AI nghe "mỏng" trên điện thoại?</h2>
+                    <p>Web app dùng 48.000 lần/giây. Điện thoại dùng 8.000 lần/giây. Sự khác biệt đó — 8kHz vs 48kHz — là nguồn gốc của toàn bộ bài toán Audio Bridge.</p>
+                    <p>Nhưng điều quan trọng hơn: con số này không phải sự lựa chọn. Đó là tiêu chuẩn được đặt ra từ năm 1972 trên toàn bộ hạ tầng viễn thông toàn cầu. Và không ai thay đổi được nó.</p>
+                    <p><strong>Điều này ảnh hưởng đến mọi quyết định kiến trúc Voice AI production.</strong></p>
+                </div>
+                <div style="background: linear-gradient(135deg, #1D9E75 0%, #378ADD 100%); border-radius: 12px; padding: 40px; color: white; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; font-weight: 700; margin-bottom: 12px;">8kHz</div>
+                        <div style="font-size: 16px; margin-bottom: 20px;">Thế giới của<br>hệ thống điện thoại</div>
+                        <div style="font-size: 14px; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 20px;">
+                            Tái tạo được đến 4kHz<br>Đủ cho giọng nói<br>Nghe "mỏng"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fundamental Concepts -->
+        <section>
+            <h2>Audio số — Từ sóng vật lý đến dãy số</h2>
+
+            <p>Âm thanh trong tự nhiên là sóng áp suất không khí — liên tục, analog. Máy tính không thể lưu sóng liên tục, nên phải <strong>"chụp ảnh"</strong> sóng đó nhiều lần mỗi giây.</p>
+
+            <div class="highlight">
+                <strong>Quá trình này gọi là sampling (lấy mẫu),</strong> và dãy số thu được chính là <strong>audio số (digital audio).</strong> Đây là khái niệm nền tảng nhất.
+            </div>
+
+            <h3>Hai thông số quyết định chất lượng audio số:</h3>
+
+            <div class="cards">
+                <div class="card">
+                    <div style="font-size: 14px; font-weight: 600; color: #534AB7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Sample Rate</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 12px;">Tần số lấy mẫu</div>
+                    <p style="font-size: 13px; color: #6b7280; line-height: 1.6;">Bao nhiêu lần "chụp" mỗi giây, đo bằng Hz hoặc kHz. Theo định lý Nyquist, sample rate phải gấp đôi tần số cao nhất muốn tái tạo.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 14px; font-weight: 600; color: #1D9E75; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Bit Depth</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 12px;">Độ sâu bit</div>
+                    <p style="font-size: 13px; color: #6b7280; line-height: 1.6;">Mỗi lần chụp, dùng bao nhiêu bit để ghi con số biên độ. 16-bit cho 65.536 mức — đủ chi tiết cho giọng nói.</p>
+                </div>
+            </div>
+
+            <p style="margin-top: 24px;">Kết hợp hai thông số này tạo ra <strong>PCM</strong> — khái niệm nền tảng nhất trong toàn bộ series.</p>
+        </section>
+
+        <!-- PCM Section -->
+        <section>
+            <h2>PCM — "Ngôn ngữ chung" của Voice AI pipeline</h2>
+
+            <p><strong>PCM (Pulse Code Modulation)</strong> là cách biểu diễn audio số đơn giản nhất: một dãy số tuần tự, mỗi số là biên độ tại một thời điểm, không nén, không biến đổi.</p>
+
+            <div class="highlight">
+                <strong>Mọi codec audio cuối cùng đều phải decode về PCM trước khi xử lý hoặc phát.</strong> G.711 từ điện thoại phải decode về PCM. Opus từ browser phải decode về PCM. Sau đó encode ngược lại để gửi đi.
+            </div>
+
+            <h3>PCM nặng như thế nào?</h3>
+
+            <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; color: #4b5563; margin: 20px 0;">
+                1 giây audio PCM 16kHz, 16-bit = 16.000 samples × 2 bytes = <strong>32KB</strong><br>
+                Một cuộc gọi 5 phút = <strong>~9.6MB</strong> chỉ riêng audio thô
+            </div>
+
+            <p>Đây là lý do cần codec để truyền qua mạng. Nhưng <strong>mọi codec đều phải "về PCM" trước khi AI xử lý</strong> — và đó chính là nơi latency tích lũy.</p>
+
+            <div class="warning">
+                <strong>⚠️ Misconception phổ biến:</strong> <em>"Dùng PCM 48kHz cho AI model cho chất lượng cao hơn."</em> Thực ra model chỉ cần 16kHz đầu vào. Nếu feed 48kHz, model tự downsample — bạn vừa tốn bandwidth, vừa tốn CPU, mà không được gì thêm.
+            </div>
+        </section>
+
+        <!-- 4 Sample Rates -->
+        <section>
+            <h2>4 sample rate cần thuộc lòng</h2>
+
+            <p>Đây là phần nhiều người bị lẫn lộn nhất — vì mỗi thành phần trong pipeline dùng một con số khác nhau và đều có lý do kỹ thuật cụ thể.</p>
+
+            <div class="cards">
+                <div class="card" style="border-top: 3px solid #6b7280;">
+                    <div class="card-icon">📞</div>
+                    <h3>8kHz</h3>
+                    <div class="frequency">PSTN</div>
+                    <div class="note">Thế giới điện thoại</div>
+                    <div class="codec" style="background: #f3f4f6; color: #4b5563;">G.711 µ-law</div>
+                    <div class="quality-bar">
+                        <div class="quality-label">Quality</div>
+                        <div class="bar"><div class="bar-fill" style="width: 25%;"></div></div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 3px solid #2563eb;">
+                    <div class="card-icon">🧠</div>
+                    <h3>16kHz</h3>
+                    <div class="frequency">AI Input</div>
+                    <div class="note">Thế giới AI model</div>
+                    <div class="codec" style="background: #dbeafe; color: #1e40af;">PCM 16-bit</div>
+                    <div class="quality-bar">
+                        <div class="quality-label">Quality</div>
+                        <div class="bar"><div class="bar-fill" style="width: 50%;"></div></div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 3px solid #059669;">
+                    <div class="card-icon">🔊</div>
+                    <h3>24kHz</h3>
+                    <div class="frequency">AI Output</div>
+                    <div class="note">Thế giới TTS</div>
+                    <div class="codec" style="background: #d1fae5; color: #065f46;">PCM 16-bit</div>
+                    <div class="quality-bar">
+                        <div class="quality-label">Quality</div>
+                        <div class="bar"><div class="bar-fill" style="width: 75%;"></div></div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 3px solid #7c3aed;">
+                    <div class="card-icon">🌐</div>
+                    <h3>48kHz</h3>
+                    <div class="frequency">Browser</div>
+                    <div class="note">Thế giới WebRTC</div>
+                    <div class="codec" style="background: #ede9fe; color: #5b21b6;">Opus RFC 6716</div>
+                    <div class="quality-bar">
+                        <div class="quality-label">Quality</div>
+                        <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="conversion-box">
+                <div class="conversion-title">Luồng chuyển đổi khi Phone gọi vào hệ thống</div>
+                <div class="conversion-flow">
+                    <div class="conversion-step" style="background: #dbeafe; color: #1e40af;">8kHz</div>
+                    <div class="arrow">→</div>
+                    <div class="conversion-step" style="background: #ede9fe; color: #5b21b6;">Upsample</div>
+                    <div class="arrow">→</div>
+                    <div class="conversion-step" style="background: #dbeafe; color: #1e40af;">16kHz</div>
+                    <div class="arrow">→</div>
+                    <div class="conversion-step" style="background: #d1fae5; color: #065f46;">24kHz</div>
+                    <div class="arrow">→</div>
+                    <div class="conversion-step" style="background: #fed7aa; color: #92400e;">Downsample</div>
+                    <div class="arrow">→</div>
+                    <div class="conversion-step" style="background: #f3f4f6; color: #4b5563;">8kHz</div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                Sự không khớp giữa 4 con số này — đặc biệt là 8kHz của phone vs 16/24kHz của AI — là toàn bộ lý do tồn tại của Audio Bridge.
+            </div>
+        </section>
+
+        <!-- G.711 Section -->
+        <section>
+            <h2>G.711 — Codec từ năm 1972 vẫn đang chạy hôm nay</h2>
+
+            <p><strong>G.711</strong> là codec audio tiêu chuẩn của mạng điện thoại toàn cầu (PSTN), được ITU chuẩn hóa năm 1972. Nghe có vẻ cổ xưa — nhưng đây là codec mà mọi cuộc gọi điện thoại trên thế giới vẫn đang sử dụng.</p>
+
+            <div class="case-study">
+                <h4>🤔 Tại sao G.711 vẫn tồn tại?</h4>
+                <p>Vì có hàng tỷ thiết bị và hàng triệu km cáp viễn thông được thiết kế xung quanh chuẩn này. Thay thế G.711 nghĩa là thay thế toàn bộ hạ tầng viễn thông toàn cầu — điều không ai làm.</p>
+                <p style="margin-top: 12px;">Đây là ví dụ điển hình của <strong>"legacy lock-in" quy mô hành tinh.</strong></p>
+            </div>
+
+            <h3>Cách G.711 hoạt động:</h3>
+
+            <p>G.711 dùng kỹ thuật <strong>companding (nén-giãn)</strong> — thay vì ghi biên độ tuyến tính (linear PCM), nó dùng thang logarithmic. Âm thanh nhỏ được ghi với độ phân giải cao hơn, âm thanh lớn bị nén lại.</p>
+
+            <p style="margin-top: 16px;">Có 2 biến thể:</p>
+            <ul>
+                <li><strong>µ-law</strong> — Bắc Mỹ, Nhật Bản</li>
+                <li><strong>A-law</strong> — Châu Âu, phần còn lại thế giới</li>
+            </ul>
+
+            <p style="margin-top: 16px;">Cả hai đều nén 14-bit linear PCM xuống 8-bit logarithmic → bitrate cố định <strong>64kbps</strong>.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>G.711 µ-law</th>
+                        <th>Opus (RFC 6716)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label-row">Ra đời</td>
+                        <td>1972</td>
+                        <td>2012</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Dùng cho</td>
+                        <td>PSTN / Phone</td>
+                        <td>WebRTC / Browser</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Sample rate</td>
+                        <td>8 kHz</td>
+                        <td>8–48 kHz</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Bitrate</td>
+                        <td>64 kbps (cố định)</td>
+                        <td>6–510 kbps (adaptive)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Nén</td>
+                        <td>Logarithmic (µ-law)</td>
+                        <td>SILK + CELT hybrid</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Chống mất gói</td>
+                        <td>Không</td>
+                        <td>FEC tích hợp</td>
+                    </tr>
+                    <tr>
+                        <td class="label-row">Algorithmic delay</td>
+                        <td>~0ms</td>
+                        <td>2.5–20ms</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Opus Section -->
+        <section>
+            <h2>Opus — Codec được thiết kế cho internet</h2>
+
+            <p><strong>Opus</strong> là codec audio hiện đại, chuẩn mở (RFC 6716, 2012), được thiết kế đặc biệt cho truyền thông realtime qua internet. Đây là codec mặc định của WebRTC — nghĩa là khi user dùng browser để nói chuyện với AI, audio được encode bằng Opus.</p>
+
+            <p>Opus kết hợp 2 công nghệ:</p>
+            <ul>
+                <li><strong>SILK</strong> — phát triển bởi Skype, tối ưu cho giọng nói</li>
+                <li><strong>CELT</strong> — tối ưu cho âm nhạc/âm thanh tổng quát</li>
+            </ul>
+
+            <p>Nó tự động chuyển đổi giữa 2 mode tùy nội dung.</p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">📊</div>
+                    <h4>Bitrate</h4>
+                    <p>Opus hỗ trợ 6kbps đến 510kbps, tự điều chỉnh theo băng thông. G.711 cố định 64kbps. Ở 24kbps, Opus đã tốt hơn G.711.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🔊</div>
+                    <h4>Sample rate</h4>
+                    <p>Opus hỗ trợ 8/12/16/24/48kHz, trong khi G.711 chỉ 8kHz. Tính linh hoạt cao.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⏱️</div>
+                    <h4>Độ trễ</h4>
+                    <p>Opus có thể xuống 2.5ms frame size (thường 20ms), G.711 gần như zero algorithmic delay.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🔧</div>
+                    <h4>Tính thích ứng</h4>
+                    <p>Opus có FEC tích hợp — tự chèn dữ liệu dự phòng để chống mất gói. G.711 không có.</p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Tại sao Opus quan trọng:</strong> Channel browser dùng Opus 48kHz, cho chất lượng audio cao nhất. Vì Opus thường được thiết lập direct connection (browser ↔ AI model), server có thể không cần chạm vào audio — đây là khác biệt kiến trúc cơ bản giữa channel browser và phone.
+            </div>
+        </section>
+
+        <!-- Why This Matters -->
+        <section>
+            <h2>Tại sao tất cả điều này quan trọng cho Voice AI?</h2>
+
+            <div class="case-study">
+                <h4>Câu chuyện thực tế:</h4>
+                <p>Một engineer đã deploy Voice AI lên production. Tiếng nghe méo, AI nhận diện sai tên người dùng. Anh đổi model 3 lần. Thêm noise cancellation. Tinh chỉnh prompt. Vẫn méo.</p>
+                <div class="problem">
+                    ❌ Nguyên nhân thật: Code audio bridge upsample 8kHz → 16kHz dùng <strong>nearest-neighbor interpolation</strong> thay vì <strong>sinc interpolation</strong> — sai về mặt tín hiệu số, tạo ra aliasing artifact.
+                </div>
+                <div class="solution">
+                    ✅ Giải pháp: Hiểu sample rate và cách resampling hoạt động → tìm ra lỗi này. Model không giúp gì được.
+                </div>
+            </div>
+
+            <p style="margin-top: 32px;">Audio fundamentals là nền tảng để tránh class of bugs này:</p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">📍</div>
+                    <h4>Không hiểu sample rate</h4>
+                    <p>→ không hiểu tại sao cần upsample/downsample, không biết chọn algorithm nào</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📍</div>
+                    <h4>Không hiểu G.711</h4>
+                    <p>→ không hiểu tại sao channel phone phức tạp hơn browser</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📍</div>
+                    <h4>Không hiểu PCM</h4>
+                    <p>→ không hiểu "ngôn ngữ chung" giữa các thành phần</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📍</div>
+                    <h4>Không hiểu codec overhead</h4>
+                    <p>→ không debug được latency budget — mỗi bước encode/decode đều tốn thời gian</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section>
+            <h2>Tóm tắt — Những gì cần nhớ</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔤</div>
+                    <h3>PCM là ngôn ngữ chung</h3>
+                    <p>Mọi audio trong pipeline đều phải decode về PCM trước khi AI xử lý. Mọi bước encode/decode đều có giá latency.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">4️⃣</div>
+                    <h3>4 sample rate: 8→16→24→48</h3>
+                    <p>Phone → AI input → AI output → Browser. Sự không khớp giữa chúng là toàn bộ lý do tồn tại của Audio Bridge.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔒</div>
+                    <h3>G.711 là thực tế không thể thay đổi</h3>
+                    <p>Hạ tầng viễn thông toàn cầu sẽ không upgrade. Voice AI production phải nói được "ngôn ngữ 1972" này.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🌐</div>
+                    <h3>Opus và G.711 đại diện 2 thế giới</h3>
+                    <p>Internet adaptive vs PSTN fixed. Voice AI production phải bridge cả hai.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-author">
+                ✍️ Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong>
+            </div>
+            <p>Bài viết này giải thích nền tảng audio cho Voice AI — cái gì là PCM, sample rate, G.711, Opus — và tại sao mỗi khái niệm này quan trọng cho production</p>
+            <p style="margin-top: 16px; color: #9ca3af; font-size: 12px;">
+                📌 Cập nhật: Tháng 4, 2026 ·
+                📖 Bài 1/15 · Series: Voice AI System Architecture ·
+                🔗 Nguồn: <a href="https://github.com/hungld10/share-everything-about-ai" style="color: #1D9E75; text-decoration: none;">GitHub</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

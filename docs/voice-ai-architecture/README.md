@@ -26,17 +26,17 @@ Series này giải quyết 80% đó.
 
 ### Bài tổng quan
 
-| # | Bài viết | Mô tả |
-|---|----------|-------|
-| 00 | [Voice AI Architecture — Tổng quan](./00-overview.md) | Toàn bộ bức tranh: 2 channel, 4 pipeline, các pattern production, cost analysis |
+| # | Bài viết | Visual | Mô tả |
+|---|----------|--------|-------|
+| 00 | [Voice AI Architecture — Tổng quan](./00-overview.md) | [🎨 Visual](./00-overview-visual.html) | Toàn bộ bức tranh: 2 channel, 4 pipeline, các pattern production, cost analysis |
 
 ### Tầng 1 — Nền tảng (đọc trước)
 
 Nếu chưa quen với audio số và realtime communication, đây là điểm bắt đầu bắt buộc. Tầng này giải thích *cái gì* đang được truyền, trước khi tầng 2 giải thích *truyền thế nào*.
 
-| # | Bài viết | Khái niệm cốt lõi |
-|---|----------|-------------------|
-| 01 | [Audio Fundamentals](./01-audio-fundamentals.md) ✅ | PCM, sample rate, G.711, Opus |
+| # | Bài viết | Visual | Khái niệm cốt lõi |
+|---|----------|--------|-------------------|
+| 01 | [Audio Fundamentals](./01-audio-fundamentals.md) ✅ | [🎨 Visual](./01-audio-fundamentals-visual.html) | PCM, sample rate, G.711, Opus |
 | 02 | WebSocket & Realtime Communication | WebSocket vs HTTP, streaming, backpressure |
 | 03 | Browser vs Phone — 2 Thế Giới Kết Nối | WebRTC/Opus vs PSTN/G.711, adapter pattern |
 
@@ -102,10 +102,10 @@ Tầng ghép mọi thứ lại thành hệ thống production. Đọc sau khi đ
 
 ## Trạng thái series
 
-| Tầng | Bài | Trạng thái |
-|------|-----|------------|
-| Tổng quan | [00 Overview](./00-overview.md) | ✅ Hoàn thành |
-| Tầng 1 | [01 Audio Fundamentals](./01-audio-fundamentals.md) | ✅ Hoàn thành |
+| Tầng | Bài | Markdown | Visual | Trạng thái |
+|------|-----|----------|--------|------------|
+| Tổng quan | [00 Overview](./00-overview.md) | ✅ | [🎨](./00-overview-visual.html) ✅ | ✅ Hoàn thành |
+| Tầng 1 | [01 Audio Fundamentals](./01-audio-fundamentals.md) | ✅ | [🎨](./01-audio-fundamentals-visual.html) ✅ | ✅ Hoàn thành |
 | Tầng 1 | 02 WebSocket & Realtime | 🔲 Chưa viết |
 | Tầng 1 | 03 Browser vs Phone | 🔲 Chưa viết |
 | Tầng 2 | 04 Audio Bridge | 🔲 Chưa viết |
