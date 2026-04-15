@@ -1,38 +1,38 @@
 
 <h2 class="sr-only">Inbound và Outbound audio pipeline trong Voice AI — nguyên tắc bất đối xứng</h2>
 <style>
-  .io-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
-  .io-section-title{font-size:14px;font-weight:700;color:#ffffff;margin:0 0 12px}
+  .io-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
+  .io-section-title{font-size:14px;font-weight:700;color:#000000;margin:0 0 12px}
 
   .dir-header{display:flex;align-items:center;gap:8px;margin:0 0 8px}
   .dir-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
-  .dir-badge-in{background:rgba(59,130,246,.2);color:#60a5fa}
-  .dir-badge-out{background:rgba(249,115,22,.2);color:#fb923c}
-  .dir-label{font-size:12px;color:#cbd5e1}
+  .dir-badge-in{background:#dbeafe;color:#1e40af}
+  .dir-badge-out{background:#fed7aa;color:#92400e}
+  .dir-label{font-size:12px;color:#374151}
 
   .pipe-row{display:flex;align-items:stretch;gap:0;margin:0 0 6px;overflow-x:auto}
-  .pipe-step{flex:1;min-width:72px;text-align:center;padding:10px 6px;font-size:11px;color:#cbd5e1;line-height:1.4;border-radius:8px;background:#1e293b}
-  .pipe-step strong{display:block;font-size:12px;color:#e2e8f0;font-weight:600;margin:0 0 2px}
-  .step-source{background:#182438}
-  .step-source-out{background:#14231e}
-  .step-dest{background:#14231e}
-  .step-buffer{background:rgba(234,179,8,.14);border:.5px solid rgba(234,179,8,.4)}
-  .step-immediate{background:rgba(249,115,22,.14);border:.5px solid rgba(249,115,22,.4)}
-  .pipe-arr{display:flex;align-items:center;padding:0 3px;flex-shrink:0;color:#475569;font-size:13px}
+  .pipe-step{flex:1;min-width:72px;text-align:center;padding:10px 6px;font-size:11px;color:#374151;line-height:1.4;border-radius:8px;background:#f9fafb;border:.5px solid #d1d5db}
+  .pipe-step strong{display:block;font-size:12px;color:#000000;font-weight:600;margin:0 0 2px}
+  .step-source{background:#dbeafe}
+  .step-source-out{background:#fed7aa}
+  .step-dest{background:#f0fdf4}
+  .step-buffer{background:rgba(234,179,8,.15);border:.5px solid rgba(234,179,8,.5)}
+  .step-immediate{background:rgba(249,115,22,.15);border:.5px solid rgba(249,115,22,.5)}
+  .pipe-arr{display:flex;align-items:center;padding:0 3px;flex-shrink:0;color:#9ca3af;font-size:13px}
 
-  .buffer-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:rgba(234,179,8,.25);color:#fbbf24;margin:3px 0 0;text-transform:uppercase}
-  .immediate-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:rgba(249,115,22,.25);color:#fb923c;margin:3px 0 0;text-transform:uppercase}
+  .buffer-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:#fef3c7;color:#92400e;margin:3px 0 0;text-transform:uppercase}
+  .immediate-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:#fed7aa;color:#92400e;margin:3px 0 0;text-transform:uppercase}
 
   .asym-rule{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
-  .asym-card{border-radius:8px;padding:10px 12px;border:.5px solid #334155}
-  .asym-card-in{border-color:rgba(59,130,246,.4)}
-  .asym-card-out{border-color:rgba(249,115,22,.4)}
+  .asym-card{border-radius:8px;padding:10px 12px;border:.5px solid #d1d5db;background:#f9fafb}
+  .asym-card-in{border-color:#bfdbfe;background:#eff6ff}
+  .asym-card-out{border-color:#fed7aa;background:#fffbeb}
   .asym-rule-label{font-size:11px;font-weight:600;margin:0 0 4px}
-  .asym-rule-label-in{color:#60a5fa}
-  .asym-rule-label-out{color:#fb923c}
-  .asym-rule-text{font-size:11px;color:#cbd5e1;line-height:1.5}
+  .asym-rule-label-in{color:#1e40af}
+  .asym-rule-label-out{color:#92400e}
+  .asym-rule-text{font-size:11px;color:#374151;line-height:1.5}
 
-  .note-box{background:rgba(59,130,246,.1);border-radius:8px;padding:10px 14px;font-size:12px;color:#93c5fd;line-height:1.5;margin:12px 0 0}
+  .note-box{background:#eff6ff;border-radius:8px;padding:10px 14px;font-size:12px;color:#1e3a8a;line-height:1.5;border:.5px solid #bfdbfe}
 
   @media(max-width:520px){
     .pipe-step{min-width:60px;padding:8px 4px}

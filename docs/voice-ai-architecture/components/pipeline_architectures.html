@@ -1,55 +1,55 @@
 
 <h2 class="sr-only">So sánh 4 kiến trúc AI pipeline trong Voice AI — Cascaded, Speech-Native, Thinker-Talker, LLM + Neural Codec</h2>
 <style>
-  .pl-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
-  .pl-title{font-size:14px;font-weight:700;color:#ffffff;margin:0 0 12px}
+  .pl-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
+  .pl-title{font-size:14px;font-weight:700;color:#000000;margin:0 0 12px}
   .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
-  .pl-card{border-radius:10px;padding:14px 16px;border:.5px solid #2d3f55;background:#1e293b;display:flex;flex-direction:column;gap:10px}
+  .pl-card{border-radius:10px;padding:14px 16px;border:.5px solid #d1d5db;background:#f9fafb;display:flex;flex-direction:column;gap:10px}
 
   .pl-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  .pl-name{font-size:13px;font-weight:600;color:#e2e8f0}
+  .pl-name{font-size:13px;font-weight:600;color:#000000}
   .pl-badge{font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:20px;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
-  .badge-standard{background:rgba(59,130,246,.2);color:#60a5fa}
-  .badge-low-lat{background:rgba(16,185,129,.2);color:#34d399}
-  .badge-emerging{background:rgba(139,92,246,.2);color:#a78bfa}
-  .badge-cheapest{background:rgba(245,158,11,.2);color:#fbbf24}
+  .badge-standard{background:#dbeafe;color:#1e40af}
+  .badge-low-lat{background:#d1fae5;color:#065f46}
+  .badge-emerging{background:#ede9fe;color:#5b21b6}
+  .badge-cheapest{background:#fef3c7;color:#92400e}
 
   .pl-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .pl-metric{background:#0f172a;border-radius:6px;padding:7px 9px}
-  .pl-metric-label{font-size:10px;color:#94a3b8;margin:0 0 2px;letter-spacing:.03em}
-  .pl-metric-val{font-size:13px;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace}
-  .latency-slow{color:#fb923c}
-  .latency-ok{color:#fbbf24}
-  .latency-fast{color:#34d399}
-  .cost-high{color:#94a3b8}
-  .cost-mid{color:#94a3b8}
-  .cost-low{color:#34d399;font-weight:700}
+  .pl-metric{background:#f3f4f6;border-radius:6px;padding:7px 9px;border:.5px solid #e5e7eb}
+  .pl-metric-label{font-size:10px;color:#4b5563;margin:0 0 2px;letter-spacing:.03em}
+  .pl-metric-val{font-size:13px;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace;color:#000000}
+  .latency-slow{color:#d97706}
+  .latency-ok{color:#f59e0b}
+  .latency-fast{color:#059669}
+  .cost-high{color:#6b7280}
+  .cost-mid{color:#6b7280}
+  .cost-low{color:#059669;font-weight:700}
 
   .pl-flow{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;overflow:hidden}
   .pl-flow-step{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
-  .flow-blue{background:rgba(59,130,246,.2);color:#60a5fa}
-  .flow-green{background:rgba(16,185,129,.2);color:#34d399}
-  .flow-purple{background:rgba(139,92,246,.2);color:#a78bfa}
-  .flow-orange{background:rgba(249,115,22,.2);color:#fb923c}
-  .flow-yellow{background:rgba(245,158,11,.2);color:#fbbf24}
-  .pl-flow-arr{font-size:11px;color:#475569;flex-shrink:0}
-  .pl-flow-single{font-size:10px;font-weight:500;padding:3px 10px;border-radius:4px;flex:1;text-align:center}
+  .flow-blue{background:#dbeafe;color:#1e40af}
+  .flow-green{background:#d1fae5;color:#065f46}
+  .flow-purple{background:#ede9fe;color:#5b21b6}
+  .flow-orange{background:#fed7aa;color:#92400e}
+  .flow-yellow{background:#fef3c7;color:#92400e}
+  .pl-flow-arr{font-size:11px;color:#9ca3af;flex-shrink:0}
+  .pl-flow-single{font-size:10px;font-weight:500;padding:3px 10px;border-radius:4px;flex:1;text-align:center;background:#d1fae5;color:#065f46}
 
-  .pl-usecase{font-size:11px;color:#cbd5e1;padding-top:6px;border-top:.5px solid #2d3f55;line-height:1.5}
-  .pl-usecase-label{font-weight:600;color:#cbd5e1}
+  .pl-usecase{font-size:11px;color:#374151;padding-top:6px;border-top:.5px solid #e5e7eb;line-height:1.5}
+  .pl-usecase-label{font-weight:600;color:#000000}
 
   /* Comparison footer */
-  .pl-footer{background:#1e293b;border-radius:8px;padding:12px 14px}
-  .pl-footer-title{font-size:12px;font-weight:500;color:#e2e8f0;margin:0 0 10px}
+  .pl-footer{background:#f9fafb;border-radius:8px;padding:12px 14px;border:.5px solid #d1d5db}
+  .pl-footer-title{font-size:12px;font-weight:600;color:#000000;margin:0 0 10px}
   .pl-compare-grid{display:grid;grid-template-columns:90px repeat(4,1fr);gap:4px}
-  .pl-col-header{font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:.04em;text-align:center;padding:4px 2px}
-  .pl-row-label{font-size:11px;color:#cbd5e1;font-weight:500;padding:5px 0;display:flex;align-items:center}
+  .pl-col-header{font-size:10px;font-weight:700;color:#374151;letter-spacing:.04em;text-align:center;padding:4px 2px;background:#f3f4f6;border-radius:4px}
+  .pl-row-label{font-size:11px;color:#374151;font-weight:500;padding:5px 0;display:flex;align-items:center}
   .pl-dots{text-align:center;font-size:12px;letter-spacing:1px;padding:5px 2px;line-height:1}
-  .dot-row{border-top:.5px solid #1e2d3d}
-  .dots-green{color:#34d399}
-  .dots-yellow{color:#fbbf24}
-  .dots-orange{color:#fb923c}
-  .dots-gray{color:#334155}
+  .dot-row{border-top:.5px solid #e5e7eb}
+  .dots-green{color:#059669}
+  .dots-yellow{color:#f59e0b}
+  .dots-orange{color:#d97706}
+  .dots-gray{color:#9ca3af}
 
   @media(max-width:520px){
     .pl-grid{grid-template-columns:1fr}

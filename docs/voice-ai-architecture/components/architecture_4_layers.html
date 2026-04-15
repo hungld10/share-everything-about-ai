@@ -1,68 +1,68 @@
 
 <h2 class="sr-only">Kiến trúc 4 tầng của hệ thống Voice AI production</h2>
 <style>
-  .arch-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
-  .arch-layer{border-radius:10px;padding:14px 16px;margin:0 0 4px}
-  .arch-layer-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin:0 0 10px;opacity:1}
+  .arch-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
+  .arch-layer{border-radius:10px;padding:14px 16px;margin:0 0 4px;border:.5px solid #d1d5db}
+  .arch-layer-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin:0 0 10px;opacity:1;color:#000000}
 
   /* CLIENT — blue tint */
-  .layer-client{background:#182438}
-  .layer-client .arch-layer-label{color:#60a5fa}
+  .layer-client{background:#eff6ff}
+  .layer-client .arch-layer-label{color:#1e40af}
   /* GATEWAY — purple tint */
-  .layer-gateway{background:#1c1830}
-  .layer-gateway .arch-layer-label{color:#a78bfa}
+  .layer-gateway{background:#faf5ff}
+  .layer-gateway .arch-layer-label{color:#5b21b6}
   /* AI CORE — green tint + border */
-  .layer-core{background:#14231e;border:.5px solid rgba(16,185,129,.35)}
-  .layer-core .arch-layer-label{color:#34d399}
+  .layer-core{background:#f0fdf4;border:.5px solid #86efac}
+  .layer-core .arch-layer-label{color:#065f46}
   /* DATA — neutral dark */
-  .layer-data{background:#182030}
-  .layer-data .arch-layer-label{color:#94a3b8}
+  .layer-data{background:#f9fafb}
+  .layer-data .arch-layer-label{color:#374151}
 
   /* Cards inside layers */
   .client-channels,.gateway-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .channel-card,.gw-item,.data-svc{background:#0f172a;border-radius:8px;padding:10px 12px;border:.5px solid #2d3f55}
+  .channel-card,.gw-item,.data-svc{background:#ffffff;border-radius:8px;padding:10px 12px;border:.5px solid #e5e7eb}
 
   .channel-header{display:flex;align-items:center;gap:6px;margin:0 0 6px}
   .channel-icon{font-size:14px;line-height:1}
-  .channel-name{font-size:12px;font-weight:600;color:#e2e8f0}
+  .channel-name{font-size:12px;font-weight:600;color:#000000}
   .channel-badges{display:flex;gap:4px;flex-wrap:wrap}
   .badge{font-size:10px;font-family:ui-monospace,'Cascadia Code',monospace;padding:2px 6px;border-radius:4px;font-weight:600}
-  .badge-blue{background:rgba(59,130,246,.18);color:#60a5fa}
-  .badge-orange{background:rgba(249,115,22,.18);color:#fb923c}
-  .badge-gray{background:#1e293b;color:#64748b}
+  .badge-blue{background:#dbeafe;color:#1e40af}
+  .badge-orange{background:#fed7aa;color:#92400e}
+  .badge-gray{background:#f3f4f6;color:#4b5563}
 
-  .gw-name{font-size:12px;font-weight:600;color:#e2e8f0;margin:0 0 4px}
-  .gw-detail{font-size:11px;color:#94a3b8;font-family:ui-monospace,'Cascadia Code',monospace}
+  .gw-name{font-size:12px;font-weight:600;color:#000000;margin:0 0 4px}
+  .gw-detail{font-size:11px;color:#374151;font-family:ui-monospace,'Cascadia Code',monospace}
 
   /* AI Core internals */
-  .core-model{background:#0f172a;border-radius:8px;padding:12px 14px;border:.5px solid rgba(52,211,153,.3);margin:0 0 8px}
-  .core-model-name{font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 6px}
+  .core-model{background:#ffffff;border-radius:8px;padding:12px 14px;border:.5px solid #86efac;margin:0 0 8px}
+  .core-model-name{font-size:13px;font-weight:600;color:#000000;margin:0 0 6px}
   .core-io{display:flex;align-items:center;gap:8px;margin:0 0 4px;flex-wrap:wrap}
   .core-io-badge{font-size:11px;font-family:ui-monospace,'Cascadia Code',monospace;padding:3px 8px;border-radius:4px;font-weight:600}
-  .io-in{background:rgba(59,130,246,.18);color:#60a5fa}
-  .io-out{background:rgba(16,185,129,.18);color:#34d399}
-  .io-arrow{color:#475569;font-size:12px}
-  .core-sub{font-size:11px;color:#94a3b8}
+  .io-in{background:#dbeafe;color:#1e40af}
+  .io-out{background:#d1fae5;color:#065f46}
+  .io-arrow{color:#6b7280;font-size:12px}
+  .core-sub{font-size:11px;color:#374151}
   .core-services{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-  .svc-chip{background:#0f172a;border-radius:6px;padding:8px 10px;border:.5px solid #2d3f55;text-align:center}
-  .svc-name{font-size:11px;font-weight:500;color:#e2e8f0}
-  .svc-desc{font-size:10px;color:#94a3b8;margin:2px 0 0}
+  .svc-chip{background:#ffffff;border-radius:6px;padding:8px 10px;border:.5px solid #e5e7eb;text-align:center}
+  .svc-name{font-size:11px;font-weight:500;color:#000000}
+  .svc-desc{font-size:10px;color:#4b5563;margin:2px 0 0}
 
   /* Data layer */
   .data-top{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .data-svc-name{font-size:12px;font-weight:600;color:#e2e8f0;margin:0 0 5px}
+  .data-svc-name{font-size:12px;font-weight:600;color:#000000;margin:0 0 5px}
   .data-svc-items{display:flex;flex-direction:column;gap:2px}
-  .data-svc-item{font-size:10px;color:#94a3b8}
+  .data-svc-item{font-size:10px;color:#374151}
 
   /* Connector arrows */
   .arch-arrow-row{display:flex;justify-content:space-around;padding:2px 60px;margin:0}
   .arch-arrow{display:flex;flex-direction:column;align-items:center}
-  .arch-arrow-line,.arch-merge-line{width:1px;height:16px;background:#334155}
-  .arch-arrow-head,.arch-merge-head{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #334155}
+  .arch-arrow-line,.arch-merge-line{width:1px;height:16px;background:#d1d5db}
+  .arch-arrow-head,.arch-merge-head{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #d1d5db}
   .arch-merge-row{display:flex;justify-content:center;margin:0}
   .arch-merge{display:flex;flex-direction:column;align-items:center}
 
-  .arch-note{font-size:11px;color:#94a3b8;text-align:center;margin:10px 0 0;font-style:italic}
+  .arch-note{font-size:11px;color:#4b5563;text-align:center;margin:10px 0 0;font-style:italic}
 
   @media(max-width:520px){
     .client-channels,.gateway-items,.core-services,.data-top{grid-template-columns:1fr}
