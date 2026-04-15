@@ -302,21 +302,21 @@ Audio fundamentals là nền tảng để tránh class of bugs này:
   .section-title{font-size:14px;font-weight:700;color:#000000;margin:0 0 10px}
   .row{display:flex;gap:8px;margin:0 0 8px}
   .col{flex:1;background:#f9fafb;border-radius:8px;padding:12px 14px;border:.5px solid #d1d5db}
-  .col-label{font-size:11px;color:#64748b;margin:0 0 4px;letter-spacing:.03em;text-transform:uppercase;font-weight:600;font-size:10px}
+  .col-label{font-size:11px;color:#4b5563;margin:0 0 4px;letter-spacing:.03em;text-transform:uppercase;font-weight:600;font-size:10px}
   .col-val{font-size:16px;font-weight:700;color:#000000;margin:0;font-family:ui-monospace,'Cascadia Code',monospace}
-  .col-note{font-size:11px;color:#94a3b8;margin:4px 0 0;line-height:1.4}
+  .col-note{font-size:11px;color:#374151;margin:4px 0 0;line-height:1.4}
   .vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
-  .vs-card{border-radius:10px;padding:14px 16px;border:.5px solid #334155;background:#1e293b}
-  .vs-h{font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 10px}
-  .vs-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:.5px solid #2d3f55}
+  .vs-card{border-radius:10px;padding:14px 16px;border:.5px solid #d1d5db;background:#f9fafb}
+  .vs-h{font-size:13px;font-weight:600;color:#000000;margin:0 0 10px}
+  .vs-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:.5px solid #e5e7eb}
   .vs-row:first-of-type{border-top:none}
-  .vs-k{color:#94a3b8}
-  .vs-v{color:#e2e8f0;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace;font-size:11px}
+  .vs-k{color:#4b5563}
+  .vs-v{color:#000000;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace;font-size:11px}
   .pipeline{display:flex;align-items:center;gap:0;margin:8px 0}
-  .pipe-step{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#94a3b8;line-height:1.4;border-radius:8px;background:#1e293b}
-  .pipe-step strong{display:block;font-size:12px;color:#e2e8f0;font-weight:600}
-  .pipe-arr{font-size:14px;color:#475569;padding:0 3px;flex-shrink:0}
-  .note-box{background:rgba(59,130,246,.1);border-radius:8px;padding:10px 14px;font-size:12px;color:#93c5fd;line-height:1.5;margin:10px 0 0}
+  .pipe-step{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#374151;line-height:1.4;border-radius:8px;background:#f9fafb;border:.5px solid #d1d5db}
+  .pipe-step strong{display:block;font-size:12px;color:#000000;font-weight:600}
+  .pipe-arr{font-size:14px;color:#6b7280;padding:0 3px;flex-shrink:0}
+  .note-box{background:#eff6ff;border-radius:8px;padding:10px 14px;font-size:12px;color:#1e3a8a;line-height:1.5;margin:10px 0 0;border:.5px solid #bfdbfe}
   @media(max-width:480px){.vs{grid-template-columns:1fr}.row{flex-direction:column}}
 </style>
 <div class="wrap">

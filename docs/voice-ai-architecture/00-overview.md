@@ -68,68 +68,68 @@ Hệ thống Voice AI production chia làm **4 tầng**, với nguyên tắc c�
 
 <h2 class="sr-only">Kiến trúc 4 tầng của hệ thống Voice AI production</h2>
 <style>
-  .arch-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
+  .arch-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
   .arch-layer{border-radius:10px;padding:14px 16px;margin:0 0 4px}
   .arch-layer-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin:0 0 10px}
 
   /* CLIENT — blue tint */
-  .layer-client{background:#182438}
-  .layer-client .arch-layer-label{color:#60a5fa}
+  .layer-client{background:#eff6ff}
+  .layer-client .arch-layer-label{color:#1e40af}
   /* GATEWAY — purple tint */
-  .layer-gateway{background:#1c1830}
-  .layer-gateway .arch-layer-label{color:#a78bfa}
+  .layer-gateway{background:#faf5ff}
+  .layer-gateway .arch-layer-label{color:#5b21b6}
   /* AI CORE — green tint + border */
-  .layer-core{background:#14231e;border:.5px solid rgba(16,185,129,.35)}
-  .layer-core .arch-layer-label{color:#34d399}
+  .layer-core{background:#f0fdf4;border:.5px solid #86efac}
+  .layer-core .arch-layer-label{color:#065f46}
   /* DATA — neutral dark */
-  .layer-data{background:#182030}
-  .layer-data .arch-layer-label{color:#94a3b8}
+  .layer-data{background:#f9fafb}
+  .layer-data .arch-layer-label{color:#374151}
 
   /* Cards inside layers */
   .client-channels,.gateway-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .channel-card,.gw-item,.data-svc{background:#0f172a;border-radius:8px;padding:10px 12px;border:.5px solid #2d3f55}
+  .channel-card,.gw-item,.data-svc{background:#ffffff;border-radius:8px;padding:10px 12px;border:.5px solid #e5e7eb}
 
   .channel-header{display:flex;align-items:center;gap:6px;margin:0 0 6px}
   .channel-icon{font-size:14px;line-height:1}
-  .channel-name{font-size:12px;font-weight:600;color:#e2e8f0}
+  .channel-name{font-size:12px;font-weight:600;color:#000000}
   .channel-badges{display:flex;gap:4px;flex-wrap:wrap}
   .badge{font-size:10px;font-family:ui-monospace,'Cascadia Code',monospace;padding:2px 6px;border-radius:4px;font-weight:600}
-  .badge-blue{background:rgba(59,130,246,.18);color:#60a5fa}
-  .badge-orange{background:rgba(249,115,22,.18);color:#fb923c}
-  .badge-gray{background:#1e293b;color:#64748b}
+  .badge-blue{background:#dbeafe;color:#1e40af}
+  .badge-orange{background:#fed7aa;color:#92400e}
+  .badge-gray{background:#f3f4f6;color:#4b5563}
 
-  .gw-name{font-size:12px;font-weight:600;color:#e2e8f0;margin:0 0 4px}
-  .gw-detail{font-size:11px;color:#64748b;font-family:ui-monospace,'Cascadia Code',monospace}
+  .gw-name{font-size:12px;font-weight:600;color:#000000;margin:0 0 4px}
+  .gw-detail{font-size:11px;color:#4b5563;font-family:ui-monospace,'Cascadia Code',monospace}
 
   /* AI Core internals */
-  .core-model{background:#0f172a;border-radius:8px;padding:12px 14px;border:.5px solid rgba(52,211,153,.3);margin:0 0 8px}
-  .core-model-name{font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 6px}
+  .core-model{background:#ffffff;border-radius:8px;padding:12px 14px;border:.5px solid #86efac;margin:0 0 8px}
+  .core-model-name{font-size:13px;font-weight:600;color:#000000;margin:0 0 6px}
   .core-io{display:flex;align-items:center;gap:8px;margin:0 0 4px;flex-wrap:wrap}
   .core-io-badge{font-size:11px;font-family:ui-monospace,'Cascadia Code',monospace;padding:3px 8px;border-radius:4px;font-weight:600}
-  .io-in{background:rgba(59,130,246,.18);color:#60a5fa}
-  .io-out{background:rgba(16,185,129,.18);color:#34d399}
-  .io-arrow{color:#475569;font-size:12px}
-  .core-sub{font-size:11px;color:#64748b}
+  .io-in{background:#dbeafe;color:#1e40af}
+  .io-out{background:#d1fae5;color:#065f46}
+  .io-arrow{color:#6b7280;font-size:12px}
+  .core-sub{font-size:11px;color:#4b5563}
   .core-services{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-  .svc-chip{background:#0f172a;border-radius:6px;padding:8px 10px;border:.5px solid #2d3f55;text-align:center}
-  .svc-name{font-size:11px;font-weight:500;color:#cbd5e1}
-  .svc-desc{font-size:10px;color:#475569;margin:2px 0 0}
+  .svc-chip{background:#ffffff;border-radius:6px;padding:8px 10px;border:.5px solid #e5e7eb;text-align:center}
+  .svc-name{font-size:11px;font-weight:500;color:#000000}
+  .svc-desc{font-size:10px;color:#6b7280;margin:2px 0 0}
 
   /* Data layer */
   .data-top{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .data-svc-name{font-size:12px;font-weight:600;color:#e2e8f0;margin:0 0 5px}
+  .data-svc-name{font-size:12px;font-weight:600;color:#000000;margin:0 0 5px}
   .data-svc-items{display:flex;flex-direction:column;gap:2px}
-  .data-svc-item{font-size:10px;color:#64748b}
+  .data-svc-item{font-size:10px;color:#4b5563}
 
   /* Connector arrows */
   .arch-arrow-row{display:flex;justify-content:space-around;padding:2px 60px;margin:0}
   .arch-arrow{display:flex;flex-direction:column;align-items:center}
-  .arch-arrow-line,.arch-merge-line{width:1px;height:16px;background:#334155}
-  .arch-arrow-head,.arch-merge-head{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #334155}
+  .arch-arrow-line,.arch-merge-line{width:1px;height:16px;background:#d1d5db}
+  .arch-arrow-head,.arch-merge-head{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #d1d5db}
   .arch-merge-row{display:flex;justify-content:center;margin:0}
   .arch-merge{display:flex;flex-direction:column;align-items:center}
 
-  .arch-note{font-size:11px;color:#475569;text-align:center;margin:10px 0 0;font-style:italic}
+  .arch-note{font-size:11px;color:#4b5563;text-align:center;margin:10px 0 0;font-style:italic}
 
   @media(max-width:520px){
     .client-channels,.gateway-items,.core-services,.data-top{grid-template-columns:1fr}
@@ -267,38 +267,38 @@ Thành phần mà hầu hết tutorial bỏ qua hoàn toàn.
 
 <h2 class="sr-only">Inbound và Outbound audio pipeline trong Voice AI — nguyên tắc bất đối xứng</h2>
 <style>
-  .io-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
-  .io-section-title{font-size:14px;font-weight:500;color:#e2e8f0;margin:0 0 12px}
+  .io-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
+  .io-section-title{font-size:14px;font-weight:500;color:#000000;margin:0 0 12px}
 
   .dir-header{display:flex;align-items:center;gap:8px;margin:0 0 8px}
   .dir-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
-  .dir-badge-in{background:rgba(59,130,246,.2);color:#60a5fa}
-  .dir-badge-out{background:rgba(249,115,22,.2);color:#fb923c}
-  .dir-label{font-size:12px;color:#94a3b8}
+  .dir-badge-in{background:#dbeafe;color:#1e40af}
+  .dir-badge-out{background:#fed7aa;color:#92400e}
+  .dir-label{font-size:12px;color:#4b5563}
 
   .pipe-row{display:flex;align-items:stretch;gap:0;margin:0 0 6px;overflow-x:auto}
-  .pipe-step{flex:1;min-width:72px;text-align:center;padding:10px 6px;font-size:11px;color:#94a3b8;line-height:1.4;border-radius:8px;background:#1e293b}
-  .pipe-step strong{display:block;font-size:12px;color:#e2e8f0;font-weight:600;margin:0 0 2px}
-  .step-source{background:#182438}
-  .step-source-out{background:#14231e}
-  .step-dest{background:#14231e}
-  .step-buffer{background:rgba(234,179,8,.14);border:.5px solid rgba(234,179,8,.4)}
-  .step-immediate{background:rgba(249,115,22,.14);border:.5px solid rgba(249,115,22,.4)}
-  .pipe-arr{display:flex;align-items:center;padding:0 3px;flex-shrink:0;color:#475569;font-size:13px}
+  .pipe-step{flex:1;min-width:72px;text-align:center;padding:10px 6px;font-size:11px;color:#374151;line-height:1.4;border-radius:8px;background:#f9fafb;border:.5px solid #d1d5db}
+  .pipe-step strong{display:block;font-size:12px;color:#000000;font-weight:600;margin:0 0 2px}
+  .step-source{background:#dbeafe}
+  .step-source-out{background:#fed7aa}
+  .step-dest{background:#d1fae5}
+  .step-buffer{background:rgba(234,179,8,.1);border:.5px solid rgba(234,179,8,.3)}
+  .step-immediate{background:rgba(249,115,22,.1);border:.5px solid rgba(249,115,22,.3)}
+  .pipe-arr{display:flex;align-items:center;padding:0 3px;flex-shrink:0;color:#6b7280;font-size:13px}
 
-  .buffer-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:rgba(234,179,8,.25);color:#fbbf24;margin:3px 0 0;text-transform:uppercase}
-  .immediate-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:rgba(249,115,22,.25);color:#fb923c;margin:3px 0 0;text-transform:uppercase}
+  .buffer-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:#fef3c7;color:#92400e;margin:3px 0 0;text-transform:uppercase}
+  .immediate-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;background:#fed7aa;color:#92400e;margin:3px 0 0;text-transform:uppercase}
 
   .asym-rule{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
-  .asym-card{border-radius:8px;padding:10px 12px;border:.5px solid #334155}
-  .asym-card-in{border-color:rgba(59,130,246,.4)}
-  .asym-card-out{border-color:rgba(249,115,22,.4)}
+  .asym-card{border-radius:8px;padding:10px 12px;border:.5px solid #d1d5db;background:#f9fafb}
+  .asym-card-in{border-color:#bfdbfe;background:#eff6ff}
+  .asym-card-out{border-color:#fed7aa;background:#fffbeb}
   .asym-rule-label{font-size:11px;font-weight:600;margin:0 0 4px}
-  .asym-rule-label-in{color:#60a5fa}
-  .asym-rule-label-out{color:#fb923c}
-  .asym-rule-text{font-size:11px;color:#94a3b8;line-height:1.5}
+  .asym-rule-label-in{color:#1e40af}
+  .asym-rule-label-out{color:#92400e}
+  .asym-rule-text{font-size:11px;color:#374151;line-height:1.5}
 
-  .note-box{background:rgba(59,130,246,.1);border-radius:8px;padding:10px 14px;font-size:12px;color:#93c5fd;line-height:1.5;margin:12px 0 0}
+  .note-box{background:#eff6ff;border-radius:8px;padding:10px 14px;font-size:12px;color:#1e3a8a;line-height:1.5;margin:12px 0 0;border:.5px solid #bfdbfe}
 
   @media(max-width:520px){
     .pipe-step{min-width:60px;padding:8px 4px}
@@ -439,55 +439,55 @@ Nhớ lại vấn đề thứ 5: 2–3 giây im lặng sau khi bắt máy. Pre-C
 
 <h2 class="sr-only">So sánh 4 kiến trúc AI pipeline trong Voice AI — Cascaded, Speech-Native, Thinker-Talker, LLM + Neural Codec</h2>
 <style>
-  .pl-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#e2e8f0}
-  .pl-title{font-size:14px;font-weight:500;color:#e2e8f0;margin:0 0 12px}
+  .pl-wrap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:.5rem 0;color:#1f2937;background:#ffffff}
+  .pl-title{font-size:14px;font-weight:700;color:#000000;margin:0 0 12px}
   .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
-  .pl-card{border-radius:10px;padding:14px 16px;border:.5px solid #2d3f55;background:#1e293b;display:flex;flex-direction:column;gap:10px}
+  .pl-card{border-radius:10px;padding:14px 16px;border:.5px solid #d1d5db;background:#f9fafb;display:flex;flex-direction:column;gap:10px}
 
   .pl-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  .pl-name{font-size:13px;font-weight:600;color:#e2e8f0}
+  .pl-name{font-size:13px;font-weight:600;color:#000000}
   .pl-badge{font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:20px;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
-  .badge-standard{background:rgba(59,130,246,.2);color:#60a5fa}
-  .badge-low-lat{background:rgba(16,185,129,.2);color:#34d399}
-  .badge-emerging{background:rgba(139,92,246,.2);color:#a78bfa}
-  .badge-cheapest{background:rgba(245,158,11,.2);color:#fbbf24}
+  .badge-standard{background:#dbeafe;color:#1e40af}
+  .badge-low-lat{background:#d1fae5;color:#065f46}
+  .badge-emerging{background:#ede9fe;color:#5b21b6}
+  .badge-cheapest{background:#fef3c7;color:#92400e}
 
   .pl-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .pl-metric{background:#0f172a;border-radius:6px;padding:7px 9px}
-  .pl-metric-label{font-size:10px;color:#64748b;margin:0 0 2px;letter-spacing:.03em}
-  .pl-metric-val{font-size:13px;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace}
-  .latency-slow{color:#fb923c}
-  .latency-ok{color:#fbbf24}
-  .latency-fast{color:#34d399}
-  .cost-high{color:#94a3b8}
-  .cost-mid{color:#94a3b8}
-  .cost-low{color:#34d399;font-weight:700}
+  .pl-metric{background:#f3f4f6;border-radius:6px;padding:7px 9px;border:.5px solid #e5e7eb}
+  .pl-metric-label{font-size:10px;color:#4b5563;margin:0 0 2px;letter-spacing:.03em}
+  .pl-metric-val{font-size:13px;font-weight:600;font-family:ui-monospace,'Cascadia Code',monospace;color:#000000}
+  .latency-slow{color:#d97706}
+  .latency-ok{color:#f59e0b}
+  .latency-fast{color:#059669}
+  .cost-high{color:#6b7280}
+  .cost-mid{color:#6b7280}
+  .cost-low{color:#059669;font-weight:700}
 
   .pl-flow{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;overflow:hidden}
   .pl-flow-step{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
-  .flow-blue{background:rgba(59,130,246,.2);color:#60a5fa}
-  .flow-green{background:rgba(16,185,129,.2);color:#34d399}
-  .flow-purple{background:rgba(139,92,246,.2);color:#a78bfa}
-  .flow-orange{background:rgba(249,115,22,.2);color:#fb923c}
-  .flow-yellow{background:rgba(245,158,11,.2);color:#fbbf24}
-  .pl-flow-arr{font-size:11px;color:#475569;flex-shrink:0}
-  .pl-flow-single{font-size:10px;font-weight:500;padding:3px 10px;border-radius:4px;flex:1;text-align:center}
+  .flow-blue{background:#dbeafe;color:#1e40af}
+  .flow-green{background:#d1fae5;color:#065f46}
+  .flow-purple{background:#ede9fe;color:#5b21b6}
+  .flow-orange{background:#fed7aa;color:#92400e}
+  .flow-yellow{background:#fef3c7;color:#92400e}
+  .pl-flow-arr{font-size:11px;color:#9ca3af;flex-shrink:0}
+  .pl-flow-single{font-size:10px;font-weight:500;padding:3px 10px;border-radius:4px;flex:1;text-align:center;background:#d1fae5;color:#065f46}
 
-  .pl-usecase{font-size:11px;color:#64748b;padding-top:6px;border-top:.5px solid #2d3f55;line-height:1.5}
-  .pl-usecase-label{font-weight:600;color:#94a3b8}
+  .pl-usecase{font-size:11px;color:#374151;padding-top:6px;border-top:.5px solid #e5e7eb;line-height:1.5}
+  .pl-usecase-label{font-weight:600;color:#000000}
 
   /* Comparison footer */
-  .pl-footer{background:#1e293b;border-radius:8px;padding:12px 14px}
-  .pl-footer-title{font-size:12px;font-weight:500;color:#e2e8f0;margin:0 0 10px}
+  .pl-footer{background:#f9fafb;border-radius:8px;padding:12px 14px;border:.5px solid #d1d5db}
+  .pl-footer-title{font-size:12px;font-weight:600;color:#000000;margin:0 0 10px}
   .pl-compare-grid{display:grid;grid-template-columns:90px repeat(4,1fr);gap:4px}
-  .pl-col-header{font-size:10px;font-weight:700;color:#64748b;letter-spacing:.04em;text-align:center;padding:4px 2px}
-  .pl-row-label{font-size:11px;color:#94a3b8;font-weight:500;padding:5px 0;display:flex;align-items:center}
+  .pl-col-header{font-size:10px;font-weight:700;color:#374151;letter-spacing:.04em;text-align:center;padding:4px 2px;background:#f3f4f6;border-radius:4px}
+  .pl-row-label{font-size:11px;color:#374151;font-weight:500;padding:5px 0;display:flex;align-items:center}
   .pl-dots{text-align:center;font-size:12px;letter-spacing:1px;padding:5px 2px;line-height:1}
-  .dot-row{border-top:.5px solid #1e2d3d}
-  .dots-green{color:#34d399}
-  .dots-yellow{color:#fbbf24}
-  .dots-orange{color:#fb923c}
-  .dots-gray{color:#334155}
+  .dot-row{border-top:.5px solid #e5e7eb}
+  .dots-green{color:#059669}
+  .dots-yellow{color:#f59e0b}
+  .dots-orange{color:#d97706}
+  .dots-gray{color:#9ca3af}
 
   @media(max-width:520px){
     .pl-grid{grid-template-columns:1fr}
