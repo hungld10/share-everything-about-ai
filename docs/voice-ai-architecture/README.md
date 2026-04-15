@@ -37,7 +37,7 @@ Nếu chưa quen với audio số và realtime communication, đây là điểm 
 | # | Bài viết | Visual | Khái niệm cốt lõi |
 |---|----------|--------|-------------------|
 | 01 | [Audio Fundamentals](./01-audio-fundamentals.md) ✅ | [🎨 Visual](./01-audio-fundamentals-visual.html) | PCM, sample rate, G.711, Opus |
-| 02 | WebSocket & Realtime Communication | WebSocket vs HTTP, streaming, backpressure |
+| 02 | [WebSocket & Realtime Communication](./02-websocket-realtime-communication.md) ✅ | [🎨 Visual](./02-websocket-realtime-communication-visual.html) | WebSocket vs HTTP, two-way streaming, patterns |
 | 03 | Browser vs Phone — 2 Thế Giới Kết Nối | WebRTC/Opus vs PSTN/G.711, adapter pattern |
 
 ### Tầng 2 — Audio Engineering
@@ -106,7 +106,7 @@ Tầng ghép mọi thứ lại thành hệ thống production. Đọc sau khi đ
 |------|-----|----------|--------|------------|
 | Tổng quan | [00 Overview](./00-overview.md) | ✅ | [🎨](./00-overview-visual.html) ✅ | ✅ Hoàn thành |
 | Tầng 1 | [01 Audio Fundamentals](./01-audio-fundamentals.md) | ✅ | [🎨](./01-audio-fundamentals-visual.html) ✅ | ✅ Hoàn thành |
-| Tầng 1 | 02 WebSocket & Realtime | 🔲 Chưa viết |
+| Tầng 1 | [02 WebSocket & Realtime](./02-websocket-realtime-communication.md) | ✅ | [🎨](./02-websocket-realtime-communication-visual.html) ✅ | ✅ Hoàn thành |
 | Tầng 1 | 03 Browser vs Phone | 🔲 Chưa viết |
 | Tầng 2 | 04 Audio Bridge | 🔲 Chưa viết |
 | Tầng 2 | 05 Inbound/Outbound Pipeline | 🔲 Chưa viết |

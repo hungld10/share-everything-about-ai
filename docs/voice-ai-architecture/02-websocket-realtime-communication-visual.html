@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket & Realtime Communication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #378ADD 0%, #1D9E75 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .hero .subtitle {
+            font-size: 15px;
+            opacity: 0.85;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-highlight {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-number {
+            font-size: 48px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Section */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #378ADD;
+            font-weight: 700;
+        }
+
+        section h3 {
+            font-size: 22px;
+            color: #1f2937;
+            margin: 24px 0 16px 0;
+            font-weight: 600;
+        }
+
+        section p {
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        section ul, section ol {
+            margin: 16px 0 16px 20px;
+            color: #4b5563;
+        }
+
+        section li {
+            margin-bottom: 12px;
+        }
+
+        /* Comparison Cards */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comp-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border-left: 4px solid #d1d5db;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .comp-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .comp-card.http {
+            border-left-color: #dc2626;
+        }
+
+        .comp-card.ws {
+            border-left-color: #059669;
+        }
+
+        .comp-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comp-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .comp-dot.danger {
+            background: #dc2626;
+        }
+
+        .comp-dot.success {
+            background: #059669;
+        }
+
+        .comp-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .comp-row:last-child {
+            border-bottom: none;
+        }
+
+        .comp-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .comp-value {
+            color: #111827;
+            font-weight: 600;
+            text-align: right;
+            max-width: 50%;
+        }
+
+        /* Diagram */
+        .diagram {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .diagram-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        .flow-node {
+            background: #f3f4f6;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .flow-node.blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .flow-node.green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .flow-node.purple {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .flow-node.gray {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .flow-arrow {
+            color: #9ca3af;
+            font-weight: bold;
+        }
+
+        /* Highlight */
+        .highlight {
+            background: linear-gradient(135deg, rgba(55, 138, 221, 0.05) 0%, rgba(29, 158, 117, 0.05) 100%);
+            border-left: 4px solid #378ADD;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .highlight strong {
+            color: #378ADD;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.05) 0%, rgba(217, 119, 6, 0.02) 100%);
+            border-left: 4px solid #d97706;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .warning strong {
+            color: #d97706;
+        }
+
+        /* Timeline */
+        .timeline-item {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-left: 4px solid #378ADD;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-item h4 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .timeline-item p {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        /* Key Points */
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .point {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .point:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .point-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .point h4 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .point p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #378ADD;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 48px 20px;
+            margin-top: 80px;
+            color: #6b7280;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-author {
+            margin-bottom: 16px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-number {
+                font-size: 40px;
+            }
+
+            section h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="container">
+            <h1>WebSocket & Realtime Communication</h1>
+            <p>Nền tảng kỹ thuật cho audio streaming hai chiều</p>
+            <p class="subtitle">Tại sao HTTP không phù hợp, WebSocket là giải pháp, và hai pattern khác nhau cho Browser vs Phone</p>
+
+            <div class="hero-highlight">
+                <span class="hero-number">50</span>
+                <span>Chunks mỗi giây, hai chiều cùng lúc — HTTP không chịu nổi</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Problem Section -->
+        <section>
+            <h2>Tại sao HTTP không phù hợp cho Voice AI?</h2>
+
+            <p><strong>HTTP hoạt động theo mô hình request-response:</strong> Client gửi request → Server xử lý → Server trả response → Kết nối đóng.</p>
+
+            <h3>Vấn đề cơ bản</h3>
+
+            <p>Cuộc hội thoại voice là <strong>liên tục và hai chiều đồng thời.</strong> Khi nói chuyện với AI:</p>
+
+            <ul>
+                <li>Cả hai bên có thể "nói" bất cứ lúc nào</li>
+                <li>Audio là dòng dữ liệu liên tục — cứ mỗi 20ms lại có chunk mới</li>
+                <li>Cần truyền <strong>50 chunks mỗi giây, hai chiều cùng lúc</strong></li>
+            </ul>
+
+            <div class="comparison">
+                <div class="comp-card http">
+                    <div class="comp-title">
+                        <div class="comp-dot danger"></div>
+                        HTTP Request-Response
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Header overhead</span>
+                        <span class="comp-value">200-500 bytes</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Mỗi chunk 20ms cần</span>
+                        <span class="comp-value">1 request mới</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">50 chunks/giây =</span>
+                        <span class="comp-value">50 requests/giây</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Server push?</span>
+                        <span class="comp-value">❌ Không thể</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Total overhead</span>
+                        <span class="comp-value">50-150% 😱</span>
+                    </div>
+                </div>
+
+                <div class="comp-card ws">
+                    <div class="comp-title">
+                        <div class="comp-dot success"></div>
+                        WebSocket
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Frame overhead</span>
+                        <span class="comp-value">2-14 bytes</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">50 chunks/giây =</span>
+                        <span class="comp-value">50 frames (1 conn)</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Connection</span>
+                        <span class="comp-value">Persistent (1 lần mở)</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Server push?</span>
+                        <span class="comp-value">✅ Bất cứ lúc nào</span>
+                    </div>
+                    <div class="comp-row">
+                        <span class="comp-label">Total overhead</span>
+                        <span class="comp-value">&lt;5% 🚀</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Với latency budget chỉ 300ms:</strong> Overhead 50-150% của HTTP sẽ lấy mất hàng trăm millisecond. WebSocket &lt;5% overhead cho phép dùng hết budget cho AI xử lý.
+            </div>
+        </section>
+
+        <!-- HTTP Hacks Section -->
+        <section>
+            <h2>Những nỗ lực "hack" HTTP để realtime</h2>
+
+            <p>Trước khi WebSocket ra đời (2011), developer cố gắng tạo realtime trên HTTP bằng các kỹ thuật:</p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🔁</div>
+                    <h4>Polling</h4>
+                    <p>Client gửi request liên tục (mỗi 100ms) để hỏi "có dữ liệu mới không?". Đa số request rỗng. Tốn băng thông, không nhanh.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⏳</div>
+                    <h4>Long Polling</h4>
+                    <p>Server giữ connection mở cho đến khi có dữ liệu. Nhưng vẫn một chiều và có khoảng "chết" giữa responses.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📡</div>
+                    <h4>Server-Sent Events (SSE)</h4>
+                    <p>Server push liên tục xuống client. Nhưng <strong>chỉ một chiều</strong>. Client gửi ngược lại phải mở request riêng.</p>
+                </div>
+            </div>
+
+            <p style="margin-top: 32px;">Tất cả là "hack" — cố ép giao thức một chiều thành hai chiều. Voice AI cần giải pháp thiết kế từ đầu.</p>
+        </section>
+
+        <!-- WebSocket Section -->
+        <section>
+            <h2>WebSocket — Giải pháp được thiết kế cho realtime</h2>
+
+            <p><strong>WebSocket (RFC 6455, 2011)</strong> là giao thức truyền thông <strong>hai chiều, full-duplex, persistent</strong> trên một TCP connection duy nhất.</p>
+
+            <p>Cả client và server có thể gửi dữ liệu bất cứ lúc nào mà <strong>không cần request/response cycle.</strong></p>
+
+            <h3>Cách hoạt động</h3>
+
+            <ol>
+                <li><strong>Opening Handshake</strong> — HTTP Upgrade request với header `Upgrade: websocket`</li>
+                <li><strong>Server đồng ý</strong> — Response 101 (Switching Protocols)</li>
+                <li><strong>Connection thiết lập</strong> — Connection TCP không còn nói HTTP</li>
+                <li><strong>Streaming</strong> — Cả hai bên gửi frames liên tục suốt cuộc gọi</li>
+            </ol>
+
+            <h3>Frame Structure</h3>
+
+            <p>Mỗi WebSocket frame có header tối thiểu <strong>2-14 bytes</strong> (so với hàng trăm bytes HTTP header).</p>
+
+            <div class="diagram">
+                <div class="diagram-title">So sánh: Audio chunk 20ms (G.711 8kHz = 320 bytes)</div>
+
+                <div style="margin: 20px 0;">
+                    <p style="font-size: 13px; color: #6b7280; margin-bottom: 12px;"><strong>HTTP:</strong></p>
+                    <div class="flow">
+                        <span class="flow-node" style="background: #fecaca; color: #dc2626;">~300B header</span>
+                        <span class="flow-arrow">+</span>
+                        <span class="flow-node">320B payload</span>
+                        <span style="color: #d97706; font-weight: bold;">=</span>
+                        <span style="color: #d97706; font-weight: bold;">50% overhead 😱</span>
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <p style="font-size: 13px; color: #6b7280; margin-bottom: 12px;"><strong>WebSocket:</strong></p>
+                    <div class="flow">
+                        <span class="flow-node green">~2B header</span>
+                        <span class="flow-arrow">+</span>
+                        <span class="flow-node">320B payload</span>
+                        <span style="color: #059669; font-weight: bold;">=</span>
+                        <span style="color: #059669; font-weight: bold;">&lt;1% overhead 🚀</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section>
+            <h2>Đặc điểm WebSocket quan trọng cho Voice AI</h2>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🔄</div>
+                    <h4>Full-duplex</h4>
+                    <p>Hai chiều đồng thời trên 1 connection. User nói (gửi) lúc AI cũng nói (nhận) — nền tảng của barge-in.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⚡</div>
+                    <h4>Overhead cực thấp</h4>
+                    <p>2-14 bytes header vs 200-500 bytes HTTP. Với audio 320 bytes, overhead chỉ &lt;5%.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🔌</div>
+                    <h4>Persistent Connection</h4>
+                    <p>1 TCP connection suốt cuộc gọi. Tiết kiệm TCP + TLS handshake (2-3 RTT) mỗi lần.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⚔️</div>
+                    <h4>Server Push</h4>
+                    <p>Server gửi dữ liệu chủ động bất cứ lúc nào. Client không phải hỏi.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⏱️</div>
+                    <h4>Latency tối thiểu</h4>
+                    <p>Không request/response cycle. Dữ liệu gửi gần như tức thì.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">💪</div>
+                    <h4>Handshake một lần</h4>
+                    <p>HTTP Upgrade + TLS tốn 50-150ms. Nhưng chỉ một lần duy nhất cho cả cuộc gọi.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Patterns Section -->
+        <section>
+            <h2>Hai pattern WebSocket trong Voice AI</h2>
+
+            <h3>Pattern 1: Browser Direct WebSocket</h3>
+
+            <div class="diagram">
+                <div class="diagram-title">Luồng: Browser ↔ AI trực tiếp</div>
+                <div class="flow">
+                    <span class="flow-node blue">Browser</span>
+                    <span class="flow-arrow">—token→</span>
+                    <span class="flow-node gray">Server<br>(auth only)</span>
+                    <span class="flow-arrow">—token→</span>
+                    <span class="flow-node blue">Browser</span>
+                    <span class="flow-arrow">════WSS════</span>
+                    <span class="flow-node green">AI Model</span>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Đặc điểm:</strong>
+                <ul style="margin: 12px 0 0 20px;">
+                    <li>Server chỉ làm <strong>authentication</strong> (cấp ephemeral token)</li>
+                    <li>Audio đi <strong>thẳng browser ↔ AI</strong>, server không chạm</li>
+                    <li><strong>Latency tối thiểu</strong> vì không qua server</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 40px;">Pattern 2: Phone Double WebSocket qua Server</h3>
+
+            <div class="diagram">
+                <div class="diagram-title">Luồng: Phone → Server → AI (transcode)</div>
+                <div class="flow">
+                    <span class="flow-node purple">Phone/PSTN</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-node purple">Twilio</span>
+                    <span class="flow-arrow">═WS#1═</span>
+                    <span class="flow-node gray">Server<br>(transcode)</span>
+                    <span class="flow-arrow">═WS#2═</span>
+                    <span class="flow-node green">AI Model</span>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Đặc điểm:</strong>
+                <ul style="margin: 12px 0 0 20px;">
+                    <li><strong>WSS #1:</strong> Twilio stream G.711 (8kHz) → Server</li>
+                    <li><strong>WSS #2:</strong> Server stream PCM 16kHz → AI Model</li>
+                    <li>Server ở giữa <strong>transcode:</strong> G.711 → PCM → upsample</li>
+                    <li>Server quản lý <strong>session state</strong> (ID, transcript)</li>
+                </ul>
+            </div>
+
+            <div class="warning" style="margin-top: 24px;">
+                <strong>Lý do Double WebSocket:</strong> Twilio gửi audio qua WS#1, server xử lý/transcode, rồi forward qua WS#2 đến AI. Hai WebSocket này phải giao tiếp qua <strong>shared memory của 1 process</strong> — đây là lý do Unified Server pattern (chủ đề 12) quan trọng.
+            </div>
+        </section>
+
+        <!-- Lifecycle Section -->
+        <section>
+            <h2>Connection Lifecycle</h2>
+
+            <div class="timeline-item">
+                <h4>1. Opening Handshake</h4>
+                <p>HTTP Upgrade request → 101 response. Mất <strong>1 RTT (~20-50ms)</strong>. Nếu WSS, thêm TLS handshake. Tổng: <strong>50-150ms</strong> (một lần duy nhất).</p>
+            </div>
+
+            <div class="timeline-item">
+                <h4>2. Active Communication</h4>
+                <p>Frames truyền hai chiều liên tục. Kéo dài suốt cuộc gọi (hàng phút). Cả hai bên gửi data frames (audio) và ping/pong frames (keep-alive).</p>
+            </div>
+
+            <div class="timeline-item">
+                <h4>3. Ping/Pong (Heartbeat)</h4>
+                <p>Server gửi ping frame định kỳ (15-30 giây), client phải trả pong. Nếu không nhận pong → client đã disconnect → cleanup resources (audio buffer, session state). <strong>Quan trọng:</strong> Nếu không phát hiện, resources leak.</p>
+            </div>
+
+            <div class="timeline-item">
+                <h4>4. Closing Handshake</h4>
+                <p>Một bên gửi close frame, bên kia acknowledge. Status code cho biết lý do: 1000 (normal), 1001 (user tắt browser), 1006 (abnormal). Server quyết định: cuộc gọi kết thúc bình thường → analytics, disconnect bất thường → error log + retry.</p>
+            </div>
+        </section>
+
+        <!-- WSS Section -->
+        <section>
+            <h2>WSS — WebSocket Secure</h2>
+
+            <p><strong>WSS (WebSocket Secure)</strong> = WebSocket trên TLS, tương tự HTTPS với HTTP.</p>
+
+            <h3>Bắt buộc production vì:</h3>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">🔒</div>
+                    <h4>Bảo mật dữ liệu</h4>
+                    <p>Audio là dữ liệu nhạy cảm (thông tin cá nhân, y tế, tài chính). TLS mã hóa toàn bộ.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">🌐</div>
+                    <h4>Browser requirement</h4>
+                    <p>Browser modern block WS không mã hóa từ trang HTTPS. Voice AI chạy HTTPS → cần WSS.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">📞</div>
+                    <h4>Twilio/Telnyx requirement</h4>
+                    <p>Nhà cung cấp telephony chỉ stream qua WSS, không chấp nhận WS.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">⚡</div>
+                    <h4>Overhead nhỏ</h4>
+                    <p>TLS handshake: 50-100ms (một lần). Mã hóa/giải mã frame: vài microsecond — không đáng kể.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section>
+            <h2>So sánh WebSocket với giao thức realtime khác</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Giao thức</th>
+                            <th>Loại</th>
+                            <th>Ưu điểm</th>
+                            <th>Nhược điểm</th>
+                            <th>Trong Voice AI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>WebSocket</strong></td>
+                            <td>Bidirectional streaming</td>
+                            <td>Native browser, low overhead, persistent</td>
+                            <td>—</td>
+                            <td>✅ Audio streaming chính</td>
+                        </tr>
+                        <tr>
+                            <td><strong>WebRTC</strong></td>
+                            <td>Peer-to-peer</td>
+                            <td>Tối ưu media, codec negotiation, echo cancellation</td>
+                            <td>Phức tạp setup, NAT traversal</td>
+                            <td>Browser audio, signaling dùng WS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>gRPC</strong></td>
+                            <td>RPC + streaming</td>
+                            <td>Typed contracts, load balancing tích hợp</td>
+                            <td>Phức tạp, không native browser</td>
+                            <td>Một số STT service</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MQTT</strong></td>
+                            <td>Pub/sub nhẹ</td>
+                            <td>Overhead cực thấp</td>
+                            <td>Thiết kế cho message, không streaming</td>
+                            <td>❌ Không phù hợp</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top: 24px;">WebSocket thắng vì: <strong>native browser, hỗ trợ binary tốt, Twilio/Telnyx chuẩn, OpenAI/Gemini API expose WebSocket.</strong></p>
+        </section>
+
+        <!-- Why It Matters -->
+        <section>
+            <h2>Tại sao hiểu WebSocket quan trọng trước khi đi tiếp?</h2>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon">1️⃣</div>
+                    <h4>Double WebSocket Pattern</h4>
+                    <p>Tại sao phone channel cần 2 WebSocket riêng — Twilio → Server, Server → AI.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">2️⃣</div>
+                    <h4>Unified Server Pattern (Bài 12)</h4>
+                    <p>Tại sao gom HTTP + 2 WebSocket vào cùng process — sync qua Redis mỗi 20ms giết latency.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">3️⃣</div>
+                    <h4>Graceful Shutdown</h4>
+                    <p>Tại sao quan trọng — server restart = đóng WebSocket = rơi call.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">4️⃣</div>
+                    <h4>Latency Budget</h4>
+                    <p>Overhead thấp của WebSocket là yếu tố sống còn — mỗi ms đều quan trọng.</p>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon">5️⃣</div>
+                    <h4>Kiến trúc hai channel</h4>
+                    <p>Tại sao Browser (Direct WS) và Phone (Double WS) hoàn toàn khác nhau.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section>
+            <h2>Tóm tắt — Những gì cần nhớ</h2>
+
+            <div class="highlight">
+                <strong>HTTP không phù hợp:</strong> Overhead 50-150% khi cần 50+ chunks/giây, hai chiều đồng thời. Server không push được.
+            </div>
+
+            <div class="highlight">
+                <strong>WebSocket là đáp án:</strong> Persistent, full-duplex, overhead &lt;5%. Một connection mở suốt cuộc gọi.
+            </div>
+
+            <div class="highlight">
+                <strong>Hai pattern khác nhau:</strong> Browser = Direct WS (audio thẳng browser ↔ AI). Phone = Double WS qua server (transcode).
+            </div>
+
+            <div class="highlight">
+                <strong>Lifecycle quan trọng:</strong> Ping/pong phát hiện disconnect, close frame cho biết lý do, graceful shutdown tránh rơi call.
+            </div>
+
+            <div class="highlight">
+                <strong>WSS bắt buộc:</strong> Browser, Twilio/Telnyx đều yêu cầu. TLS overhead không đáng kể.
+            </div>
+        </section>
+
+        <!-- Next -->
+        <section>
+            <h2>Bài tiếp theo</h2>
+
+            <p><strong>Bài 03 — Browser vs Phone: 2 Thế Giới Kết Nối</strong> sẽ xây dựng trên nền tảng WebSocket này.</p>
+
+            <p>Sẽ giải thích:</p>
+            <ul>
+                <li><strong>WebRTC</strong> cho browser (codec, streaming quality)</li>
+                <li><strong>PSTN + Twilio</strong> cho phone (G.711, limitations)</li>
+                <li>Tại sao chúng tạo ra hai "thế giới" hoàn toàn khác nhau về audio, latency, kiến trúc</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-author">
+                ✍️ Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong>
+            </div>
+            <p>Bài viết này giải thích nền tảng kỹ thuật WebSocket trong Voice AI — tại sao HTTP không đủ, cách WebSocket hoạt động, và hai pattern khác nhau cho browser vs phone</p>
+            <p style="margin-top: 16px; color: #9ca3af; font-size: 12px;">
+                📌 Cập nhật: Tháng 4, 2026 ·
+                📖 Bài 2/15 · Series: Voice AI System Architecture ·
+                🔗 Nguồn: <a href="https://github.com/hungld10/share-everything-about-ai" style="color: #378ADD; text-decoration: none;">GitHub</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
