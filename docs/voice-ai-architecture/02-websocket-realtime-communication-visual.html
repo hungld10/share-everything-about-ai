@@ -428,6 +428,33 @@
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Intro Story -->
+        <section>
+            <h2>Từ Demo Thành Production — Một Câu Chuyện Thực</h2>
+
+            <p>Năm 2024, một startup AI healthcare demo thành công trên môi trường nội bộ. <strong>Cuộc demo hoàn hảo:</strong> Voice receptionist trả lời trong 280ms, giọng tự nhiên, context-aware.</p>
+
+            <p style="margin-top: 16px;">Ba tuần sau, họ deploy lên production qua Twilio — kết nối điện thoại thực tế.</p>
+
+            <div class="comparison" style="margin-top: 24px;">
+                <div class="comp-card http">
+                    <div class="comp-title">
+                        <div class="comp-dot danger"></div>
+                        Thực tế production
+                    </div>
+                    <div class="comp-row"><span class="comp-label">Cuộc gọi #1–10</span><span class="comp-value" style="color: #059669;">Hoàn hảo ✓</span></div>
+                    <div class="comp-row"><span class="comp-label">Cuộc gọi #11</span><span class="comp-value" style="color: #dc2626;">Hang 2 giây, user cúp máy</span></div>
+                    <div class="comp-row"><span class="comp-label">Cuộc gọi #50</span><span class="comp-value" style="color: #dc2626;">Timeout, "All agents busy"</span></div>
+                    <div class="comp-row"><span class="comp-label">Cuộc gọi #100+</span><span class="comp-value" style="color: #dc2626;">Dropout rate 40%</span></div>
+                </div>
+            </div>
+
+            <div class="warning" style="margin-top: 24px;">
+                <strong>Đội engineering đổ lỗi cho model.</strong> GPT-4o chưa đủ tốt? Prompt sai? Cần fine-tune?<br><br>
+                <strong>Sai.</strong> Model là 20% của problem. 80% là kiến trúc — cụ thể: demo dùng HTTP POST requests để gửi audio. Production không chịu được. Đây là lý do bạn cần hiểu WebSocket.
+            </div>
+        </section>
+
         <!-- Problem Section -->
         <section>
             <h2>Tại sao HTTP không phù hợp cho Voice AI?</h2>
@@ -682,7 +709,7 @@
                 <strong>Lý do Double WebSocket:</strong> Twilio gửi audio qua WS#1, server xử lý/transcode, rồi forward qua WS#2 đến AI. Hai WebSocket này phải giao tiếp qua <strong>shared memory của 1 process</strong> — đây là lý do Unified Server pattern (chủ đề 12) quan trọng.
             </div>
 
-            <h3 style="margin-top: 40px;">Connection Lifecycle — Happy Path + Failure Scenarios</h3>
+            <h3 style="margin-top: 40px;">Failure Scenarios — Xử lý khi connection gặp sự cố</h3>
 
             <div class="diagram" style="background: white; border: 1px solid #e5e7eb;">
                 <div class="diagram-title" style="margin-bottom: 24px;"><strong>Happy Path</strong> — Normal connection flow</div>

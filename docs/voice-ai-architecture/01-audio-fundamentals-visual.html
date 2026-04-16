@@ -807,13 +807,44 @@
                 </div>
             </div>
         </section>
+
+        <!-- Next Article -->
+        <section>
+            <h2>Bài tiếp theo</h2>
+
+            <p>Bài 01 giải thích <strong>cái gì</strong> đang được truyền — dãy số PCM, đóng gói bởi G.711 hoặc Opus.</p>
+
+            <p style="margin-top: 16px;"><strong>Bài 02 — WebSocket &amp; Realtime Communication</strong> giải thích <em>truyền bằng cách nào</em>:</p>
+
+            <div class="key-points" style="margin-top: 24px;">
+                <div class="point">
+                    <div class="point-icon">❌</div>
+                    <h4>Tại sao HTTP không dùng được</h4>
+                    <p>Request-response model tạo overhead quá lớn khi cần 50 chunks/giây, hai chiều đồng thời.</p>
+                </div>
+                <div class="point">
+                    <div class="point-icon">✅</div>
+                    <h4>WebSocket giải quyết thế nào</h4>
+                    <p>Persistent, full-duplex, overhead 2–14 bytes/frame. Một connection mở suốt cuộc gọi.</p>
+                </div>
+                <div class="point">
+                    <div class="point-icon">🔀</div>
+                    <h4>Hai pattern Browser vs Phone</h4>
+                    <p>Browser: audio đi thẳng browser ↔ AI. Phone: audio qua server transcode, 2 WebSocket.</p>
+                </div>
+            </div>
+
+            <div class="highlight" style="margin-top: 32px;">
+                <a href="./02-websocket-realtime-communication.html" style="color: #534AB7; font-weight: 600; font-size: 16px;">→ Đọc Bài 02 — WebSocket &amp; Realtime Communication</a>
+            </div>
+        </section>
     </div>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-author">
-                ✍️ Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong>
+                ✍️ Tổng hợp &amp; biên soạn bởi <strong>Hưng 2x</strong>
             </div>
             <p>Bài viết này giải thích nền tảng audio cho Voice AI — cái gì là PCM, sample rate, G.711, Opus — và tại sao mỗi khái niệm này quan trọng cho production</p>
             <p style="margin-top: 16px; color: #9ca3af; font-size: 12px;">

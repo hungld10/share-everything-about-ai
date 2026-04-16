@@ -667,6 +667,41 @@
             </table>
         </section>
 
+        <!-- Production Patterns -->
+        <section>
+            <h2>Các Pattern Kiến trúc Production</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🏗️</div>
+                    <h3>Unified Server — Anti-microservices có chủ đích</h3>
+                    <p>Gom HTTP + WebSocket + audio bridge vào cùng 1 process. Audio bridge truy cập session state mỗi ~20ms — nếu tách microservices, mỗi hop tốn 1 network round-trip. In-memory: ~0.1µs. Network: ~0.5ms. <strong>Khác nhau 5.000 lần.</strong></p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">⚡</div>
+                    <h3>Speculative Tool Calling — Che latency bằng parallelism</h3>
+                    <p>Khi AI nhận diện intent (ví dụ: flight booking), bắt đầu gọi API <em>trong lúc user vẫn đang nói</em>. Khi user nói xong, API đã có kết quả. Latency bị "che" bằng user's speaking time — user không cảm thấy bất kỳ delay nào.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔀</div>
+                    <h3>Barge-in State Machine — User có quyền ngắt lời</h3>
+                    <p>LISTENING → PROCESSING → SPEAKING. Khi VAD phát hiện user nói lại trong lúc AI đang nói: <strong>cancel TTS ngay lập tức</strong>, transition về LISTENING. Lỗi phổ biến: chờ AI nói xong rồi mới xử lý interrupt — user đã cúp máy lâu rồi.</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 20px; margin-bottom: 12px;">📋</div>
+                    <h3>Template-Driven System</h3>
+                    <p>Không hardcode conversation flow trong code. Persona, prompt, flow config đều là dữ liệu trong Template Store. Thay đổi behavior của AI mà không cần deploy lại code — phù hợp khi cần nhiều AI persona cho nhiều khách hàng khác nhau.</p>
+                </div>
+            </div>
+
+            <div class="highlight" style="margin-top: 32px;">
+                Chi tiết triển khai: <strong>Bài 12 — Unified Server Pattern</strong> · <strong>Bài 13 — Optimization Patterns</strong> (sắp ra)
+            </div>
+        </section>
+
         <!-- Key Takeaways -->
         <section>
             <h2>Key Takeaways</h2>
@@ -706,6 +741,35 @@
                     <div style="font-size: 20px; margin-bottom: 12px;">🎯</div>
                     <h3>Pre-connect làm sớm, không phải làm nhanh</h3>
                     <p>Giải quyết 2–3 giây im lặng bằng cách bắt đầu setup từ lúc phone reo, không phải từ lúc user bắt máy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reading Path -->
+        <section>
+            <h2>Đọc tiếp — Chọn path phù hợp với bạn</h2>
+
+            <div class="cards">
+                <div class="card" style="border-top: 3px solid #534AB7;">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🆕</div>
+                    <h3>Bạn mới với Voice AI</h3>
+                    <p>Bắt đầu tuần tự từ Tầng 1:</p>
+                    <p style="margin-top: 12px;"><a href="./01-audio-fundamentals.md" style="color: #534AB7; font-weight: 600;">→ Bài 01 — Audio Fundamentals</a></p>
+                    <p style="font-size: 13px; color: #6b7280; margin-top: 4px;">Hiểu PCM, sample rate, G.711, Opus — nền tảng để đọc mọi thứ còn lại</p>
+                </div>
+
+                <div class="card" style="border-top: 3px solid #dc2626;">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🔧</div>
+                    <h3>Đang debug production</h3>
+                    <p>Đọc 3 bài này trước:</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #374151;">Bài 04 — Audio Bridge<br>Bài 06 — Latency Budget<br>Bài 14 — Observability <em>(sắp ra)</em></p>
+                </div>
+
+                <div class="card" style="border-top: 3px solid #059669;">
+                    <div style="font-size: 20px; margin-bottom: 12px;">🏛️</div>
+                    <h3>Đang chọn kiến trúc</h3>
+                    <p>2 bài quyết định:</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #374151;">Bài 07 — 4 AI Pipeline Architectures<br>Bài 15 — Cost Analysis <em>(sắp ra)</em></p>
                 </div>
             </div>
         </section>
