@@ -61,9 +61,9 @@ Một cuộc gọi 5 phút = **~9.6MB** chỉ riêng audio thô — chưa kể m
 **Luồng chuyển đổi khi phone gọi vào hệ thống:**
 
 ```
-Phone       Upsample    AI Input    AI Output   Downsample   Phone
-8kHz    →   8→16kHz  →  16kHz   →   24kHz   →  24→8kHz   →  8kHz
-G.711        (+PCM)     PCM         PCM          (+G.711)    G.711
+Phone      Upsample     AI Input     AI Output    Downsample     Phone
+8kHz    →  8→16kHz   →  16kHz     →  24kHz     →  24→8kHz     →  8kHz
+G.711      (+PCM)       PCM          PCM          (+G.711)       G.711
 ```
 
 Chính sự không khớp giữa 4 con số này — đặc biệt là 8kHz của phone vs 16/24kHz của AI — là toàn bộ lý do tồn tại của Audio Bridge. Sẽ đi sâu ở [Bài 04](./04-audio-bridge.md).
