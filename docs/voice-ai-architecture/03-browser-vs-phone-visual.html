@@ -668,53 +668,59 @@
         </p>
 
         <!-- SVG: Two worlds converge -->
+        <!-- Layout (left→right, all center y=110, no overlaps):
+             Browser [x=10,w=150] →20px→ Adapter mỏng [x=180,w=130] →20px→ AI Core [x=330,w=140] →20px→ Adapter dày [x=490,w=130] →20px→ Phone [x=640,w=150]
+        -->
         <div class="intro-diagram">
             <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto;">
-                <!-- Browser side -->
-                <rect x="20" y="60" width="160" height="100" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
-                <text x="100" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#1D9E75">Browser</text>
-                <text x="100" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4b5563">WebRTC · Opus 48kHz</text>
-                <text x="100" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">AEC · AGC · NS tích hợp</text>
 
-                <!-- Phone side -->
-                <rect x="20" y="185" width="160" height="26" rx="0" fill="transparent"/>
-                <rect x="620" y="60" width="160" height="100" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
-                <text x="700" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#D85A30">Phone / PSTN</text>
-                <text x="700" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4b5563">Twilio · G.711 8kHz</text>
-                <text x="700" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Circuit switching · 64kbps cố định</text>
+                <!-- ① Browser: x=10, y=60, w=150, h=100, center=(85,110) -->
+                <rect x="10" y="60" width="150" height="100" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+                <text x="85" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#1D9E75">Browser</text>
+                <text x="85" y="118" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">WebRTC · Opus 48kHz</text>
+                <text x="85" y="135" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">AEC · AGC · NS tích hợp</text>
 
-                <!-- Adapter browser -->
-                <rect x="235" y="72" width="120" height="76" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
-                <text x="295" y="102" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#534AB7">Adapter mỏng</text>
-                <text x="295" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">downsample</text>
-                <text x="295" y="136" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">48 → 16 kHz</text>
+                <!-- Arrow ①→② -->
+                <line x1="162" y1="110" x2="178" y2="110" stroke="#1D9E75" stroke-width="2" marker-end="url(#arrowG)"/>
 
-                <!-- Adapter phone -->
-                <rect x="445" y="72" width="120" height="76" rx="10" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5"/>
-                <text x="505" y="102" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#E06C00">Adapter dày</text>
-                <text x="505" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">decode + upsample</text>
-                <text x="505" y="136" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">8 → 16 kHz</text>
+                <!-- ② Adapter mỏng: x=180, y=72, w=130, h=76, center=(245,110) -->
+                <rect x="180" y="72" width="130" height="76" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+                <text x="245" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#534AB7">Adapter mỏng</text>
+                <text x="245" y="121" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#6b7280">downsample</text>
+                <text x="245" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#6b7280">48 → 16 kHz</text>
 
-                <!-- AI Core -->
-                <rect x="330" y="55" width="140" height="110" rx="14" fill="#534AB7"/>
-                <text x="400" y="90" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="800" fill="white">AI Core</text>
-                <text x="400" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">PCM 16kHz in</text>
-                <text x="400" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">PCM 24kHz out</text>
-                <text x="400" y="148" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session · Persona · Tools</text>
+                <!-- Arrow ②→③ -->
+                <line x1="312" y1="110" x2="328" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowP)"/>
 
-                <!-- Arrows browser → adapter -->
-                <line x1="180" y1="110" x2="232" y2="110" stroke="#1D9E75" stroke-width="2" marker-end="url(#arrowG)"/>
-                <!-- Arrows adapter → core -->
-                <line x1="355" y1="110" x2="332" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowP)"/>
-                <!-- Arrows core → adapter phone -->
-                <line x1="470" y1="110" x2="448" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowO)"/>
-                <!-- Arrows adapter phone → phone -->
-                <line x1="565" y1="110" x2="618" y2="110" stroke="#D85A30" stroke-width="2" marker-end="url(#arrowR)"/>
+                <!-- ③ AI Core: x=330, y=40, w=140, h=140, center=(400,110) -->
+                <rect x="330" y="40" width="140" height="140" rx="14" fill="#534AB7"/>
+                <text x="400" y="84" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="800" fill="white">AI Core</text>
+                <text x="400" y="106" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.85)">PCM 16kHz in</text>
+                <text x="400" y="122" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.85)">PCM 24kHz out</text>
+                <line x1="352" y1="134" x2="448" y2="134" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                <text x="400" y="150" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session · Persona · Tools</text>
+
+                <!-- Arrow ③→④ -->
+                <line x1="472" y1="110" x2="488" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowO)"/>
+
+                <!-- ④ Adapter dày: x=490, y=72, w=130, h=76, center=(555,110) -->
+                <rect x="490" y="72" width="130" height="76" rx="10" fill="#FFF3E0" stroke="#E06C00" stroke-width="2"/>
+                <text x="555" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#E06C00">Adapter dày</text>
+                <text x="555" y="121" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#6b7280">decode + upsample</text>
+                <text x="555" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#6b7280">8 → 16 kHz</text>
+
+                <!-- Arrow ④→⑤ -->
+                <line x1="622" y1="110" x2="638" y2="110" stroke="#D85A30" stroke-width="2" marker-end="url(#arrowR)"/>
+
+                <!-- ⑤ Phone: x=640, y=60, w=150, h=100, center=(715,110) -->
+                <rect x="640" y="60" width="150" height="100" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+                <text x="715" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#D85A30">Phone / PSTN</text>
+                <text x="715" y="118" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">Twilio · G.711 8kHz</text>
+                <text x="715" y="135" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Circuit switching · 64kbps</text>
 
                 <!-- Caption -->
                 <text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#888780">AI Core không cần biết audio đến từ đâu — chỉ nhận PCM 16kHz, trả PCM 24kHz</text>
 
-                <!-- Arrow defs -->
                 <defs>
                     <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
                         <path d="M0,0 L0,6 L8,3 z" fill="#1D9E75"/>
