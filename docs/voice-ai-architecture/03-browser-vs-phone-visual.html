@@ -3,1158 +3,1301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browser vs Phone: 2 Thế Giới Kết Nối</title>
+    <title>Bài 03 — Browser vs Phone: 2 Thế Giới Kết Nối</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #1f2937;
-            background: #f9fafb;
+            color: #1a1a18;
+            background: #FAFAF8;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
-        /* Hero */
+        /* ═══ HERO ═══ */
         .hero {
-            background: linear-gradient(135deg, #534AB7 0%, #378ADD 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #534AB7 45%, #1D9E75 80%, #378ADD 100%);
             color: white;
-            padding: 80px 20px;
+            padding: 80px 24px 60px;
             text-align: center;
-            margin-bottom: 60px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.18);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(8px);
         }
 
         .hero h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
         }
 
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .hero-sub {
+            font-size: 17px;
             opacity: 0.9;
-        }
-
-        .hero .subtitle {
-            font-size: 15px;
-            opacity: 0.85;
-            max-width: 700px;
-            margin: 0 auto;
+            max-width: 620px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
 
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 40px;
+            gap: 16px;
             max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        @media (max-width: 768px) {
-            .hero-stats {
-                grid-template-columns: 1fr;
-            }
+            margin: 0 auto;
         }
 
         .stat-box {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 24px;
-            border-radius: 12px;
+            background: rgba(255,255,255,0.14);
+            padding: 22px 16px;
+            border-radius: 14px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .stat-number {
+        .stat-num {
             font-size: 32px;
-            font-weight: 700;
+            font-weight: 800;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .stat-label {
-            font-size: 13px;
-            opacity: 0.9;
+        .stat-lbl {
+            font-size: 12px;
+            opacity: 0.85;
+            line-height: 1.4;
         }
 
-        /* Section */
-        section {
-            margin-bottom: 80px;
+        /* ═══ SECTIONS ═══ */
+        .section {
+            padding: 64px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
         }
 
-        section h2 {
-            font-size: 32px;
-            color: #111827;
-            margin-bottom: 32px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #378ADD;
+        .section:last-of-type { border-bottom: none; }
+
+        .section-label {
+            font-size: 12px;
             font-weight: 700;
-        }
-
-        section h3 {
-            font-size: 22px;
-            color: #1f2937;
-            margin: 28px 0 18px 0;
-            font-weight: 600;
-        }
-
-        section p {
-            font-size: 15px;
-            color: #4b5563;
-            margin-bottom: 16px;
-            line-height: 1.8;
-        }
-
-        section ul, section ol {
-            margin: 16px 0 16px 20px;
-            color: #4b5563;
-        }
-
-        section li {
-            margin-bottom: 12px;
-        }
-
-        /* Cards Grid */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #111827;
-        }
-
-        .card-content {
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .card-item {
-            display: flex;
-            gap: 8px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #534AB7;
             margin-bottom: 10px;
         }
 
-        .card-icon {
-            font-size: 18px;
-            flex-shrink: 0;
+        .section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a18;
+            margin-bottom: 12px;
+            line-height: 1.3;
         }
 
-        /* Comparison Cards */
-        .comparison {
+        .section-intro {
+            font-size: 16px;
+            color: #5f5e5a;
+            margin-bottom: 36px;
+            max-width: 720px;
+            line-height: 1.75;
+        }
+
+        .section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a18;
+            margin: 32px 0 14px;
+        }
+
+        .section p {
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 14px;
+            line-height: 1.8;
+        }
+
+        /* ═══ INTRO SVG DIAGRAM ═══ */
+        .intro-diagram {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 32px;
+            margin: 32px 0;
+            overflow: hidden;
+        }
+
+        /* ═══ TWO WORLDS GRID ═══ */
+        .worlds-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin: 32px 0;
         }
 
-        @media (max-width: 768px) {
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .comp-card {
-            background: white;
-            border-radius: 12px;
+        .world-card {
+            border-radius: 16px;
             padding: 28px;
-            border-left: 4px solid #d1d5db;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid;
         }
 
-        .comp-card.browser {
-            border-left-color: #378ADD;
+        .world-card.pstn {
+            background: #FFF8F5;
+            border-color: #D85A30;
         }
 
-        .comp-card.phone {
-            border-left-color: #1D9E75;
+        .world-card.webrtc {
+            background: #F0FDF8;
+            border-color: #1D9E75;
         }
 
-        .comp-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
+        .world-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .comp-dot {
+        .world-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
-        .comp-row {
+        .world-dot.pstn { background: #D85A30; }
+        .world-dot.webrtc { background: #1D9E75; }
+
+        .world-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a18;
+        }
+
+        .world-subtitle {
+            font-size: 12px;
+            color: #888780;
+            margin-top: 2px;
+        }
+
+        .spec-row {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             padding: 10px 0;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            gap: 12px;
+        }
+
+        .spec-row:last-child { border-bottom: none; }
+
+        .spec-key {
+            font-size: 13px;
+            color: #888780;
+            font-weight: 500;
+            flex-shrink: 0;
+            min-width: 110px;
+        }
+
+        .spec-val {
+            font-size: 13px;
+            color: #1a1a18;
+            font-weight: 600;
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        .spec-val.good { color: #1D9E75; }
+        .spec-val.warn { color: #D85A30; }
+
+        /* ═══ WEBRTC STACK ═══ */
+        .stack-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin: 24px 0;
+        }
+
+        .stack-table td {
+            padding: 14px 18px;
             font-size: 14px;
         }
 
-        .comp-row:last-child {
-            border-bottom: none;
+        .stack-layer {
+            background: #534AB7;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+            border-radius: 8px 0 0 8px;
+            white-space: nowrap;
+            width: 110px;
         }
 
-        .comp-label {
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        .comp-value {
-            color: #111827;
-            font-weight: 600;
-            text-align: right;
-            max-width: 50%;
-        }
-
-        /* Pipeline Diagram */
-        .pipeline {
+        .stack-content {
             background: white;
+            color: #1a1a18;
+            border-radius: 0 8px 8px 0;
+            border: 1px solid rgba(0,0,0,0.07);
+            border-left: none;
+            line-height: 1.6;
+        }
+
+        .stack-content strong { color: #534AB7; }
+
+        /* ═══ COMPARISON TABLE ═══ */
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
             border-radius: 12px;
-            padding: 32px;
-            margin: 32px 0;
-            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            font-size: 14px;
         }
 
-        .pipeline-title {
-            font-size: 16px;
+        .comp-table thead tr {
+            background: #1D9E75;
+            color: white;
+        }
+
+        .comp-table thead th {
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .comp-table thead th:first-child { background: #158a63; }
+
+        .comp-table tbody tr {
+            background: white;
+            border-bottom: 1px solid #f0f0ee;
+        }
+
+        .comp-table tbody tr:hover { background: #F7F7F5; }
+
+        .comp-table td {
+            padding: 12px 18px;
+            color: #374151;
+        }
+
+        .comp-table td:first-child {
             font-weight: 600;
-            margin-bottom: 24px;
-            color: #111827;
+            color: #1a1a18;
+            background: #FAFAF8;
         }
 
-        .pipeline-steps {
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-yes { background: #E1F5EE; color: #1D9E75; }
+        .badge-no { background: #FAECE7; color: #D85A30; }
+        .badge-mid { background: #FFF3E0; color: #E06C00; }
+
+        /* ═══ TWILIO SECTION ═══ */
+        .flow-diagram {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 28px;
+            margin: 24px 0;
+        }
+
+        .flow-steps {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 0;
         }
 
-        .pipeline-step {
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .flow-line {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .flow-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
         }
 
-        .step-item {
-            background: #f3f4f6;
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #1f2937;
+        .flow-connector {
+            width: 2px;
+            height: 28px;
+            background: linear-gradient(to bottom, #534AB7, #1D9E75);
+            flex-shrink: 0;
+        }
+
+        .flow-content {
+            padding: 6px 0 24px;
             flex: 1;
         }
 
-        .step-item.highlight {
-            background: #fef3c7;
-            color: #92400e;
+        .flow-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a18;
+            margin-bottom: 4px;
         }
 
-        .step-item.processing {
-            background: #dbeafe;
-            color: #1e40af;
+        .flow-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
         }
 
-        .step-arrow {
-            color: #9ca3af;
-            font-size: 18px;
-            writing-mode: horizontal-tb;
+        .provider-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
         }
 
-        /* Diagram */
-        .diagram {
+        .provider-card {
             background: white;
             border-radius: 12px;
+            padding: 22px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .provider-name {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .provider-name.twilio { color: #F22F46; }
+        .provider-name.telnyx { color: #00C48C; }
+
+        .provider-feature {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #4b5563;
+            align-items: flex-start;
+        }
+
+        .provider-feature::before {
+            content: "›";
+            color: #534AB7;
+            font-weight: 700;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+
+        /* ═══ ADAPTER PATTERN SVG ═══ */
+        .adapter-diagram {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.08);
             padding: 32px;
-            margin: 32px 0;
-            border: 1px solid #e5e7eb;
+            margin: 28px 0;
+            text-align: center;
         }
 
-        .diagram-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: #111827;
+        /* ═══ ARCH IMPLICATIONS ═══ */
+        .implications-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 28px 0;
         }
 
-        .flow {
+        .impl-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .impl-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 14px;
         }
 
-        .flow-node {
-            background: #f3f4f6;
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-size: 12px;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.3;
-            white-space: nowrap;
-        }
+        .impl-icon.purple { background: #EEEDFE; }
+        .impl-icon.green { background: #E1F5EE; }
+        .impl-icon.blue { background: #E6F1FB; }
+        .impl-icon.coral { background: #FAECE7; }
 
-        .flow-node.browser {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .flow-node.phone {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .flow-node.processing {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .flow-node.ai {
-            background: #e9d5ff;
-            color: #6b21a8;
-        }
-
-        .flow-arrow {
-            color: #9ca3af;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        /* Key Points */
-        .key-points {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 32px 0;
-        }
-
-        .point {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .point-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
-
-        .point h4 {
-            font-size: 16px;
-            font-weight: 600;
+        .impl-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a18;
             margin-bottom: 8px;
-            color: #111827;
         }
 
-        .point p {
-            font-size: 14px;
-            color: #4b5563;
-            margin-bottom: 0;
-        }
-
-        /* Highlight Box */
-        .highlight {
-            background: #f0fdf4;
-            border-left: 4px solid #059669;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 24px 0;
-        }
-
-        .highlight strong {
-            color: #059669;
-        }
-
-        /* Warning Box */
-        .warning {
-            background: #fef2f2;
-            border-left: 4px solid #dc2626;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 24px 0;
-        }
-
-        .warning strong {
-            color: #dc2626;
-        }
-
-        /* Info Box */
-        .info {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 24px 0;
-        }
-
-        .info strong {
-            color: #1e40af;
-        }
-
-        /* Table */
-        .table-responsive {
-            overflow-x: auto;
-            margin: 32px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        th {
-            background: #f3f4f6;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-            color: #111827;
-            font-size: 14px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 14px;
-            color: #4b5563;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Footer */
-        footer {
-            background: #f3f4f6;
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        footer p {
-            font-size: 14px;
+        .impl-body {
+            font-size: 13px;
             color: #6b7280;
-            margin-bottom: 12px;
+            line-height: 1.65;
         }
+
+        /* ═══ HIGHLIGHT BOXES ═══ */
+        .highlight {
+            background: #EEEDFE;
+            border-left: 4px solid #534AB7;
+            padding: 18px 22px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.7;
+        }
+
+        .highlight.green {
+            background: #E1F5EE;
+            border-color: #1D9E75;
+        }
+
+        .highlight.coral {
+            background: #FAECE7;
+            border-color: #D85A30;
+        }
+
+        .highlight.blue {
+            background: #E6F1FB;
+            border-color: #378ADD;
+        }
+
+        .highlight strong { color: #1a1a18; }
+
+        /* ═══ SUMMARY ═══ */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-top: 3px solid;
+        }
+
+        .summary-card:nth-child(1) { border-top-color: #D85A30; }
+        .summary-card:nth-child(2) { border-top-color: #1D9E75; }
+        .summary-card:nth-child(3) { border-top-color: #378ADD; }
+        .summary-card:nth-child(4) { border-top-color: #534AB7; }
+
+        .summary-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a18;
+            margin-bottom: 10px;
+        }
+
+        .summary-card p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* ═══ NEXT ARTICLE ═══ */
+        .next-article {
+            background: linear-gradient(135deg, #1D9E75 0%, #378ADD 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: white;
+            margin: 48px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .next-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .next-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .next-desc {
+            font-size: 14px;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        .next-btn {
+            display: inline-block;
+            background: white;
+            color: #1D9E75;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ═══ FOOTER ═══ */
+        footer {
+            background: #1a1a18;
+            color: #888780;
+            text-align: center;
+            padding: 40px 24px;
+            margin-top: 80px;
+            font-size: 14px;
+        }
+
+        footer strong { color: #e5e4e0; }
 
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 20px;
+            margin-top: 14px;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            color: #378ADD;
+            color: #6b6b67;
             text-decoration: none;
             font-size: 13px;
         }
 
-        .footer-links a:hover {
-            text-decoration: underline;
+        .footer-links a:hover { color: #e5e4e0; }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 768px) {
+            .hero-stats { grid-template-columns: 1fr; }
+            .worlds-grid { grid-template-columns: 1fr; }
+            .provider-grid { grid-template-columns: 1fr; }
+            .implications-grid { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .next-article { flex-direction: column; }
+            .spec-key { min-width: 90px; }
+        }
+
+        @media (max-width: 540px) {
+            .comp-table { font-size: 12px; }
+            .comp-table td, .comp-table th { padding: 10px 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container">
-            <h1>Browser vs Phone</h1>
-            <p>2 Thế Giới Kết Nối Hoàn Toàn Khác Nhau</p>
-            <p class="subtitle">Cùng một AI Model, nhưng audio quality, latency, và kiến trúc xử lý lại khác biệt hoàn toàn</p>
 
-            <div class="hero-stats">
-                <div class="stat-box">
-                    <span class="stat-number">48 kHz</span>
-                    <span class="stat-label">Browser Opus</span>
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-badge">Tầng 1 — Nền tảng · Bài 3/15</div>
+        <h1>Browser vs Phone<br>2 Thế Giới Kết Nối Voice</h1>
+        <p class="hero-sub">
+            Cùng một AI Core, nhưng browser và điện thoại thật đến qua hai con đường
+            hoàn toàn khác nhau. Hiểu sự khác biệt này là điều kiện tiên quyết
+            để thiết kế kiến trúc Voice AI đúng.
+        </p>
+        <div class="hero-stats">
+            <div class="stat-box">
+                <span class="stat-num">8 kHz</span>
+                <span class="stat-lbl">PSTN — giới hạn cứng không thể thay đổi</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-num">48 kHz</span>
+                <span class="stat-lbl">WebRTC Opus — gấp 6 lần, chất lượng HD</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-num">1 Core</span>
+                <span class="stat-lbl">AI Core dùng chung — channel chỉ là adapter</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ═══ INTRO: TWO WORLDS ═══ -->
+    <section class="section">
+        <div class="section-label">Bài toán cốt lõi</div>
+        <h2>Một AI Core, hai channel hoàn toàn khác nhau</h2>
+        <p class="section-intro">
+            Voice AI cần phục vụ cả người dùng trên web app lẫn người gọi qua số điện thoại thật.
+            Hai nguồn audio này khác nhau về codec, transport, latency và kiến trúc — đến mức
+            có thể coi là hai hệ thống riêng biệt buộc phải chia sẻ chung một AI Core.
+        </p>
+
+        <!-- SVG: Two worlds converge -->
+        <div class="intro-diagram">
+            <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto;">
+                <!-- Browser side -->
+                <rect x="20" y="60" width="160" height="100" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+                <text x="100" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#1D9E75">Browser</text>
+                <text x="100" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4b5563">WebRTC · Opus 48kHz</text>
+                <text x="100" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">AEC · AGC · NS tích hợp</text>
+
+                <!-- Phone side -->
+                <rect x="20" y="185" width="160" height="26" rx="0" fill="transparent"/>
+                <rect x="620" y="60" width="160" height="100" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+                <text x="700" y="100" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#D85A30">Phone / PSTN</text>
+                <text x="700" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4b5563">Twilio · G.711 8kHz</text>
+                <text x="700" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Circuit switching · 64kbps cố định</text>
+
+                <!-- Adapter browser -->
+                <rect x="235" y="72" width="120" height="76" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+                <text x="295" y="102" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#534AB7">Adapter mỏng</text>
+                <text x="295" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">downsample</text>
+                <text x="295" y="136" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">48 → 16 kHz</text>
+
+                <!-- Adapter phone -->
+                <rect x="445" y="72" width="120" height="76" rx="10" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5"/>
+                <text x="505" y="102" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#E06C00">Adapter dày</text>
+                <text x="505" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">decode + upsample</text>
+                <text x="505" y="136" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">8 → 16 kHz</text>
+
+                <!-- AI Core -->
+                <rect x="330" y="55" width="140" height="110" rx="14" fill="#534AB7"/>
+                <text x="400" y="90" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="800" fill="white">AI Core</text>
+                <text x="400" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">PCM 16kHz in</text>
+                <text x="400" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">PCM 24kHz out</text>
+                <text x="400" y="148" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session · Persona · Tools</text>
+
+                <!-- Arrows browser → adapter -->
+                <line x1="180" y1="110" x2="232" y2="110" stroke="#1D9E75" stroke-width="2" marker-end="url(#arrowG)"/>
+                <!-- Arrows adapter → core -->
+                <line x1="355" y1="110" x2="332" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowP)"/>
+                <!-- Arrows core → adapter phone -->
+                <line x1="470" y1="110" x2="448" y2="110" stroke="#534AB7" stroke-width="2" marker-end="url(#arrowO)"/>
+                <!-- Arrows adapter phone → phone -->
+                <line x1="565" y1="110" x2="618" y2="110" stroke="#D85A30" stroke-width="2" marker-end="url(#arrowR)"/>
+
+                <!-- Caption -->
+                <text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#888780">AI Core không cần biết audio đến từ đâu — chỉ nhận PCM 16kHz, trả PCM 24kHz</text>
+
+                <!-- Arrow defs -->
+                <defs>
+                    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L8,3 z" fill="#1D9E75"/>
+                    </marker>
+                    <marker id="arrowP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L8,3 z" fill="#534AB7"/>
+                    </marker>
+                    <marker id="arrowO" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L8,3 z" fill="#534AB7"/>
+                    </marker>
+                    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L8,3 z" fill="#D85A30"/>
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ═══ PSTN SECTION ═══ -->
+    <section class="section">
+        <div class="section-label">Thế giới 1</div>
+        <h2>PSTN — Mạng Điện Thoại 50 Năm Tuổi Vẫn Thống Trị</h2>
+        <p class="section-intro">
+            PSTN (Public Switched Telephone Network) là hạ tầng điện thoại toàn cầu, số hóa từ thập niên 1960.
+            Khi ai đó gọi đến hotline công ty bạn, cuộc gọi đó đi qua PSTN — với G.711 8kHz là codec duy nhất,
+            không có lựa chọn nào khác.
+        </p>
+
+        <!-- Circuit switching explanation -->
+        <div class="flow-diagram">
+            <p style="font-size:13px;font-weight:700;color:#888780;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:20px;">Cách PSTN hoạt động — circuit switching</p>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-circle" style="background:#FAECE7;font-size:18px;">📱</div>
+                        <div class="flow-connector"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-title">Điện thoại người gọi</div>
+                        <div class="flow-desc">Chuyển giọng nói thành tín hiệu điện, gửi qua đường dây đến tổng đài</div>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <span class="stat-number">8 kHz</span>
-                    <span class="stat-label">Phone G.711</span>
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-circle" style="background:#FFF3E0;font-size:18px;">🏢</div>
+                        <div class="flow-connector"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-title">Central Office (tổng đài)</div>
+                        <div class="flow-desc">Số hóa thành G.711 (8kHz, 8-bit µ-law/A-law). Dành riêng một "đường dây ảo" 64kbps — <strong>circuit switching</strong> — từ đầu đến cuối cuộc gọi</div>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <span class="stat-number">6x</span>
-                    <span class="stat-label">Bandwidth Difference</span>
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-circle" style="background:#E6F1FB;font-size:18px;">🌐</div>
+                        <div class="flow-connector"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-title">Twilio / Telnyx (CPaaS)</div>
+                        <div class="flow-desc">Nhận cuộc gọi từ PSTN, mở WebSocket đến server của bạn, stream audio G.711 dưới dạng JSON messages (base64, 20ms/chunk)</div>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-circle" style="background:#EEEDFE;font-size:18px;">⚙️</div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-title">Voice AI Server</div>
+                        <div class="flow-desc">Nhận JSON → decode base64 → G.711 decode → PCM 8kHz → upsample 8→16kHz → AI Model</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PSTN specs -->
+        <div class="worlds-grid" style="grid-template-columns: 1fr;">
+            <div class="world-card pstn">
+                <div class="world-header">
+                    <div class="world-dot pstn"></div>
+                    <div>
+                        <div class="world-title">PSTN — Phone Channel</div>
+                        <div class="world-subtitle">Thông số kỹ thuật</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px;">
+                    <div>
+                        <div class="spec-row">
+                            <span class="spec-key">Codec</span>
+                            <span class="spec-val warn">G.711 µ-law/A-law (cố định)</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Sample rate</span>
+                            <span class="spec-val warn">8 kHz — tần số đến 4kHz</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Bitrate</span>
+                            <span class="spec-val warn">64 kbps cố định mọi lúc</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="spec-row">
+                            <span class="spec-key">Latency</span>
+                            <span class="spec-val warn">80-200ms (transport only)</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Reliability</span>
+                            <span class="spec-val good">99.999% uptime</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Chất lượng</span>
+                            <span class="spec-val warn">SD — mỏng, hẹp tần số</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight coral">
+            <strong>Tại sao G.711 8kHz không thể thay đổi?</strong> PSTN thiết kế từ 1950s khi bandwidth là luxury.
+            8kHz = Nyquist frequency 16kHz = đủ cho speech intelligibility. Dù bandwidth internet rẻ hôm nay,
+            toàn bộ hạ tầng PSTN toàn cầu vẫn locked ở 8kHz vì backward compatibility.
+            Đây là giới hạn cứng — không thể vượt qua từ phía server.
+        </div>
+    </section>
+
+    <!-- ═══ WEBRTC SECTION ═══ -->
+    <section class="section">
+        <div class="section-label">Thế giới 2</div>
+        <h2>WebRTC — Stack Hoàn Chỉnh Sinh Ra Cho Realtime</h2>
+        <p class="section-intro">
+            WebRTC (Web Real-Time Communication) không chỉ là một giao thức — nó là một stack đầy đủ gồm
+            xử lý audio, codec, transport bảo mật, và network traversal. Google open-source năm 2011,
+            mọi browser lớn đều hỗ trợ native. Điều đặc biệt: tất cả tính năng đều miễn phí và tự động.
+        </p>
+
+        <!-- WebRTC Stack table -->
+        <table class="stack-table">
+            <tr>
+                <td class="stack-layer">Audio</td>
+                <td class="stack-content">
+                    <strong>AEC</strong> (Acoustic Echo Cancellation) — loại bỏ tiếng vọng khi loa phát lại audio mà mic thu.
+                    <strong>AGC</strong> (Automatic Gain Control) — tự điều chỉnh âm lượng nếu user nói nhỏ/to.
+                    <strong>NS</strong> (Noise Suppression) — lọc tiếng ồn nền (quạt, xe cộ, bàn phím).
+                    <em>Ba tính năng này tự động, miễn phí — PSTN không có.</em>
+                </td>
+            </tr>
+            <tr>
+                <td class="stack-layer">Codec</td>
+                <td class="stack-content">
+                    <strong>Opus</strong> là mặc định — adaptive 6-510kbps, hỗ trợ 8-48kHz. Khi im lặng,
+                    <strong>DTX</strong> tiêu thụ gần 0 bandwidth. Opus negotiate tự động giữa hai bên —
+                    có thể fallback G.711 nếu cần. Chất lượng vượt trội G.711 ở mọi bitrate.
+                </td>
+            </tr>
+            <tr>
+                <td class="stack-layer">Transport</td>
+                <td class="stack-content">
+                    <strong>SRTP over UDP</strong> — không retry packet bị mất, thà bỏ qua còn hơn chờ trễ.
+                    Đúng cho audio realtime: packet âm thanh đến trễ 200ms thì phát lại cũng vô nghĩa.
+                    <strong>DTLS</strong> thêm mã hóa end-to-end bắt buộc.
+                </td>
+            </tr>
+            <tr>
+                <td class="stack-layer">Network</td>
+                <td class="stack-content">
+                    <strong>ICE + STUN + TURN</strong> framework — tự tìm đường kết nối tốt nhất qua NAT/firewall.
+                    STUN tìm IP public. TURN làm relay khi direct connection không thể (~10-15% trường hợp).
+                    Toàn bộ tự động — developer không cần config.
+                </td>
+            </tr>
+            <tr>
+                <td class="stack-layer">Security</td>
+                <td class="stack-content">
+                    <strong>DTLS + SRTP</strong> — mã hóa bắt buộc end-to-end theo chuẩn W3C/IETF.
+                    Không thể tắt. Browser không cho phép `ws://` (unencrypted) cho media stream.
+                </td>
+            </tr>
+        </table>
+
+        <!-- WebRTC specs -->
+        <div class="worlds-grid" style="grid-template-columns: 1fr;">
+            <div class="world-card webrtc">
+                <div class="world-header">
+                    <div class="world-dot webrtc"></div>
+                    <div>
+                        <div class="world-title">WebRTC — Browser Channel</div>
+                        <div class="world-subtitle">Thông số kỹ thuật</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px;">
+                    <div>
+                        <div class="spec-row">
+                            <span class="spec-key">Codec</span>
+                            <span class="spec-val good">Opus 48kHz (negotiate)</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Sample rate</span>
+                            <span class="spec-val good">48 kHz — full spectrum</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Bitrate</span>
+                            <span class="spec-val good">6-510 kbps adaptive</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="spec-row">
+                            <span class="spec-key">Latency</span>
+                            <span class="spec-val good">20-80ms (transport)</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Reliability</span>
+                            <span class="spec-val warn">Phụ thuộc internet</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Chất lượng</span>
+                            <span class="spec-val good">HD — rõ, ấm, tự nhiên</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight green">
+            <strong>WebRTC vs PSTN — chất lượng không phải là lý do duy nhất để quan tâm.</strong>
+            Sự khác biệt quan trọng hơn là kiến trúc: WebRTC có thể direct connection browser ↔ AI
+            (server không chạm audio, zero transcode latency). PSTN bắt buộc qua server để transcode —
+            server trở thành bottleneck và single point of failure.
+        </div>
+    </section>
+
+    <!-- ═══ COMPARISON TABLE ═══ -->
+    <section class="section">
+        <div class="section-label">So sánh</div>
+        <h2>WebRTC vs PSTN — Thông Số Kỹ Thuật Trực Diện</h2>
+        <p class="section-intro">
+            Sự khác biệt không chỉ là "chất lượng cao hơn" — nó tạo ra hai bài toán kiến trúc
+            hoàn toàn khác nhau, từ scaling đến failure handling.
+        </p>
+
+        <div style="overflow-x:auto;border-radius:12px;">
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th>Tiêu chí</th>
+                        <th>WebRTC — Browser</th>
+                        <th>PSTN — Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Codec</td>
+                        <td>Opus (negotiate tự động)</td>
+                        <td>G.711 µ-law (cố định)</td>
+                    </tr>
+                    <tr>
+                        <td>Sample rate</td>
+                        <td>48 kHz</td>
+                        <td>8 kHz</td>
+                    </tr>
+                    <tr>
+                        <td>Bitrate</td>
+                        <td>6-510 kbps adaptive</td>
+                        <td>64 kbps cố định</td>
+                    </tr>
+                    <tr>
+                        <td>Echo cancel</td>
+                        <td><span class="badge badge-yes">Tích hợp sẵn</span></td>
+                        <td><span class="badge badge-no">Server tự xử lý</span></td>
+                    </tr>
+                    <tr>
+                        <td>Noise suppression</td>
+                        <td><span class="badge badge-yes">Tích hợp sẵn</span></td>
+                        <td><span class="badge badge-no">Server tự xử lý</span></td>
+                    </tr>
+                    <tr>
+                        <td>Server xử lý audio</td>
+                        <td><span class="badge badge-yes">Không (direct)</span></td>
+                        <td><span class="badge badge-no">Bắt buộc (transcode)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Latency transport</td>
+                        <td>20-80ms</td>
+                        <td>80-200ms</td>
+                    </tr>
+                    <tr>
+                        <td>Reliability</td>
+                        <td><span class="badge badge-mid">Phụ thuộc internet</span></td>
+                        <td><span class="badge badge-yes">99.999% uptime</span></td>
+                    </tr>
+                    <tr>
+                        <td>Chất lượng voice</td>
+                        <td>HD — rõ, ấm, tự nhiên</td>
+                        <td>SD — mỏng, hẹp tần số</td>
+                    </tr>
+                    <tr>
+                        <td>Scale model</td>
+                        <td>Scale theo signaling</td>
+                        <td>Scale theo compute (CPU)</td>
+                    </tr>
+                    <tr>
+                        <td>Failure mode</td>
+                        <td>Mất mạng → reconnect</td>
+                        <td>Server chết → all calls drop</td>
+                    </tr>
+                    <tr>
+                        <td>STT accuracy</td>
+                        <td><span class="badge badge-yes">Cao hơn (48→16kHz)</span></td>
+                        <td><span class="badge badge-mid">Thấp hơn (8→16kHz upsample)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight">
+            <strong>Audio quality gap ảnh hưởng trực tiếp đến STT accuracy:</strong> AI model nhận input 16kHz.
+            PSTN upsample 8→16kHz — bổ sung thông tin <em>không tồn tại</em>, quality bị giới hạn bởi G.711.
+            WebRTC downsample 48→16kHz — bỏ bớt thông tin dư thừa, quality vẫn tốt.
+            Cùng một model nhưng WER (Word Error Rate) khác nhau rõ rệt giữa hai channel.
+        </div>
+    </section>
+
+    <!-- ═══ TWILIO & TELNYX ═══ -->
+    <section class="section">
+        <div class="section-label">Cầu nối</div>
+        <h2>Twilio &amp; Telnyx — Cổng Vào Thế Giới PSTN</h2>
+        <p class="section-intro">
+            Server Voice AI không kết nối trực tiếp với mạng PSTN. Các nhà cung cấp CPaaS
+            (Communication Platform as a Service) đóng vai trò cầu nối quan trọng.
+        </p>
+
+        <div class="flow-diagram">
+            <p style="font-size:13px;font-weight:700;color:#888780;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:20px;">Twilio Media Streams — Cách hoạt động</p>
+            <svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto 16px;">
+                <rect x="10" y="20" width="110" height="40" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+                <text x="65" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#D85A30">PSTN</text>
+                <text x="65" y="53" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Mạng điện thoại</text>
+
+                <line x1="120" y1="40" x2="158" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+                <text x="139" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">G.711</text>
+
+                <rect x="160" y="20" width="110" height="40" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.5"/>
+                <text x="215" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#378ADD">Twilio / Telnyx</text>
+                <text x="215" y="53" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">CPaaS Gateway</text>
+
+                <line x1="270" y1="40" x2="308" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+                <text x="289" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">WSS</text>
+
+                <rect x="310" y="20" width="120" height="40" rx="8" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5"/>
+                <text x="370" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#E06C00">Voice AI Server</text>
+                <text x="370" y="53" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">JSON decode + transcode</text>
+
+                <line x1="430" y1="40" x2="468" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+                <text x="449" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">PCM 16k</text>
+
+                <rect x="470" y="20" width="100" height="40" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+                <text x="520" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#534AB7">AI Model</text>
+                <text x="520" y="53" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">STT + LLM + TTS</text>
+
+                <line x1="590" y1="40" x2="628" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+                <text x="609" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">TTS</text>
+
+                <rect x="630" y="20" width="60" height="40" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
+                <text x="660" y="44" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1D9E75">Output</text>
+
+                <defs>
+                    <marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#888780"/>
+                    </marker>
+                </defs>
+            </svg>
+            <div style="font-size:13px;color:#6b7280;line-height:1.7;margin-top:8px;">
+                Mỗi WebSocket message từ Twilio chứa: <code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:12px;">{ "media": { "payload": "&lt;base64&gt;", "sequence": 123, "timestamp": 456 } }</code>
+                Server cần: base64 decode → G.711 decode → PCM 8kHz → upsample 16kHz → AI Model.
+            </div>
+        </div>
+
+        <div class="provider-grid">
+            <div class="provider-card">
+                <div class="provider-name twilio">Twilio</div>
+                <div class="provider-feature">SIP Trunk — kết nối mạng PSTN</div>
+                <div class="provider-feature">Phone number provisioning (mua số)</div>
+                <div class="provider-feature">Media Streams — WebSocket audio</div>
+                <div class="provider-feature">TwiML — XML scripting call flow</div>
+                <div class="provider-feature">Pricing theo phút + phí số/tháng</div>
+                <div class="provider-feature">Market leader, documentation tốt nhất</div>
+            </div>
+            <div class="provider-card">
+                <div class="provider-name telnyx">Telnyx</div>
+                <div class="provider-feature">Dịch vụ tương đương Twilio</div>
+                <div class="provider-feature">Private IP network — ít hop hơn</div>
+                <div class="provider-feature">Latency thấp hơn Twilio ~10-20ms</div>
+                <div class="provider-feature">API gần tương thích với Twilio</div>
+                <div class="provider-feature">Pricing rẻ hơn cho high-volume</div>
+                <div class="provider-feature">Coverage tốt tại một số vùng địa lý</div>
+            </div>
+        </div>
+
+        <div class="highlight blue">
+            <strong>Production tip:</strong> Nhiều hệ thống tích hợp cả Twilio và Telnyx để <strong>failover tự động</strong>.
+            Nếu một provider gặp sự cố, traffic tự động chuyển sang provider còn lại trong vòng giây.
+            Đây là thực hành quan trọng với uptime SLA 99.99%+. Chi phí tích hợp đáng so với downtime
+            khi provider single-point-of-failure gặp sự cố.
+        </div>
+    </section>
+
+    <!-- ═══ ADAPTER PATTERN ═══ -->
+    <section class="section">
+        <div class="section-label">Kiến trúc</div>
+        <h2>Điểm Hội Tụ — Channel Chỉ Là Adapter, Core Mới Là Bộ Não</h2>
+        <p class="section-intro">
+            Dù hai channel khác nhau hoàn toàn, chúng đều hội tụ tại AI Core. Đây là insight
+            kiến trúc quan trọng nhất từ bài này — và nó quyết định toàn bộ cách thiết kế hệ thống.
+        </p>
+
+        <!-- Convergence diagram -->
+        <div class="adapter-diagram">
+            <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;">
+                <!-- Browser box -->
+                <rect x="20" y="30" width="140" height="80" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+                <text x="90" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1D9E75">Browser</text>
+                <text x="90" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">Opus 48kHz</text>
+                <text x="90" y="97" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">WebRTC + AEC + NS</text>
+
+                <!-- Phone box -->
+                <rect x="20" y="190" width="140" height="80" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+                <text x="90" y="222" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#D85A30">Phone / PSTN</text>
+                <text x="90" y="240" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">G.711 8kHz</text>
+                <text x="90" y="257" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">via Twilio/Telnyx WSS</text>
+
+                <!-- Thin adapter -->
+                <rect x="220" y="48" width="130" height="44" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="285" y="66" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#534AB7">Adapter mỏng</text>
+                <text x="285" y="82" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Opus decode · downsample 48→16</text>
+
+                <!-- Thick adapter -->
+                <rect x="220" y="196" width="130" height="68" rx="8" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="285" y="218" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#E06C00">Adapter dày</text>
+                <text x="285" y="234" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">G.711 decode · upsample 8→16</text>
+                <text x="285" y="249" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">VAD · barge-in · echo suppress</text>
+                <text x="285" y="264" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">downsample 24→8 · G.711 encode</text>
+
+                <!-- AI Core -->
+                <rect x="420" y="80" width="180" height="140" rx="16" fill="#534AB7"/>
+                <text x="510" y="118" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="800" fill="white">AI Core</text>
+                <text x="510" y="140" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 16kHz in</text>
+                <text x="510" y="158" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 24kHz out</text>
+                <line x1="460" y1="170" x2="560" y2="170" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                <text x="510" y="184" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session State</text>
+                <text x="510" y="198" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Persona · Tools · History</text>
+
+                <!-- Arrows -->
+                <line x1="160" y1="70" x2="217" y2="70" stroke="#1D9E75" stroke-width="2" marker-end="url(#ag)"/>
+                <line x1="160" y1="230" x2="217" y2="230" stroke="#D85A30" stroke-width="2" marker-end="url(#ar)"/>
+                <path d="M 350 70 Q 395 70 395 150 L 418 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
+                <path d="M 350 230 Q 395 230 395 150 L 418 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
+
+                <!-- Labels under adapters -->
+                <text x="285" y="120" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#1D9E75" font-weight="600">pass-through ≈</text>
+                <text x="280" y="280" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#E06C00" font-weight="600">phức tạp hơn nhiều</text>
+
+                <!-- Shared label -->
+                <text x="600" y="48" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Dùng chung:</text>
+                <text x="600" y="63" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Session · Persona</text>
+                <text x="600" y="76" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Analytics · PII masking</text>
+                <line x1="510" y1="220" x2="510" y2="238" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+
+                <defs>
+                    <marker id="ag" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#1D9E75"/>
+                    </marker>
+                    <marker id="ar" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#D85A30"/>
+                    </marker>
+                    <marker id="ap" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#534AB7"/>
+                    </marker>
+                </defs>
+            </svg>
+            <p style="font-size:13px;color:#888780;margin-top:16px;line-height:1.6;">
+                AI Core không cần biết audio đến từ browser hay phone — chỉ nhận PCM 16kHz, trả PCM 24kHz.
+                Mỗi channel có adapter riêng xử lý codec và transport. <strong>Separation of concerns.</strong>
+            </p>
+        </div>
+
+        <!-- Architecture implications -->
+        <div class="implications-grid">
+            <div class="impl-card">
+                <div class="impl-icon purple">🧩</div>
+                <div class="impl-title">AI Core independent</div>
+                <div class="impl-body">
+                    Thiết kế Core nhận PCM 16kHz, trả PCM 24kHz — không quan tâm audio đến từ đâu.
+                    Thay đổi channel không ảnh hưởng Core logic. Thêm channel mới chỉ cần viết adapter mới.
+                </div>
+            </div>
+            <div class="impl-card">
+                <div class="impl-icon green">⚖️</div>
+                <div class="impl-title">Scale model khác nhau</div>
+                <div class="impl-body">
+                    Browser adapter: scale theo signaling connections — nhẹ, không tốn compute.
+                    Phone adapter: scale theo CPU transcode — nặng, cần sticky session vì audio state trong memory.
+                </div>
+            </div>
+            <div class="impl-card">
+                <div class="impl-icon blue">🔗</div>
+                <div class="impl-title">Shared state là điểm kết nối</div>
+                <div class="impl-body">
+                    Session state (history, context, tools) dùng chung giữa hai channel.
+                    Nếu một user chuyển từ browser sang phone (hoặc ngược lại), conversation context không bị mất.
+                </div>
+            </div>
+            <div class="impl-card">
+                <div class="impl-icon coral">⚡</div>
+                <div class="impl-title">Failure modes khác nhau</div>
+                <div class="impl-body">
+                    WebRTC: mất internet = mất kết nối, nhưng có thể reconnect. PSTN: server chết = tất cả cuộc gọi đang active bị rơi.
+                    Graceful shutdown quan trọng hơn nhiều với phone channel.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Browser Section -->
-        <section>
-            <h2>Thế Giới 1: Browser — WebRTC, Opus, Full Quality</h2>
+    <!-- ═══ SUMMARY ═══ -->
+    <section class="section">
+        <div class="section-label">Tóm tắt</div>
+        <h2>Những Gì Cần Nhớ Từ Bài Này</h2>
 
-            <h3>Codec: Opus ở 48 kHz</h3>
-            <p>Browser native WebRTC mặc định dùng <strong>Opus codec</strong> — được thiết kế cho speech realtime.</p>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="card-title">📊 Sampling Rate</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span><strong>48 kHz</strong> (phạm vi nghe của người)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>Hỗ trợ 5 tần suất: 8, 12, 16, 24, 48 kHz</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎚️ Adaptive Bitrate</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>10 kbps → 128+ kbps (tự động điều chỉnh)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>TWCC: Thích ứng với tình trạng mạng</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎙️ Quality Feel</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>MOS ~4.1-4.3 (toll-quality)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>Natural, nuanced, tự nhiên</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎵 Audio Bandwidth</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>~8,438 Hz (full speech frequencies)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>Breathiness, sibilants, tone color rõ ràng</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">⚙️ Echo Cancellation</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>AEC3 (Google, tích hợp sẵn)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>Delay-agnostic, automatic</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📡 Jitter Buffer</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>NetEQ (adaptive, self-tuning)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>15-120ms range, automatic</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="highlight">
-                <strong>Latency:</strong> 150-250ms end-to-end (một chiều) — do UDP peer-to-peer, optimize cho real-time
-            </div>
-
-            <h3>Adaptive Bitrate: TWCC</h3>
-            <p>Opus không fixed bitrate. WebRTC liên tục monitor mạng:</p>
-
-            <div class="info">
-                <strong>📊 TWCC (Transport-Wide Congestion Control):</strong> Receiver ước tính bandwidth khả dụng → gửi feedback về sender → sender điều chỉnh Opus bitrate (10 → 50 → 128 kbps). Kết quả: không "trơ" tiếng khi mạng yếu, không lãng phí bandwidth khi mạng tốt.
-            </div>
-
-            <h3>Architecture: Direct WebSocket</h3>
-            <p>Browser channel không qua server processing:</p>
-
-            <div class="diagram">
-                <div class="flow">
-                    <span class="flow-node browser">Browser</span>
-                    <span class="flow-arrow">═WSS═</span>
-                    <span class="flow-node ai">AI Model</span>
-                </div>
-                <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">Audio truyền trực tiếp 48 kHz Opus → Server không chạm → latency minimal</p>
-            </div>
-        </section>
-
-        <!-- Phone Section -->
-        <section>
-            <h2>Thế Giới 2: Phone — PSTN, G.711, Limited Quality</h2>
-
-            <h3>Codec: G.711 ở 8 kHz</h3>
-            <p>Khi user gọi vào số điện thoại, Twilio stream audio = <strong>G.711 μ-law ở 8 kHz</strong>.</p>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="card-title">📊 Sampling Rate</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span><strong>8 kHz</strong> (thập niên 1970, PSTN legacy)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span>Hẹp: chỉ voice frequency (300-3400 Hz)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📈 Fixed Bitrate</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span><strong>64 kbps</strong> (không thay đổi)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span>Predictable nhưng không thích ứng</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎙️ Quality Feel</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✓</span>
-                            <span>MOS ~4.1-4.3 (toll-quality)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span>Acceptable nhưng "tinny", không tự nhiên</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎵 Audio Bandwidth</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span>~3,969 Hz (speech intelligibility only)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">✗</span>
-                            <span>Thiếu breathiness, sibilants chi tiết</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🔄 Echo Cancellation</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">⚠️</span>
-                            <span>PSTN hybrid echo (~64ms window)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">⚠️</span>
-                            <span>AI phải detect + suppress outbound echo</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📡 Jitter Buffer</div>
-                    <div class="card-content">
-                        <div class="card-item">
-                            <span class="card-icon">⚠️</span>
-                            <span>Manual adaptive buffer (40-80ms)</span>
-                        </div>
-                        <div class="card-item">
-                            <span class="card-icon">⚠️</span>
-                            <span>Complex tuning, tùy PSTN quality</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="warning">
-                <strong>Vì Sao 8 kHz?</strong> PSTN thiết kế từ 1950s. 8 kHz = 16 kHz Nyquist frequency = đủ cho speech intelligibility. Dù bandwidth rẻ hôm nay, PSTN vẫn "bị tóc" ở 8 kHz vì backward compatibility.
-            </div>
-
-            <h3>Architecture: Double WebSocket + Transcode</h3>
-            <p>Phone channel phải đi qua server để xử lý:</p>
-
-            <div class="diagram">
-                <div class="flow">
-                    <span class="flow-node phone">Twilio<br>WS#1</span>
-                    <span class="flow-arrow">→</span>
-                    <span class="flow-node processing">Server<br>Transcode</span>
-                    <span class="flow-arrow">→</span>
-                    <span class="flow-node ai">AI Model<br>WS#2</span>
-                </div>
-                <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">Audio 8kHz → Server decode G.711 → upsample → process → downsample → encode → Twilio</p>
-            </div>
-
-            <div class="highlight">
-                <strong>Latency:</strong> 150-200ms (PSTN ~100ms + gateway buffer ~50-100ms) — dù network nhanh, server processing + codec conversion thêm latency
-            </div>
-        </section>
-
-        <!-- Comparison Section -->
-        <section>
-            <h2>So Sánh Trực Tiếp: Browser vs Phone</h2>
-
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tiêu chí</th>
-                            <th>Browser (WebRTC)</th>
-                            <th>Phone (PSTN)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Codec</strong></td>
-                            <td>Opus</td>
-                            <td>G.711 μ-law</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sample Rate</strong></td>
-                            <td>48 kHz</td>
-                            <td>8 kHz</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bitrate</strong></td>
-                            <td>Adaptive 10-128+ kbps</td>
-                            <td>Fixed 64 kbps + overhead</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bandwidth</strong></td>
-                            <td>~8,438 Hz (full speech)</td>
-                            <td>~3,969 Hz (speech only)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Quality</strong></td>
-                            <td>Natural, nuanced</td>
-                            <td>Acceptable, but "tinny"</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Network Adaptive</strong></td>
-                            <td>Yes (TWCC)</td>
-                            <td>No (fixed)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Echo Handling</strong></td>
-                            <td>AEC3 (automatic)</td>
-                            <td>PSTN hybrid + AI suppress</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Latency</strong></td>
-                            <td>150-250ms</td>
-                            <td>150-200ms</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Architecture</strong></td>
-                            <td>Peer-to-peer (WSS direct)</td>
-                            <td>Gateway + transcode (double WSS)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Preprocessing Section -->
-        <section>
-            <h2>Preprocessing: Nơi Hai Thế Giới Gặp Nhau</h2>
-
-            <h3>Browser Path — Minimal Processing</h3>
-            <p>Audio từ browser đến AI Model:</p>
-
-            <div class="pipeline">
-                <div class="pipeline-title">🌐 Browser → AI Model</div>
-                <div class="pipeline-steps">
-                    <div class="pipeline-step">
-                        <div class="step-item">Mic (48 kHz PCM)</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item highlight">AEC3 + Noise Suppression (Browser)</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item">Opus Encode (adaptive bitrate)</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item processing">WebSocket → Server</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item">Opus Decode → 16 kHz PCM</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item highlight">AI Model (STT + LLM + TTS)</div>
-                    </div>
-                </div>
-            </div>
-
-            <p><strong>Key point:</strong> Minimal preprocessing. Opus 48kHz → 16kHz, không cần đổi codec.</p>
-
-            <h3>Phone Path — Heavy Processing</h3>
-            <p>Audio từ phone đến AI Model:</p>
-
-            <div class="pipeline">
-                <div class="pipeline-title">☎️ Phone → AI Model</div>
-                <div class="pipeline-steps">
-                    <div class="pipeline-step">
-                        <div class="step-item">Twilio WebSocket (G.711 μ-law 8 kHz)</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item processing">G.711 Decode → PCM 8 kHz</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item highlight">Upsample 8 kHz → 16 kHz</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item">VAD: Voice Activity Detection</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item">Barge-in: Cut TTS if user speaking</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item highlight">AI Model (STT + LLM + TTS)</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item highlight">Downsample 24 kHz → 8 kHz</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item processing">G.711 Encode → μ-law</div>
-                    </div>
-                    <div class="pipeline-step">
-                        <span class="step-arrow">↓</span>
-                    </div>
-                    <div class="pipeline-step">
-                        <div class="step-item">Twilio WebSocket → Phone</div>
-                    </div>
-                </div>
-            </div>
-
-            <p><strong>Key point:</strong> Heavy preprocessing. Receive 8kHz → upsample → AI → downsample → 8kHz. Mỗi resample = cơ hội tăng latency hoặc giảm chất lượng.</p>
-
-            <div class="info">
-                <strong>❓ Tại sao phải upsample 8 kHz → 16 kHz?</strong>
-                <ul style="margin: 12px 0 0 20px;">
-                    <li><strong>STT (Speech-to-Text):</strong> Whisper, Google STT expect 16 kHz. 8 kHz = thiếu consonant detail → WER (Word Error Rate) tăng.</li>
-                    <li><strong>TTS Quality:</strong> AI TTS model train ở 24 kHz. Nếu output 8 kHz, tiếng méo mó → phải upsample trước, downsample sau.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- VAD and Barge-in Section -->
-        <section>
-            <h2>Voice Activity Detection & Barge-in</h2>
-
-            <h3>VAD — Phát Hiện Người Nói</h3>
-            <p>Khi nào user đang nói vs. đang nghe TTS?</p>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="card-title">⏱️ Latency</div>
-                    <div class="card-content">
-                        Real-time detection: ~20-100ms (tùy algorithm)
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎯 Accuracy</div>
-                    <div class="card-content">
-                        ~85-95% (tùy noise level)
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📱 Use Case</div>
-                    <div class="card-content">
-                        Detect user speech → cut TTS playback (barge-in)
-                    </div>
-                </div>
-            </div>
-
-            <h3>Barge-in — User Nói Chen Ngang</h3>
-            <p>Khi user nói trong khi AI đang nói TTS:</p>
-
-            <div class="key-points">
-                <div class="point">
-                    <div class="point-icon">🔊</div>
-                    <h4>Inbound Audio Arrives</h4>
-                    <p>User speech detected in G.711 8 kHz input stream</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">⚡</div>
-                    <h4>VAD Triggers</h4>
-                    <p>Voice activity detected → signal to stop TTS</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">🎤</div>
-                    <h4>New Input to AI</h4>
-                    <p>User speech forwarded to STT/LLM, new response generated</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">📊</div>
-                    <h4>Latency Budget</h4>
-                    <p>User speaks → VAD detects (20-50ms) → AI receives → AI cuts TTS → <600ms (natural)</p>
-                </div>
-            </div>
-
-            <div class="warning">
-                <strong>Challenge:</strong> Timing — user speaks → latency → AI detects → latency → AI stops TTS. Average 200-300ms. If VAD miss user speech or latency too high, overlap happens (bad experience).
-            </div>
-        </section>
-
-        <!-- Jitter Buffer Section -->
-        <section>
-            <h2>Jitter Buffer & Adaptive Playout</h2>
-
-            <h3>Problem: Network Jitter</h3>
-            <p>Network doesn't deliver packets uniformly:</p>
-
-            <div class="info">
-                <strong>Expected:</strong> Packet 1 at T, Packet 2 at T+20ms, Packet 3 at T+40ms<br>
-                <strong>Actual:</strong> Packet 1 at T, Packet 2 at T+45ms, Packet 3 at T+15ms<br>
-                <strong>Result:</strong> Audio gập gập, không mượt ❌
-            </div>
-
-            <h3>Solution: Jitter Buffer</h3>
-            <p>Collect packets vào buffer, phát theo regular schedule:</p>
-
-            <div class="comparison">
-                <div class="comp-card">
-                    <div class="comp-title">
-                        <span>❌ Fixed Buffer (cũ)</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">Deterministic latency</span>
-                        <span class="comp-value">Pro</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">On heavy jitter</span>
-                        <span class="comp-value">Buffer overflow, dropouts</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">Use case</span>
-                        <span class="comp-value">Stable network only</span>
-                    </div>
-                </div>
-
-                <div class="comp-card">
-                    <div class="comp-title">
-                        <span>✅ Adaptive Buffer (modern)</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">Monitor packet arrival</span>
-                        <span class="comp-value">Dynamic adjust</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">Handle variable jitter</span>
-                        <span class="comp-value">Minimize gaps, latency</span>
-                    </div>
-                    <div class="comp-row">
-                        <span class="comp-label">Typical range</span>
-                        <span class="comp-value">15-120ms</span>
-                    </div>
-                </div>
-            </div>
-
-            <p><strong>How:</strong> Monitor average arrival delay, expand buffer if delay increasing, shrink if stable. Compression/expansion (time-scaling) when packet missed.</p>
-
-            <div class="highlight">
-                <strong>Result:</strong> Natural playback dù network có jitter.
-            </div>
-        </section>
-
-        <!-- Architecture Section -->
-        <section>
-            <h2>Tại Sao Kiến Trúc Phải Khác Nhau</h2>
-
-            <h3>Browser Channel — Direct WebSocket</h3>
-            <p>Audio truyền thẳng từ browser đến AI:</p>
-
-            <div class="diagram">
-                <div class="flow">
-                    <span class="flow-node browser">Browser</span>
-                    <span class="flow-arrow">═WSS═</span>
-                    <span class="flow-node ai">AI Model</span>
-                </div>
-                <p style="margin-top: 16px; color: #4b5563;">
-                    <strong>Ưu điểm:</strong> Audio 48 kHz direct, server không chạm → latency minimal. Client-side AEC → network không phải handle echo. Adaptive bitrate auto-adjust quality.
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h4>PSTN và WebRTC là hai thế giới khác nhau</h4>
+                <p>
+                    PSTN: G.711 8kHz cố định, latency cao, 99.999% uptime, audio bắt buộc qua server.
+                    WebRTC: Opus 48kHz adaptive, latency thấp, phụ thuộc internet, audio có thể direct đến AI.
                 </p>
             </div>
-
-            <h3>Phone Channel — Double WebSocket + Transcode</h3>
-            <p>Audio phải đi qua server để xử lý:</p>
-
-            <div class="diagram">
-                <div class="flow">
-                    <span class="flow-node phone">Phone (8 kHz)</span>
-                    <span class="flow-arrow">═WSS#1═</span>
-                    <span class="flow-node processing">Server<br>(Transcode, VAD, Echo)</span>
-                    <span class="flow-arrow">═WSS#2═</span>
-                    <span class="flow-node ai">AI Model<br>(16 kHz in)</span>
-                </div>
-                <p style="margin-top: 16px; color: #4b5563;">
-                    <strong>Tại sao:</strong> Audio format khác (8 kHz vs 16 kHz), server handle codec conversion, upsampling/downsampling, VAD, barge-in, echo suppression. Không thể bypass server.
+            <div class="summary-card">
+                <h4>WebRTC là stack hoàn chỉnh</h4>
+                <p>
+                    AEC, AGC, noise suppression, codec negotiation, NAT traversal — tất cả tích hợp miễn phí.
+                    PSTN không có những thứ này, server phải tự xử lý hoặc chấp nhận quality thấp hơn.
                 </p>
             </div>
-
-            <div class="highlight">
-                <strong>Insight:</strong> Hai channel không thể dùng cùng architecture vì audio format và processing pipeline quá khác nhau. Đây là lý do bài 04 sẽ giải thích "Unified Server Pattern" — cách triển khai 2 WebSocket + transcode mà không kill latency.
+            <div class="summary-card">
+                <h4>Twilio/Telnyx là cầu nối bắt buộc</h4>
+                <p>
+                    Server không connect trực tiếp với mạng PSTN. CPaaS nhận cuộc gọi và stream G.711
+                    qua WebSocket, mỗi 20ms audio là một JSON message cần decode trước khi xử lý.
+                </p>
             </div>
-        </section>
-
-        <!-- Summary Section -->
-        <section>
-            <h2>Tóm Tắt — Những Gì Cần Nhớ</h2>
-
-            <div class="key-points">
-                <div class="point">
-                    <div class="point-icon">🌐</div>
-                    <h4>Browser: High Quality</h4>
-                    <p>Opus 48 kHz adaptive, AEC3 automatic, 150-250ms latency, peer-to-peer simple.</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">☎️</div>
-                    <h4>Phone: Legacy Standard</h4>
-                    <p>G.711 8 kHz fixed, PSTN echo path, 150-200ms latency, gateway required.</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">🔄</div>
-                    <h4>Processing Asymmetric</h4>
-                    <p>Browser minimal (Opus → 16 kHz). Phone heavy (8 kHz → upsample → AI → downsample → 8 kHz).</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">🎤</div>
-                    <h4>VAD & Barge-in</h4>
-                    <p>Detect user speech in realtime, cut TTS if overlap. Target <600ms latency.</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">📡</div>
-                    <h4>Jitter Buffer</h4>
-                    <p>Adaptive buffer absorb network jitter, balance latency vs. audio smoothness.</p>
-                </div>
-
-                <div class="point">
-                    <div class="point-icon">🏗️</div>
-                    <h4>Architecture Implication</h4>
-                    <p>Unified Server Pattern (bài 04) essential for phone channel — single process, shared memory, no Redis latency trap.</p>
-                </div>
+            <div class="summary-card">
+                <h4>"Channel là adapter, Core là bộ não"</h4>
+                <p>
+                    AI Core independent: nhận PCM 16kHz, trả PCM 24kHz, không quan tâm nguồn gốc audio.
+                    Browser adapter mỏng (pass-through). Phone adapter dày (decode + upsample + VAD + encode ngược).
+                </p>
             </div>
-        </section>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>Tổng hợp & biên soạn bởi <strong>Hưng 2x</strong> · Tháng 4, 2026</p>
-        <div class="footer-links">
-            <a href="./README.md">← Roadmap</a>
-            <span style="color: #d1d5db;">·</span>
-            <a href="./02-websocket-realtime-communication.md">← Bài 02: WebSocket</a>
-            <span style="color: #d1d5db;">·</span>
-            <a href="./04-audio-bridge.md">Bài 04: Audio Bridge →</a>
         </div>
-    </footer>
+
+        <!-- Next article -->
+        <div class="next-article">
+            <div>
+                <div class="next-label">BÀI TIẾP THEO · BÀI 04/15</div>
+                <div class="next-title">Audio Bridge — Demo vs Production</div>
+                <div class="next-desc">
+                    Có hai pipeline trên giấy là một chuyện. Triển khai production mà không tăng latency là chuyện khác.
+                    Codec chaining, quality loss tích lũy, ring buffer, unified bridge pattern.
+                </div>
+            </div>
+            <a href="./04-audio-bridge.md" class="next-btn">Đọc Bài 04 →</a>
+        </div>
+    </section>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <p>Tổng hợp &amp; biên soạn bởi <strong>Hưng 2x</strong> · Tháng 4, 2026</p>
+    <div class="footer-links">
+        <a href="./README.md">← Roadmap Series</a>
+        <a href="./02-websocket-realtime-communication-visual.html">← Bài 02: WebSocket</a>
+        <a href="./03-browser-vs-phone.md">📄 Markdown version</a>
+        <a href="./04-audio-bridge.md">Bài 04: Audio Bridge →</a>
+    </div>
+</footer>
+
 </body>
 </html>
