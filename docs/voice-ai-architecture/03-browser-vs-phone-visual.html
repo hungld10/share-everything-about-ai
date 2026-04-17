@@ -1073,8 +1073,8 @@
                 <text x="520" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#534AB7">AI Model</text>
                 <text x="520" y="53" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">STT + LLM + TTS</text>
 
-                <line x1="590" y1="40" x2="628" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
-                <text x="609" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">TTS</text>
+                <line x1="572" y1="40" x2="628" y2="40" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+                <text x="600" y="34" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">TTS</text>
 
                 <rect x="630" y="20" width="60" height="40" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
                 <text x="660" y="44" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1D9E75">Output</text>
@@ -1131,55 +1131,56 @@
 
         <!-- Convergence diagram -->
         <div class="adapter-diagram">
-            <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;">
-                <!-- Browser box -->
+            <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;">
+                <!-- Browser box: center y=70 -->
                 <rect x="20" y="30" width="140" height="80" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
                 <text x="90" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1D9E75">Browser</text>
                 <text x="90" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">Opus 48kHz</text>
                 <text x="90" y="97" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">WebRTC + AEC + NS</text>
 
-                <!-- Phone box -->
+                <!-- Phone box: center y=230 -->
                 <rect x="20" y="190" width="140" height="80" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
                 <text x="90" y="222" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#D85A30">Phone / PSTN</text>
                 <text x="90" y="240" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#4b5563">G.711 8kHz</text>
                 <text x="90" y="257" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">via Twilio/Telnyx WSS</text>
 
-                <!-- Thin adapter -->
-                <rect x="220" y="48" width="130" height="44" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="5,3"/>
-                <text x="285" y="66" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#534AB7">Adapter mỏng</text>
-                <text x="285" y="82" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Opus decode · downsample 48→16</text>
+                <!-- Thin adapter: x=220, y=44, w=170, h=54, right edge=390, center=(305,71) -->
+                <rect x="220" y="44" width="170" height="54" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="305" y="66" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#534AB7">Adapter mỏng</text>
+                <text x="305" y="83" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">Opus decode · downsample 48→16</text>
 
-                <!-- Thick adapter -->
-                <rect x="220" y="196" width="130" height="68" rx="8" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5" stroke-dasharray="5,3"/>
-                <text x="285" y="218" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#E06C00">Adapter dày</text>
-                <text x="285" y="234" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">G.711 decode · upsample 8→16</text>
-                <text x="285" y="249" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">VAD · barge-in · echo suppress</text>
-                <text x="285" y="264" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">downsample 24→8 · G.711 encode</text>
+                <!-- Thick adapter: x=220, y=188, w=170, h=92, right edge=390, center=(305,234) -->
+                <rect x="220" y="188" width="170" height="92" rx="8" fill="#FFF3E0" stroke="#E06C00" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="305" y="210" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#E06C00">Adapter dày</text>
+                <text x="305" y="226" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">G.711 decode · upsample 8→16</text>
+                <text x="305" y="241" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">VAD · barge-in · echo suppress</text>
+                <text x="305" y="256" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#888780">downsample 24→8 · G.711 encode</text>
 
-                <!-- AI Core -->
-                <rect x="420" y="80" width="180" height="140" rx="16" fill="#534AB7"/>
-                <text x="510" y="118" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="800" fill="white">AI Core</text>
-                <text x="510" y="140" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 16kHz in</text>
-                <text x="510" y="158" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 24kHz out</text>
-                <line x1="460" y1="170" x2="560" y2="170" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
-                <text x="510" y="184" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session State</text>
-                <text x="510" y="198" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Persona · Tools · History</text>
+                <!-- AI Core: x=450, y=80, w=180, h=140, center=(540,150) -->
+                <rect x="450" y="80" width="180" height="140" rx="16" fill="#534AB7"/>
+                <text x="540" y="118" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="800" fill="white">AI Core</text>
+                <text x="540" y="140" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 16kHz in</text>
+                <text x="540" y="158" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">PCM 24kHz out</text>
+                <line x1="490" y1="170" x2="590" y2="170" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                <text x="540" y="184" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Session State</text>
+                <text x="540" y="198" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Persona · Tools · History</text>
 
-                <!-- Arrows -->
-                <line x1="160" y1="70" x2="217" y2="70" stroke="#1D9E75" stroke-width="2" marker-end="url(#ag)"/>
-                <line x1="160" y1="230" x2="217" y2="230" stroke="#D85A30" stroke-width="2" marker-end="url(#ar)"/>
-                <path d="M 350 70 Q 395 70 395 150 L 418 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
-                <path d="M 350 230 Q 395 230 395 150 L 418 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
+                <!-- Arrows: browser/phone → adapters -->
+                <line x1="160" y1="70" x2="218" y2="70" stroke="#1D9E75" stroke-width="2" marker-end="url(#ag)"/>
+                <line x1="160" y1="230" x2="218" y2="230" stroke="#D85A30" stroke-width="2" marker-end="url(#ar)"/>
+
+                <!-- Curved paths: adapters right edge (x=390) → AI Core left edge (x=450) -->
+                <path d="M 390 71 Q 420 71 420 150 L 448 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
+                <path d="M 390 234 Q 420 234 420 150 L 448 150" stroke="#534AB7" stroke-width="2" fill="none" marker-end="url(#ap)"/>
 
                 <!-- Labels under adapters -->
-                <text x="285" y="120" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#1D9E75" font-weight="600">pass-through ≈</text>
-                <text x="280" y="280" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#E06C00" font-weight="600">phức tạp hơn nhiều</text>
+                <text x="305" y="114" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#1D9E75" font-weight="600">pass-through ≈</text>
+                <text x="305" y="297" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#E06C00" font-weight="600">phức tạp hơn nhiều</text>
 
-                <!-- Shared label -->
-                <text x="600" y="48" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Dùng chung:</text>
-                <text x="600" y="63" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Session · Persona</text>
-                <text x="600" y="76" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Analytics · PII masking</text>
-                <line x1="510" y1="220" x2="510" y2="238" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <!-- Shared label (right of AI Core) -->
+                <text x="648" y="48" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Dùng chung:</text>
+                <text x="648" y="63" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Session · Persona</text>
+                <text x="648" y="76" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888780">Analytics · PII masking</text>
 
                 <defs>
                     <marker id="ag" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
