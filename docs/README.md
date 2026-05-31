@@ -17,7 +17,7 @@ Thư mục này chứa các tài liệu hệ thống hoá về AI.
 - [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](./claude-personal-preferences/claude-personal-preferences-visual.html)
 
 ### 🔐 AI Agent Security
-- [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](./ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](./ai-bash-commands-guide/cheatsheet/cheatsheet.html)
+- [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/cheatsheet/cheatsheet.html)
 
 ---
 
