@@ -21,6 +21,9 @@ Mục tiêu:
 ### ⚙️ Claude Configuration
 - [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./docs/claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](./docs/claude-personal-preferences/claude-personal-preferences-visual.html)
 
+### 🔐 AI Agent Security
+- [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./docs/ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](./docs/ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](./docs/ai-bash-commands-guide/cheatsheet/cheatsheet.html)
+
 ### 🛠️ Engineering & Build
 - Agent Architecture
 - RAG System
