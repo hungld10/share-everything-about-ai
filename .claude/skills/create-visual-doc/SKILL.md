@@ -189,14 +189,36 @@ Skill hỗ trợ **2 workflow** phụ thuộc vào tình huống:
    - Test lại trên 3 device size (mobile, tablet, desktop)
    - Commit with semantic message (e.g., `feat: enhance 02-websocket content`, `fix: escape ampersands in HTML`)
 
-4. **Cập nhật README:**
-   - Nếu file mới: Thêm entry vào `docs/README.md` theo format:
-     ```
-     | # | Bài viết | Visual | Khái niệm |
-     |---|----------|--------|----------|
-     | NN | [Tên bài](./file.md) | [🎨 Visual](./file-visual.html) | Mô tả |
-     ```
-   - Cập nhật `README.md` (root) nếu cần
+4. **Cập nhật README (BẮT BUỘC cả 2 file):**
+
+   Repo có **2 README** cần đồng bộ — KHÔNG được chỉ update 1 file:
+   - `README.md` (root) — landing page repo
+   - `docs/README.md` — TOC thư mục tài liệu
+
+   **URL pattern bắt buộc — đây là lỗi rất hay gặp:**
+
+   | Loại file | Dùng link gì |
+   |-----------|--------------|
+   | Markdown (`.md`) | **Relative path** — `./docs/foo/foo.md` |
+   | HTML visual / Cheatsheet HTML | **GitHub Pages URL** — `https://hungld10.github.io/share-everything-about-ai/docs/foo/foo-visual.html` |
+   | Cheatsheet `.md`/`.txt` | Relative path |
+
+   ⚠️ **Tại sao:** Relative `.html` paths trên github.com sẽ render **raw HTML source code**, không phải trang đã render. Phải dùng GitHub Pages URL để link mở đúng trang visual.
+
+   **Format chuẩn 1 entry:**
+
+   ```markdown
+   ### 🔖 Tên section
+   - [Tên bài](./docs/foo/foo.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/foo/foo-visual.html) · [📥 Cheatsheet](https://hungld10.github.io/share-everything-about-ai/docs/foo/cheatsheet/cheatsheet.html)
+   ```
+
+   Trong `docs/README.md`, prefix `./docs/` được bỏ (vì đang ở trong `docs/` rồi):
+
+   ```markdown
+   - [Tên bài](./foo/foo.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/foo/foo-visual.html) · ...
+   ```
+
+   GitHub Pages URL luôn full path từ `https://hungld10.github.io/share-everything-about-ai/docs/...` bất kể đang ở file README nào.
 
 5. **Đặt tên file** (nếu là file mới):
    - Markdown: `docs/<topic-folder>/<topic-name>.md`
@@ -254,3 +276,13 @@ Skill hỗ trợ **2 workflow** phụ thuộc vào tình huống:
   - `enhance: improve latency discussion with production examples`
   - `fix: escape ampersands in HTML for W3C validation`
   - `refactor: remove scope creep from article 02, trim to 276 lines`
+
+### Bước 4 — Link URL pattern ⚠️ (Lỗi đã xảy ra nhiều lần)
+
+- **Quên 1 trong 2 README:** Skill ban đầu chỉ ghi "cập nhật `docs/README.md`, root README nếu cần" — kết quả thực tế là `README.md` ở root bị bỏ sót. **Luôn update CẢ 2 file** trong cùng commit.
+- **Relative path cho `.html` = LINK SAI:** Click vào `./docs/foo/foo-visual.html` trên github.com sẽ render raw source code, người dùng thấy code HTML không phải trang visual. **Bắt buộc dùng full GitHub Pages URL** `https://hungld10.github.io/share-everything-about-ai/docs/foo/foo-visual.html` cho mọi link HTML.
+- **Mixed pattern:** `.md` dùng relative, `.html` dùng absolute GH Pages URL — đây là pattern chuẩn của repo này, không phải bug. Lý do: github.com render `.md` đẹp nên relative tốt; còn `.html` thì github.com show raw, github.io mới render.
+- **Quick check sau khi thêm entry README:**
+  - Mở README trên github.com → click thử Visual link → có hiện trang đã render không?
+  - Click thử Cheatsheet link → có thấy nút "🖨️ In / Lưu PDF" không?
+  - Nếu thấy raw HTML code → URL đang sai pattern.
