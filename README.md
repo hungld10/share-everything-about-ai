@@ -13,13 +13,13 @@ Mục tiêu:
 
 ### 🧠 AI System & Framework
 - [Voice AI System Architecture](./docs/voice-ai-architecture/README.md) — Production challenges, 4 AI pipeline architectures, audio engineering
-- [Skill System](./docs/skill-system/skill-system.md) · [🎨 Visual](./docs/skill-system/skill-system-visual.html)
-- [Claude Code Agent Skills](./docs/claude-code-skills-huong-dan-truc-quan.html)
+- [Skill System](./docs/skill-system/skill-system.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/skill-system/skill-system-visual.html)
+- [Claude Code Agent Skills](https://hungld10.github.io/share-everything-about-ai/docs/claude-code-skills-huong-dan-truc-quan.html)
 - AI Workflow Design
 - Prompt vs Skill vs Agent
 
 ### ⚙️ Claude Configuration
-- [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./docs/claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](./docs/claude-personal-preferences/claude-personal-preferences-visual.html)
+- [Claude Personal Preferences — Cấu hình hành vi AI theo ý muốn](./docs/claude-personal-preferences/claude-personal-preferences.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/claude-personal-preferences/claude-personal-preferences-visual.html)
 
 ### 🔐 AI Agent Security
 - [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./docs/ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/cheatsheet/cheatsheet.html)
