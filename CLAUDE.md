@@ -60,3 +60,23 @@ Khi thêm bài mới, **luôn cập nhật cả 2 file** với cùng format link
 - Mọi bài viết ghi tác giả: **Hưng 2x**
 - HTML visual + cheatsheet có footer: `Tổng hợp & biên soạn bởi Hưng 2x · <tháng>/<năm>`
 - Luôn viết bằng **tiếng Việt** (đầy đủ dấu)
+
+### Favicon, Logo & Brand assets
+
+Toàn bộ tài sản brand đặt ở thư mục **`/icons/` tại root repo** (đồng bộ với trang chủ [hungledn.com](https://hungledn.com/)):
+
+- Favicon: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192/512.png`, `mstile-150x150.png`, `safari-pinned-tab.svg`
+- Cấu hình: `site.webmanifest`, `browserconfig.xml` (dùng path tương đối bare → resolve trong `icons/`)
+- Logo: `logo.png` (xanh sáng), `logo-dark.png` (xanh đậm) — 1200×1200
+
+**Quy tắc nhúng trong file HTML:**
+
+| Mục đích | Path | Tại sao |
+|----------|------|---------|
+| Favicon / manifest / mask-icon | **Relative theo độ sâu** — `../icons/`, `../../icons/`, `../../../icons/` | Repo chạy GH Pages ở **subpath** `/share-everything-about-ai/` → path tuyệt đối `/icons/` sẽ trỏ sai. Relative chạy đúng cả GH Pages, local, lẫn khi đổi tên repo |
+| `og:image` / `twitter:image` | **URL tuyệt đối** — `https://hungld10.github.io/share-everything-about-ai/icons/logo.png` | Social scraper (FB/X/Zalo) bắt buộc URL tuyệt đối |
+| Logo on-page (góc hero) | **Relative** — `<a>` + `<img>` inline-style `position:absolute` ở đầu `<body>` | Neo vào góc trên-trái trang, không phụ thuộc CSS hero |
+
+- `twitter:card` = **`summary`** (không phải `summary_large_image`) vì logo là ảnh **vuông** → card vuông hiển thị trọn, không bị crop.
+- Màu brand chrome: `theme-color` = `#0d1117` (nền dark docs), `TileColor`/`mask-icon color` = `#2f6b1f` (xanh logo).
+- **Bài mới:** copy `<head>` từ `.claude/skills/create-visual-doc/examples/template-skeleton.html` (đã có sẵn đủ block này) và điền `og:title`/`og:url`/`og:description` cho đúng bài.

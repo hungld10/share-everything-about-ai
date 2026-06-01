@@ -141,8 +141,12 @@ Skill hỗ trợ **2 workflow** phụ thuộc vào tình huống:
 
 **Mục tiêu:** Chuyển Markdown thành trang HTML đẹp, dễ đọc, hấp dẫn người mới.
 
-1. **Sử dụng design system** của repo (xem `references/design-system.css`).
-2. **Bắt buộc có các thành phần trực quan:**
+1. **Bắt đầu từ `examples/template-skeleton.html`** — đã có sẵn `<head>` chuẩn: bộ **favicon + logo brand** và **og/twitter meta**.
+   - Favicon dùng file thật ở thư mục `/icons/` tại **root repo** (đồng bộ với trang chủ [hungledn.com](https://hungledn.com/)), **không** dùng favicon emoji/SVG nhúng.
+   - Đường dẫn favicon là **relative theo độ sâu** của file HTML tới root repo. Template để sẵn prefix `../../` (hợp cho bài ở `docs/<chủ-đề>/<file>.html`). Nếu đặt file ở độ sâu khác, đếm lại số `../` cho khớp.
+   - Điền `og:title` = tiêu đề bài, `og:description` = mô tả ngắn, `og:url` = GitHub Pages URL của chính file đó. `og:image` giữ nguyên `logo.png` (URL tuyệt đối — social scraper yêu cầu).
+2. **Sử dụng design system** của repo (xem `references/design-system.css`).
+3. **Bắt buộc có các thành phần trực quan:**
    - **Hero section:** Tiêu đề + subtitle + 3–4 thống kê nổi bật
    - **SVG diagrams:** Sơ đồ kiến trúc, flow, so sánh — inline SVG
    - **Card grids:** Phân loại, danh mục dùng grid cards + icon + ví dụ
@@ -152,12 +156,12 @@ Skill hỗ trợ **2 workflow** phụ thuộc vào tình huống:
    - **Code blocks:** Ví dụ code với syntax highlighting (`code-key`, `code-str`, `code-comment`, `code-punct`)
    - **Comparison tables:** Bảng so sánh nếu cần
    - **Resource cards:** Link tài nguyên tham khảo
-3. **Nguyên tắc thiết kế:**
+4. **Nguyên tắc thiết kế:**
    - Hướng đến người mới — ngôn ngữ dễ hiểu, ví dụ cụ thể
    - Tạo hứng thú — mỗi section ≥1 thành phần trực quan
    - Responsive — hoạt động tốt trên mobile
    - Tiếng Việt đầy đủ dấu
-4. **Footer:** Luôn ghi `Tổng hợp & biên soạn bởi Hưng 2x` kèm nguồn tham khảo và tháng/năm cập nhật.
+5. **Footer:** Luôn ghi `Tổng hợp & biên soạn bởi Hưng 2x` kèm nguồn tham khảo và tháng/năm cập nhật.
 
 **Output:** Updated `.md` file (với hình ảnh) + created/updated `.html` file + image assets (nếu cần)
 
