@@ -24,6 +24,9 @@ Mục tiêu:
 ### 🔐 AI Agent Security
 - [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./docs/ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/cheatsheet/cheatsheet.html)
 
+### 🧭 Mindset & Sự nghiệp
+- [Sự Bất Lực Tập Nhiễm giữa thời đại AI — Dành cho lập trình viên](./docs/learned-helplessness-ai-era/learned-helplessness-ai-era.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/learned-helplessness-ai-era/learned-helplessness-ai-era-visual.html)
+
 ### 🛠️ Engineering & Build
 - Agent Architecture
 - RAG System

@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="apple-touch-icon" sizes="180x180" href="../../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16x16.png">
+<link rel="icon" href="../../icons/favicon.ico" sizes="any">
+<link rel="manifest" href="../../icons/site.webmanifest">
+<link rel="mask-icon" href="../../icons/safari-pinned-tab.svg" color="#2f6b1f">
+<meta name="theme-color" content="#0d1117">
+<meta name="msapplication-TileColor" content="#2f6b1f">
+<meta name="msapplication-config" content="../../icons/browserconfig.xml">
+<meta name="author" content="Hưng 2x">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Share Everything About AI">
+<meta property="og:title" content="Sự Bất Lực Tập Nhiễm giữa thời đại AI — Dành cho lập trình viên">
+<meta property="og:description" content="Vì sao lập trình viên dễ rơi vào 'learned helplessness' khi dùng AI — và cách dùng AI như đòn bẩy để học nhanh hơn, làm chủ công nghệ thay vì bị bào mòn kỹ năng.">
+<meta property="og:url" content="https://hungld10.github.io/share-everything-about-ai/docs/learned-helplessness-ai-era/learned-helplessness-ai-era-visual.html">
+<meta property="og:image" content="https://hungld10.github.io/share-everything-about-ai/icons/logo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sự Bất Lực Tập Nhiễm giữa thời đại AI — Dành cho lập trình viên">
+<meta name="twitter:image" content="https://hungld10.github.io/share-everything-about-ai/icons/logo.png">
+<title>Sự Bất Lực Tập Nhiễm giữa thời đại AI — Dành cho lập trình viên</title>
+<meta name="description" content="Vì sao lập trình viên dễ rơi vào 'learned helplessness' khi dùng AI — và cách dùng AI như đòn bẩy để học nhanh hơn, làm chủ công nghệ thay vì bị bào mòn kỹ năng.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2330;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+
+    --green: #3fb950;
+    --green-dim: #1a3a24;
+    --green-border: #238636;
+
+    --yellow: #d29922;
+    --yellow-dim: #3a2e0a;
+    --yellow-border: #9e6a03;
+
+    --red: #f85149;
+    --red-dim: #3a1212;
+    --red-border: #da3633;
+
+    --blue: #58a6ff;
+    --blue-dim: #0d2847;
+    --purple: #bc8cff;
+    --purple-dim: #2a1a3e;
+    --cyan: #39d353;
+
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-body: 'Sora', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(188,140,255,.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 85% 100%, rgba(88,166,255,.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--purple-dim);
+    border: 1px solid #5b3a8a;
+    color: var(--purple);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+    margin-bottom: 16px;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+  .hero h1 em { font-style: normal; color: var(--purple); }
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 15.5px;
+    max-width: 600px;
+    margin: 0 auto 36px;
+    position: relative;
+  }
+  .hero-quote {
+    max-width: 560px;
+    margin: 0 auto;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 14px;
+    position: relative;
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    max-width: 760px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .stat {
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-width: 150px;
+    flex: 1;
+  }
+  .stat .num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .stat.red .num { color: var(--red); }
+  .stat.yellow .num { color: var(--yellow); }
+  .stat.purple .num { color: var(--purple); }
+  .stat.blue .num { color: var(--blue); }
+  .stat .label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 44px 0 8px;
+  }
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc ol li {
+    counter-increment: toc;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .toc ol li:last-child { border-bottom: none; }
+  .toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    width: 22px;
+  }
+  .toc a { color: var(--text-muted); text-decoration: none; transition: color .15s; }
+  .toc a:hover { color: var(--blue); }
+
+  /* ── SECTIONS ── */
+  .section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--purple);
+    flex-shrink: 0;
+  }
+  h2 {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.3;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 28px 0 12px;
+    color: var(--text);
+  }
+  p { color: var(--text-muted); margin-bottom: 14px; }
+  strong { color: var(--text); font-weight: 600; }
+  em.hl { font-style: normal; color: var(--purple); font-weight: 600; }
+  a.inline { color: var(--blue); text-decoration: none; }
+  a.inline:hover { text-decoration: underline; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { color: var(--text-muted); line-height: 1.7; }
+  .callout-body strong { color: var(--text); }
+  .callout.info { background: rgba(88,166,255,.07); border: 1px solid rgba(88,166,255,.2); }
+  .callout.warn { background: rgba(210,153,34,.07); border: 1px solid rgba(210,153,34,.25); }
+  .callout.danger { background: rgba(248,81,73,.07); border: 1px solid rgba(248,81,73,.2); }
+  .callout.insight { background: rgba(188,140,255,.07); border: 1px solid rgba(188,140,255,.2); }
+  .callout.success { background: rgba(63,185,80,.07); border: 1px solid rgba(63,185,80,.25); }
+
+  /* ── DIAGRAM ── */
+  .diagram-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 20px 16px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+  .diagram-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .diagram-caption {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    font-family: var(--font-mono);
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 22px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .data-table th {
+    background: var(--bg3);
+    padding: 11px 16px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(48,54,61,.5);
+    vertical-align: top;
+    color: var(--text-muted);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,.02); }
+  .data-table td strong { color: var(--text); }
+  .hl-red { color: var(--red) !important; font-weight: 600; }
+  .hl-green { color: var(--green) !important; font-weight: 600; }
+  .hl-yellow { color: var(--yellow) !important; font-weight: 600; }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .info-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color .2s, transform .2s;
+  }
+  .info-card:hover { border-color: rgba(188,140,255,.4); transform: translateY(-2px); }
+  .info-card .ic-icon { font-size: 24px; margin-bottom: 10px; }
+  .info-card .ic-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--text); }
+  .info-card .ic-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+  .info-card.accent-red { border-top: 3px solid var(--red); }
+  .info-card.accent-yellow { border-top: 3px solid var(--yellow); }
+  .info-card.accent-purple { border-top: 3px solid var(--purple); }
+
+  /* ── STAT-HIGHLIGHT CARDS (evidence) ── */
+  .ev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .ev-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .ev-num { font-family: var(--font-mono); font-size: 28px; font-weight: 700; line-height: 1; }
+  .ev-card.red .ev-num { color: var(--red); }
+  .ev-card.yellow .ev-num { color: var(--yellow); }
+  .ev-card.purple .ev-num { color: var(--purple); }
+  .ev-card.blue .ev-num { color: var(--blue); }
+  .ev-card.green .ev-num { color: var(--green); }
+  .ev-label { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
+  .ev-src { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); margin-top: 8px; }
+
+  /* ── SIGN CHECKLIST ── */
+  .sign-list { list-style: none; margin: 16px 0; }
+  .sign-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(48,54,61,.5);
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .sign-list li:last-child { border-bottom: none; }
+  .sign-box {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid var(--red-border);
+    background: var(--red-dim);
+    color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* ── GOOD / BAD ── */
+  .good-bad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .gb {
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-size: 13.5px;
+  }
+  .gb .gb-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gb.bad { background: var(--red-dim); border: 1px solid var(--red-border); }
+  .gb.bad .gb-label { color: var(--red); }
+  .gb.good { background: var(--green-dim); border: 1px solid var(--green-border); }
+  .gb.good .gb-label { color: var(--green); }
+  .gb p { color: var(--text-muted); margin: 0; }
+  .gb code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: rgba(0,0,0,.3); padding: 1px 6px; border-radius: 4px; color: var(--text);
+  }
+
+  /* ── STEPS ── */
+  .steps { margin: 22px 0; }
+  .step-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(48,54,61,.5);
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-n {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--purple-dim); border: 1px solid #5b3a8a; color: var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-body p { font-size: 13.5px; margin: 0; }
+
+  /* ── LAYER STACK (roadmap) ── */
+  .layers { margin: 24px 0; display: flex; flex-direction: column; gap: 12px; }
+  .layer {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--purple);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .layer.l1 { border-left-color: var(--green); }
+  .layer.l2 { border-left-color: var(--blue); }
+  .layer.l3 { border-left-color: var(--purple); }
+  .layer.l4 { border-left-color: var(--yellow); }
+  .layer-badge {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text-muted);
+  }
+  .layer-body h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .layer-body p { font-size: 13.5px; margin: 0; }
+  .layer-body .tag { color: var(--text-dim); font-size: 12.5px; font-style: italic; }
+
+  /* ── CODE / PROMPT BLOCK ── */
+  .code-block {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  .code-comment { color: var(--text-dim); }
+  .code-prompt { color: var(--purple); }
+  .code-good { color: var(--green); }
+
+  /* ── RESOURCES ── */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin: 22px 0;
+  }
+  .resource-card {
+    display: block;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: border-color .2s, transform .2s;
+  }
+  .resource-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .r-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+  .r-url { font-family: var(--font-mono); font-size: 11px; color: var(--blue); word-break: break-all; }
+
+  /* ── DOWNLOAD/READ CTA cards ── */
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 22px 0;
+  }
+  .cta-card {
+    display: block;
+    background: var(--bg2);
+    border: 1px solid var(--green-border);
+    border-radius: 10px;
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .2s;
+  }
+  .cta-card:hover { transform: translateY(-2px); }
+  .cta-icon { font-size: 22px; margin-bottom: 10px; }
+  .cta-title { font-weight: 600; font-size: 14px; color: var(--green); margin-bottom: 4px; }
+  .cta-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  .post-footer {
+    margin: 56px 0 0;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .post-footer a { color: var(--blue); text-decoration: none; }
+  .post-footer a:hover { text-decoration: underline; }
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .meta-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg2); border: 1px solid var(--border);
+    padding: 4px 12px; border-radius: 20px; color: var(--text-dim);
+  }
+
+  /* ── IMAGE FIGURE (ảnh AI raster + fallback) ── */
+  .img-fig { margin: 24px 0; }
+  .img-fig img {
+    display: block;
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .img-fig .img-ph { display: none; }
+  .img-fig.missing img { display: none; }
+  .img-fig.missing .img-ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    min-height: 200px;
+    padding: 28px 24px;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 0%, rgba(188,140,255,.06), transparent 70%),
+      var(--bg2);
+  }
+  .img-ph-icon { font-size: 32px; opacity: .85; }
+  .img-ph-title { font-family: var(--font-mono); font-size: 12px; color: var(--purple); }
+  .img-ph-tag {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--bg3); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .img-ph-desc { font-size: 12.5px; color: var(--text-muted); max-width: 460px; line-height: 1.6; }
+  .img-fig figcaption {
+    text-align: center; font-size: 12.5px; color: var(--text-dim);
+    margin-top: 10px; font-style: italic;
+  }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero { padding: 44px 16px 36px; }
+    .section { padding: 36px 0; }
+    .good-bad { grid-template-columns: 1fr; }
+    .stat { min-width: 120px; }
+    .stat .num { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<a href="https://hungledn.com/" target="_blank" rel="noopener" aria-label="Hưng Lê — hungledn.com" data-brand-logo style="position:absolute;top:16px;left:18px;z-index:50;line-height:0;"><img src="../../icons/logo.png" alt="Logo Hưng Lê" width="46" height="46" style="width:46px;height:46px;border-radius:11px;box-shadow:0 2px 10px rgba(0,0,0,.35);display:block;"></a>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Tư duy &amp; Sự nghiệp · AI Era</div>
+  <h1>Sự Bất Lực Tập Nhiễm<br>giữa thời đại <em>AI</em></h1>
+  <p class="hero-sub">Vì sao lập trình viên là nhóm dễ "học cách bỏ cuộc" nhất khi dùng AI — và cách lật ngược thế cờ để dùng AI như đòn bẩy học hỏi, làm chủ công nghệ.</p>
+
+  <div class="stats">
+    <div class="stat red">
+      <span class="num">83%</span>
+      <span class="label">người dùng ChatGPT không nhớ nổi 1 câu bài mình vừa viết (MIT)</span>
+    </div>
+    <div class="stat yellow">
+      <span class="num">+19%</span>
+      <span class="label">dev kỳ cựu thực tế <em>chậm hơn</em> khi dùng AI — dù tưởng nhanh hơn (METR)</span>
+    </div>
+    <div class="stat purple">
+      <span class="num">−76%</span>
+      <span class="label">câu hỏi mới trên Stack Overflow kể từ khi ChatGPT ra đời</span>
+    </div>
+    <div class="stat blue">
+      <span class="num">90%</span>
+      <span class="label">lập trình viên đã dùng AI trong công việc (DORA 2025)</span>
+    </div>
+  </div>
+
+  <p class="hero-quote">"AI không làm bạn giỏi hơn hay dở đi. Nó khuếch đại con người bạn đang là."</p>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- TOC -->
+  <nav class="toc reveal">
+    <div class="toc-title">Mục lục</div>
+    <ol>
+      <li><a href="#s1">"Sự bất lực tập nhiễm" là gì?</a></li>
+      <li><a href="#s2">Vì sao dev là nhóm rủi ro cao nhất</a></li>
+      <li><a href="#s3">Bằng chứng: AI đang làm gì với não &amp; kỹ năng của bạn</a></li>
+      <li><a href="#s4">Ba con đường rơi vào bất lực tập nhiễm</a></li>
+      <li><a href="#s5">Dấu hiệu nhận biết bạn đang "tập nhiễm"</a></li>
+      <li><a href="#s6">Lật ngược thế cờ: từ ủy thác sang làm chủ</a></li>
+      <li><a href="#s7">Lộ trình học AI liên tục cho dev</a></li>
+      <li><a href="#s8">Kết luận</a></li>
+    </ol>
+  </nav>
+
+  <!-- AI IMAGE 1: hero concept -->
+  <figure class="img-fig reveal">
+    <img src="./images/fig-01-hero-breaking-free.png" alt="Lập trình viên thoát khỏi chiếc lồng ánh sáng, vươn tới ý tưởng — ẩn dụ giành lại quyền làm chủ giữa thời đại AI">
+    <div class="img-ph">
+      <div class="img-ph-icon">🖼️</div>
+      <span class="img-ph-tag">Ảnh AI · chưa tạo</span>
+      <div class="img-ph-title">images/fig-01-hero-breaking-free.png</div>
+      <div class="img-ph-desc">Lập trình viên bên bàn làm việc, một "chiếc lồng" ánh sáng đang vỡ ra khi anh vươn tay tới ý tưởng dạng neural-network. Ẩn dụ: giành lại quyền làm chủ. Prompt đầy đủ trong <code>images/PROMPTS.md</code>.</div>
+    </div>
+    <figcaption>Thời đại AI: bạn có thể "nằm im trong lồng" — hoặc bước qua rào để làm chủ.</figcaption>
+  </figure>
+
+  <!-- SECTION 1 -->
+  <section class="section reveal" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>"Sự bất lực tập nhiễm" là gì?</h2>
+    </div>
+
+    <p>Theo Hiệp hội Tâm lý học Hoa Kỳ (APA), <strong>sự bất lực tập nhiễm</strong> (<em class="hl">learned helplessness</em>) xảy ra khi một cá nhân liên tục đối mặt với tình huống tiêu cực nằm ngoài tầm kiểm soát — đến mức họ <strong>ngừng cố gắng thoát ra, ngay cả khi cơ hội thoát đã ở ngay trước mặt</strong>.</p>
+
+    <p>Khái niệm bắt nguồn từ thí nghiệm năm 1967 của <strong>Martin Seligman</strong> và <strong>Steven F. Maier</strong> — thực hiện <strong>trên chó</strong>. Họ chia chó thành hai nhóm, cho cả hai nhận các cú sốc điện <em>giống hệt nhau</em>, chỉ khác ở một điểm: <strong>có kiểm soát được cú sốc hay không</strong>. Sau đó cả hai được đưa vào "shuttle box" — chiếc lồng có rào chắn rất thấp, chỉ cần bước qua là thoát:</p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" font-family="Sora, sans-serif" aria-label="Minh hoạ thí nghiệm chó của Seligman: nhóm mất kiểm soát nằm im, nhóm kiểm soát nhảy qua rào thoát">
+        <defs>
+          <linearGradient id="floorRed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#3a1212"/><stop offset="1" stop-color="#1a0c0c"/>
+          </linearGradient>
+          <linearGradient id="floorGreen" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0d1117"/><stop offset="1" stop-color="#10240f"/>
+          </linearGradient>
+          <radialGradient id="safeGlow" cx="50%" cy="60%" r="60%">
+            <stop offset="0" stop-color="#3fb950" stop-opacity="0.18"/><stop offset="1" stop-color="#3fb950" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ===== PANEL A — NHÓM 1 (bất lực) ===== -->
+        <rect x="14" y="58" width="338" height="270" rx="16" fill="#161b22" stroke="#30363d"/>
+        <!-- badge + label -->
+        <rect x="32" y="78" width="74" height="24" rx="12" fill="#3a1212" stroke="#da3633"/>
+        <text x="69" y="94" fill="#f85149" font-size="12" font-weight="700" text-anchor="middle">NHÓM 1</text>
+        <text x="120" y="88" fill="#e6edf3" font-size="12.5" font-weight="700">Chó bị sốc — KHÔNG tắt được</text>
+        <text x="120" y="105" fill="#8b949e" font-size="11.5">(mất kiểm soát hoàn toàn)</text>
+
+        <!-- shuttle box A -->
+        <rect x="34" y="150" width="298" height="120" rx="10" fill="#0d1117" stroke="#30363d"/>
+        <!-- electrified left floor -->
+        <rect x="40" y="236" width="140" height="28" rx="5" fill="url(#floorRed)"/>
+        <polyline points="52,232 60,222 66,230 76,218 84,228" fill="none" stroke="#d29922" stroke-width="2" stroke-linejoin="round"/>
+        <polyline points="100,232 108,222 114,230 124,218 132,228" fill="none" stroke="#d29922" stroke-width="2" stroke-linejoin="round"/>
+        <text x="110" y="258" fill="#f85149" font-size="9.5" text-anchor="middle" font-family="JetBrains Mono, monospace">sàn điện ⚡</text>
+        <!-- low barrier -->
+        <rect x="226" y="222" width="12" height="42" rx="3" fill="#30363d" stroke="#484f58"/>
+        <text x="276" y="200" fill="#6e7681" font-size="9.5" text-anchor="middle" font-family="JetBrains Mono, monospace">rào THẤP</text>
+        <line x1="276" y1="205" x2="240" y2="226" stroke="#6e7681" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- LYING / DEFEATED DOG -->
+        <g>
+          <ellipse cx="118" cy="232" rx="42" ry="14" fill="#d9b382"/>
+          <ellipse cx="150" cy="240" rx="13" ry="6" fill="#cda571"/>
+          <ellipse cx="80" cy="240" rx="16" ry="6" fill="#cda571"/>
+          <circle cx="82" cy="222" r="15" fill="#d9b382"/>
+          <ellipse cx="66" cy="228" rx="11" ry="8" fill="#e3c595"/>
+          <circle cx="56" cy="228" r="3" fill="#2a2118"/>
+          <path d="M86,210 q14,2 12,22 q-8,2 -12,-6 Z" fill="#b3895a"/>
+          <path d="M74,220 q4,3 9,1" fill="none" stroke="#5b4a33" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M156,228 q12,-2 14,8" fill="none" stroke="#cda571" stroke-width="6" stroke-linecap="round"/>
+          <text x="100" y="200" fill="#6e7681" font-size="13" text-anchor="middle">. . .</text>
+        </g>
+
+        <text x="183" y="296" fill="#f85149" font-size="12.5" font-weight="700" text-anchor="middle">Nằm im, KHÔNG cố thoát</text>
+        <text x="183" y="314" fill="#8b949e" font-size="11" text-anchor="middle">→ "có cố cũng vô ích" = bất lực tập nhiễm</text>
+
+        <!-- ===== PANEL B — NHÓM 2 (chủ động) ===== -->
+        <rect x="368" y="58" width="338" height="270" rx="16" fill="#161b22" stroke="#30363d"/>
+        <rect x="538" y="150" width="150" height="120" rx="10" fill="url(#safeGlow)"/>
+        <rect x="386" y="78" width="74" height="24" rx="12" fill="#1a3a24" stroke="#238636"/>
+        <text x="423" y="94" fill="#3fb950" font-size="12" font-weight="700" text-anchor="middle">NHÓM 2</text>
+        <text x="474" y="88" fill="#e6edf3" font-size="12.5" font-weight="700">Chó bị sốc — CÓ thể tự tắt</text>
+        <text x="474" y="105" fill="#8b949e" font-size="11.5">(kiểm soát được tình huống)</text>
+
+        <!-- shuttle box B -->
+        <rect x="388" y="150" width="298" height="120" rx="10" fill="#0d1117" stroke="#30363d"/>
+        <rect x="394" y="236" width="140" height="28" rx="5" fill="url(#floorRed)" opacity="0.55"/>
+        <rect x="548" y="236" width="132" height="28" rx="5" fill="url(#floorGreen)"/>
+        <text x="614" y="258" fill="#3fb950" font-size="9.5" text-anchor="middle" font-family="JetBrains Mono, monospace">vùng an toàn ✓</text>
+        <!-- low barrier -->
+        <rect x="534" y="222" width="12" height="42" rx="3" fill="#30363d" stroke="#484f58"/>
+        <!-- jump arc -->
+        <path d="M496,240 Q540,170 584,240" fill="none" stroke="#3fb950" stroke-width="2" stroke-dasharray="5 5" opacity="0.8"/>
+        <path d="M580,234 l6,8 l-9,2 Z" fill="#3fb950"/>
+
+        <!-- JUMPING / ACTIVE DOG -->
+        <g transform="rotate(-16 540 200)">
+          <line x1="520" y1="208" x2="506" y2="226" stroke="#cda571" stroke-width="7" stroke-linecap="round"/>
+          <line x1="528" y1="210" x2="520" y2="230" stroke="#cda571" stroke-width="7" stroke-linecap="round"/>
+          <line x1="556" y1="208" x2="572" y2="222" stroke="#cda571" stroke-width="7" stroke-linecap="round"/>
+          <line x1="562" y1="206" x2="580" y2="216" stroke="#cda571" stroke-width="7" stroke-linecap="round"/>
+          <ellipse cx="540" cy="200" rx="40" ry="14" fill="#d9b382"/>
+          <path d="M506,198 q-12,-4 -16,-16 q10,-2 18,8 Z" fill="#cda571"/>
+          <circle cx="576" cy="190" r="15" fill="#d9b382"/>
+          <ellipse cx="590" cy="193" rx="11" ry="7" fill="#e3c595"/>
+          <circle cx="599" cy="192" r="3" fill="#2a2118"/>
+          <path d="M572,176 q-3,-14 8,-18 q5,9 -2,18 Z" fill="#b3895a"/>
+          <circle cx="580" cy="188" r="2.4" fill="#2a2118"/>
+        </g>
+
+        <text x="537" y="296" fill="#3fb950" font-size="12.5" font-weight="700" text-anchor="middle">Bước/nhảy qua rào → thoát ngay</text>
+        <text x="537" y="314" fill="#8b949e" font-size="11" text-anchor="middle">→ vẫn tin "mình thay đổi được tình huống"</text>
+      </svg>
+      <div class="diagram-caption">Hai nhóm chó nhận lượng sốc <strong style="color:#e6edf3">như nhau</strong> — khác biệt không nằm ở nỗi đau, mà ở trải nghiệm "mình có kiểm soát được hay không".</div>
+    </div>
+
+    <div class="callout insight">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">Bất lực tập nhiễm <strong>không cần một cú sốc lớn</strong>. Nó hình thành dần qua hàng trăm quyết định nhỏ mỗi ngày, khi ta chọn "buông tay" thay vì "thử thêm một lần nữa".</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="section reveal" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Vì sao lập trình viên là nhóm rủi ro cao nhất</h2>
+    </div>
+
+    <p>Nghề lập trình bản chất là <strong>giải quyết vấn đề liên tục</strong>: đọc lỗi → lần stack trace → giả thuyết → thử → sửa. Mỗi vòng lặp ấy chính là một lần não <em class="hl">"tập kiểm soát"</em> — đúng điều kiện sống còn để không rơi vào bất lực.</p>
+
+    <p>AI coding assistant đi thẳng vào trung tâm vòng lặp này. Thay vì vật lộn 20 phút với một bug, bạn paste nó vào chat và có đáp án sau 20 giây. Đó là nơi <strong>"ủy thác nhận thức" (cognitive offloading)</strong> diễn ra: ta giao phần <em>suy nghĩ</em> cho máy, giữ lại phần <em>copy-paste</em>.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">🧠</div>
+      <div class="callout-body"><strong>Ủy thác nhận thức không xấu.</strong> Con người vẫn luôn làm vậy: máy tính bỏ túi, GPS, Google. Vấn đề là <strong>ủy thác cái gì</strong>. Ủy thác phép nhân thì ổn. Ủy thác <em>khả năng tư duy và lần ra vấn đề</em> thì nguy hiểm — vì đó là năng lực lõi của nghề.</div>
+    </div>
+
+    <!-- AI IMAGE 2: cognitive offloading -->
+    <figure class="img-fig reveal">
+      <img src="./images/fig-02-cognitive-offloading.png" alt="Bộ não người nối dây sang một con chip AI, các bánh răng tư duy chảy từ não sang máy — minh hoạ ủy thác nhận thức">
+      <div class="img-ph">
+        <div class="img-ph-icon">🖼️</div>
+        <span class="img-ph-tag">Ảnh AI · chưa tạo</span>
+        <div class="img-ph-title">images/fig-02-cognitive-offloading.png</div>
+        <div class="img-ph-desc">Bộ não người nối dây phát sáng sang một con chip/robot AI; các bánh răng "tư duy" chảy từ não sang máy — não mờ dần, máy sáng lên. Prompt đầy đủ trong <code>images/PROMPTS.md</code>.</div>
+      </div>
+      <figcaption>Ủy thác nhận thức: ta giao phần "suy nghĩ" cho máy, giữ lại phần "copy-paste".</figcaption>
+    </figure>
+
+    <p>Mức phơi nhiễm của dev cao hơn hẳn nghề khác:</p>
+    <div class="card-grid">
+      <div class="info-card accent-purple">
+        <div class="ic-icon">📅</div>
+        <div class="ic-title">Tần suất cực cao</div>
+        <div class="ic-desc">67% dev dùng Copilot từ <strong>5 ngày/tuần</strong> trở lên — gần như mọi tác vụ đều có AI tham gia.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">🌐</div>
+        <div class="ic-title">Phổ cập gần tuyệt đối</div>
+        <div class="ic-desc">DORA 2025: <strong>90% dev</strong> đã dùng AI trong công việc. Không dùng AI giờ là ngoại lệ.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">⚡</div>
+        <div class="ic-title">Rào cản "buông tay" = 0</div>
+        <div class="ic-desc">AI luôn trả lời, không phán xét, không "đóng câu hỏi vì trùng lặp". Quá dễ để bỏ cuộc sớm và hỏi máy.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="section reveal" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Bằng chứng: AI đang làm gì với não &amp; kỹ năng của bạn</h2>
+    </div>
+    <p>Đây không phải lo lắng cảm tính. Một loạt nghiên cứu 2025 đã <strong>đo được</strong> hiện tượng này.</p>
+
+    <div class="ev-grid">
+      <div class="ev-card red">
+        <div class="ev-num">83%</div>
+        <div class="ev-label">người dùng ChatGPT không trích lại nổi 1 câu bài vừa viết — "cognitive debt"</div>
+        <div class="ev-src">MIT Media Lab · EEG</div>
+      </div>
+      <div class="ev-card yellow">
+        <div class="ev-num">+19%</div>
+        <div class="ev-label">thời gian hoàn thành tăng (chậm hơn) ở dev kỳ cựu khi được dùng AI</div>
+        <div class="ev-src">METR · RCT 2025</div>
+      </div>
+      <div class="ev-card purple">
+        <div class="ev-num">−90%</div>
+        <div class="ev-label">lượt post Stack Overflow so với đỉnh 2020 — hệ sinh thái học tập co lại</div>
+        <div class="ev-src">SO Data Explorer</div>
+      </div>
+      <div class="ev-card blue">
+        <div class="ev-num">30%</div>
+        <div class="ev-label">dev gần như không tin tưởng code AI sinh ra ("trust paradox")</div>
+        <div class="ev-src">DORA 2025</div>
+      </div>
+    </div>
+
+    <h3>3.1 · MIT — "Your Brain on ChatGPT"</h3>
+    <p>3 nhóm viết luận, đo não bằng EEG. Mức kết nối thần kinh giảm dần khi càng dựa vào công cụ ngoài:</p>
+    <table class="data-table">
+      <thead><tr><th>Nhóm</th><th>Kết nối thần kinh (EEG)</th><th>Nhớ lại bài vừa viết</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Chỉ dùng não</strong></td><td class="hl-green">Mạnh nhất, phân bố rộng</td><td class="hl-green">Cao</td></tr>
+        <tr><td>Dùng search engine</td><td class="hl-yellow">Trung bình</td><td>Trung bình</td></tr>
+        <tr><td><strong>Dùng LLM (ChatGPT)</strong></td><td class="hl-red">Yếu nhất</td><td class="hl-red">83% không nhớ nổi 1 câu</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">Nghiên cứu này là <strong>preprint</strong> (6/2025), chưa peer-review — đọc thận trọng. Nhưng tín hiệu rõ: <strong>outsource việc tư duy → não giảm engagement → kiến thức không đọng lại.</strong></div>
+    </div>
+
+    <h3>3.2 · Microsoft &amp; CMU (CHI 2025) — Nghịch lý của sự tự tin</h3>
+    <p>Khảo sát <strong>319 knowledge worker</strong>, 936 tình huống dùng AI thực tế:</p>
+    <div class="good-bad">
+      <div class="gb bad">
+        <div class="gb-label">📉 Tin AI nhiều</div>
+        <p>Càng <strong>tin vào AI</strong> → càng <strong>ít tư duy phản biện</strong>, ít kiểm chứng. Vai trò co lại thành "người duyệt &amp; sửa lỗi của máy".</p>
+      </div>
+      <div class="gb good">
+        <div class="gb-label">📈 Tin chính mình</div>
+        <p>Càng <strong>tự tin vào năng lực bản thân</strong> → càng tư duy phản biện nhiều hơn (dù tốn sức hơn). Giữ vai trò "người tạo giải pháp".</p>
+      </div>
+    </div>
+
+    <h3>3.3 · METR — AI có thể làm bạn <em class="hl">chậm</em> hơn mà bạn không biết</h3>
+    <p>RCT trên 16 dev open-source kỳ cựu (TB 5 năm trên chính codebase đó), 246 task chia ngẫu nhiên:</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" font-family="Sora, sans-serif">
+        <text x="20" y="30" fill="#8b949e" font-size="13">Dev dự đoán TRƯỚC khi làm</text>
+        <rect x="300" y="16" width="120" height="22" rx="5" fill="#1a3a24" stroke="#238636"/>
+        <text x="360" y="32" fill="#3fb950" font-size="13" font-weight="700" text-anchor="middle">−24% (nhanh)</text>
+
+        <text x="20" y="80" fill="#8b949e" font-size="13">Dev ước lượng SAU khi làm xong</text>
+        <rect x="300" y="66" width="120" height="22" rx="5" fill="#1a3a24" stroke="#238636"/>
+        <text x="360" y="82" fill="#3fb950" font-size="13" font-weight="700" text-anchor="middle">−20% (nhanh)</text>
+
+        <line x1="20" y1="112" x2="660" y2="112" stroke="#30363d" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <text x="20" y="148" fill="#e6edf3" font-size="13" font-weight="700">ĐO ĐẠC THỰC TẾ</text>
+        <rect x="300" y="132" width="160" height="26" rx="5" fill="#3a1212" stroke="#da3633"/>
+        <text x="380" y="150" fill="#f85149" font-size="14" font-weight="700" text-anchor="middle">+19% (CHẬM hơn!)</text>
+
+        <text x="20" y="190" fill="#6e7681" font-size="11.5">Khoảng cách giữa CẢM GIÁC và THỰC TẾ = nơi automation bias trú ngụ</text>
+      </svg>
+      <div class="diagram-caption">METR 2025 — kỳ vọng vs thực tế khi expert dùng AI trên codebase quen thuộc</div>
+    </div>
+    <div class="callout info">
+      <div class="callout-icon">📌</div>
+      <div class="callout-body">Kết quả này áp dụng cho <strong>expert làm trên codebase quen</strong>. Với task mới, ngôn ngữ lạ, boilerplate — AI thường giúp thật. Bài học: <strong>"đừng tin cảm giác, hãy đo".</strong></div>
+    </div>
+
+    <h3>3.4 · Stack Overflow sụp đổ — hệ sinh thái học tập biến mất</h3>
+    <p>Câu hỏi mới <strong>giảm ~76% kể từ 11/2022</strong>; tháng 4/2025 giảm 64% so cùng kỳ và <strong>hơn 90% so đỉnh 2020</strong>. Đáng lo vì SO là nơi <em>tư duy được công khai</em>: câu sai bị mổ xẻ, nhiều cách giải được tranh luận. Hỏi AI riêng tư → mất tầng học từ va chạm cộng đồng đó.</p>
+
+    <h3>3.5 · DORA 2025 — AI là "đòn bẩy", không phải "thuốc tiên"</h3>
+    <div class="callout success">
+      <div class="callout-icon">🔑</div>
+      <div class="callout-body">"AI không sửa được team yếu — nó <strong>phóng đại</strong> thứ vốn có. Team mạnh dùng AI để mạnh hơn; team yếu thấy vấn đề bị khuếch đại." Cá nhân cũng vậy: nền tảng vững → AI biến bạn thành 10x. Nền tảng rỗng → AI giúp bạn <strong>tạo sai lầm nhanh gấp 10 lần</strong>.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="section reveal" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Ba con đường khiến dev rơi vào bất lực tập nhiễm</h2>
+    </div>
+    <div class="card-grid">
+      <div class="info-card accent-red">
+        <div class="ic-icon">⏱️</div>
+        <div class="ic-title">Áp lực tiến độ</div>
+        <div class="ic-desc">Deadline dày làm cạn "dung lượng tư duy". Não mệt sẽ chọn đường tắt: paste lỗi → lấy code → chạy được là xong, không cần hiểu <em>vì sao</em>. Lặp đủ nhiều, "không cần hiểu" thành thói quen.</div>
+      </div>
+      <div class="info-card accent-red">
+        <div class="ic-icon">😔</div>
+        <div class="ic-title">Mặc cảm tự ti</div>
+        <div class="ic-desc">"Mình gõ cả buổi không bằng nó gõ 5 giây" → cam chịu, từ bỏ quyền can thiệp. Đúng cơ chế con chó trong lồng: <em>"có cố cũng vô ích, thôi đừng cố."</em></div>
+      </div>
+      <div class="info-card accent-red">
+        <div class="ic-icon">🎭</div>
+        <div class="ic-title">Thiết kế thao túng</div>
+        <div class="ic-desc"><strong>Sycophancy:</strong> chatbot nịnh "Ý bạn rất hay!" kể cả khi bạn sai. <strong>Automation bias:</strong> AI đúng 95% lần làm ta mất cảnh giác đúng vào 5% lần nó sai — lúc trả giá đắt nhất.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="section reveal" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Dấu hiệu nhận biết bạn đang "tập nhiễm"</h2>
+    </div>
+    <p>Tự kiểm tra trung thực. Càng nhiều dấu hiệu, càng cần hành động:</p>
+    <ul class="sign-list">
+      <li><span class="sign-box">!</span><div>Gặp lỗi → phản xạ đầu tiên là <strong>paste cho AI</strong>, không phải đọc message.</div></li>
+      <li><span class="sign-box">!</span><div><strong>Không nhớ nổi</strong> code mình "viết" tuần trước hoạt động thế nào (triệu chứng <em>cognitive debt</em>).</div></li>
+      <li><span class="sign-box">!</span><div>Khi AI/Copilot <strong>không khả dụng</strong>, năng suất tụt thẳng đứng, thấy "mất tay lái".</div></li>
+      <li><span class="sign-box">!</span><div><strong>Merge code AI mà không thật sự đọc</strong> — tin là đúng vì "trông hợp lý".</div></li>
+      <li><span class="sign-box">!</span><div>Lâu rồi <strong>không học một khái niệm nền tảng mới</strong> nào ngoài việc hỏi AI giải thích nhanh.</div></li>
+      <li><span class="sign-box">!</span><div>Whiteboard/phỏng vấn không gợi ý → <strong>đơ</strong>, dù task đơn giản (có report junior không viết nổi FizzBuzz khi mất autocomplete).</div></li>
+    </ul>
+    <div class="callout danger">
+      <div class="callout-icon">🚨</div>
+      <div class="callout-body"><strong>Quy tắc tự chẩn:</strong> Nếu việc đầu tiên khi gặp khó là <em>"hỏi AI"</em> thay vì <em>"thử nghĩ 5 phút"</em> — bạn đang huấn luyện não bỏ cuộc sớm.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="section reveal" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Lật ngược thế cờ: từ ủy thác sang làm chủ</h2>
+    </div>
+    <p>Tin tốt: bất lực tập nhiễm <strong>có thể đảo ngược</strong>. Seligman gọi cách chữa là <em class="hl">"learned optimism"</em> — học lại cảm giác mình kiểm soát được. Đây là phiên bản hành động cho dev:</p>
+
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <h4>Biến bức tường thành đối thoại</h4>
+          <p>Đừng buông "AI ơi sửa giúp". Hỏi theo hướng kích hoạt tư duy của bạn — dùng AI như mentor giỏi, không phải máy bán đáp án.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <h4>"Brain-first" — thử trước, hỏi sau</h4>
+          <p>Đặt rào cản cố ý: quy tắc <strong>"5 phút brain-only"</strong> cho mọi bug. Tự viết giải pháp nháp → <em>sau đó</em> nhờ AI review. Bạn vẫn là "người tạo giải pháp".</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <h4>Thách thức cái máy — không merge mù</h4>
+          <p>Bắt AI giải thích từng bước; chủ động tìm lỗ hổng logic. Hỏi: "Sai trong trường hợp nào? Edge case nào? Có lỗ hổng bảo mật không?"</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">4</div>
+        <div class="step-body">
+          <h4>Tách bạch: học hay sản xuất?</h4>
+          <p>Sai lầm chí mạng là dùng chế độ "ship" cho mọi thứ, kể cả lúc lẽ ra phải đang học. Chủ động dành thời gian cho chế độ "học".</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">5</div>
+        <div class="step-body">
+          <h4>Neo giữ tâm trí vào thực tại</h4>
+          <p>Duy trì <strong>deliberate practice</strong>: side project không AI, đọc source thư viện, giải thuật toán bằng tay, dạy lại người khác — "phòng gym" giữ cơ bắp tư duy không teo.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>Ví dụ cụ thể về cách hỏi — so sánh hai prompt cùng giải quyết một bug:</p>
+    <div class="good-bad">
+      <div class="gb bad">
+        <div class="gb-label">✗ Ủy thác (tắt não)</div>
+        <p><code>"Lỗi này, sửa giúp tôi."</code><br><br>→ Bạn copy-paste, không học được gì. Não ghi nhận: "khó là có máy lo".</p>
+      </div>
+      <div class="gb good">
+        <div class="gb-label">✓ Làm chủ (bật não)</div>
+        <p><code>"Giải thích nguyên nhân gốc, đừng đưa code vội. Cho tôi 3 hướng &amp; trade-off. Hỏi ngược lại để chắc tôi hiểu."</code></p>
+      </div>
+    </div>
+
+    <h3>Phân biệt 2 chế độ làm việc</h3>
+    <table class="data-table">
+      <thead><tr><th>Chế độ</th><th>Mục tiêu</th><th>Cách dùng AI</th></tr></thead>
+      <tbody>
+        <tr><td><strong class="hl-green">Sản xuất (ship)</strong></td><td>Ra việc nhanh</td><td>Tận dụng AI tối đa: boilerplate, refactor, test scaffold</td></tr>
+        <tr><td><strong class="hl-yellow">Học (learn)</strong></td><td>Tăng năng lực lõi</td><td>AI ở vai trò mentor/đặt câu hỏi — <em>bạn</em> tự code phần khó</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="section reveal" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Lộ trình học AI liên tục cho dev</h2>
+    </div>
+    <p>Làm chủ thời đại AI <strong>không</strong> phải là tránh AI — mà là <em class="hl">liên tục nâng cấp bản thân nhanh hơn tốc độ AI thay đổi</em>. Lộ trình thực dụng:</p>
+
+    <!-- AI IMAGE 3: mastery / learning -->
+    <figure class="img-fig reveal">
+      <img src="./images/fig-03-mastery-learning.png" alt="Lập trình viên leo cầu thang phát sáng nhiều tầng, AI như người đồng hành soi đường thay vì cõng đi">
+      <div class="img-ph">
+        <div class="img-ph-icon">🖼️</div>
+        <span class="img-ph-tag">Ảnh AI · chưa tạo</span>
+        <div class="img-ph-title">images/fig-03-mastery-learning.png</div>
+        <div class="img-ph-desc">Lập trình viên leo cầu thang ánh sáng nhiều tầng (nền tảng → kỹ năng AI → xây dựng → hệ thống); AI là người đồng hành soi đường, không phải cõng đi. Tinh thần trưởng thành, làm chủ. Prompt đầy đủ trong <code>images/PROMPTS.md</code>.</div>
+      </div>
+      <figcaption>Làm chủ AI = liên tục leo lên tầng năng lực cao hơn, với AI soi đường.</figcaption>
+    </figure>
+
+    <div class="layers">
+      <div class="layer l1">
+        <span class="layer-badge">T1</span>
+        <div class="layer-body">
+          <h4>Nền tảng — không bao giờ outsource</h4>
+          <p>CS fundamentals (data structures, complexity, networking, OS) · đọc-hiểu code &amp; debug bằng tay · tư duy hệ thống &amp; thiết kế.</p>
+          <span class="tag">AI khuếch đại tầng này → giữ cho nó vững.</span>
+        </div>
+      </div>
+      <div class="layer l2">
+        <span class="layer-badge">T2</span>
+        <div class="layer-body">
+          <h4>Kỹ năng làm việc với AI — kỹ năng mới của nghề</h4>
+          <p>Prompt &amp; context engineering · verify output, phát hiện hallucination · biết khi nào <strong>KHÔNG</strong> nên dùng AI.</p>
+        </div>
+      </div>
+      <div class="layer l3">
+        <span class="layer-badge">T3</span>
+        <div class="layer-body">
+          <h4>Xây dựng với AI — lợi thế cạnh tranh</h4>
+          <p>LLM API, function calling, tool use · RAG, embeddings, vector search · AI agents, MCP, orchestration.</p>
+        </div>
+      </div>
+      <div class="layer l4">
+        <span class="layer-badge">T4</span>
+        <div class="layer-body">
+          <h4>Hệ thống — 10x thật sự</h4>
+          <p>Đưa AI vào production an toàn · eval, observability, cost &amp; latency · tự động hoá workflow team.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>5 thói quen học bền vững</h3>
+    <div class="card-grid">
+      <div class="info-card accent-purple">
+        <div class="ic-icon">❓</div>
+        <div class="ic-title">Học để hiểu, không học để nhớ đáp án</div>
+        <div class="ic-desc">Mỗi lần AI giải xong, hỏi <em>"vì sao"</em> đến khi bạn tự giải thích lại được.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">🔨</div>
+        <div class="ic-title">Build &gt; đọc</div>
+        <div class="ic-desc">Làm một dự án nhỏ thật (RAG, agent, MCP server) dạy nhiều hơn 10 bài blog.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">📚</div>
+        <div class="ic-title">Theo nguồn gốc</div>
+        <div class="ic-desc">Ưu tiên tài liệu chính thức &amp; paper hơn tóm tắt tầng 3.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">🎤</div>
+        <div class="ic-title">Dạy lại</div>
+        <div class="ic-desc">Viết blog, chia sẻ team — "dạy lại" là bài test trung thực nhất xem bạn thực sự hiểu hay chỉ copy.</div>
+      </div>
+      <div class="info-card accent-purple">
+        <div class="ic-icon">📊</div>
+        <div class="ic-title">Đo, đừng đoán</div>
+        <div class="ic-desc">Định kỳ tự kiểm tra: <em>không có AI, mình còn làm được không?</em></div>
+      </div>
+    </div>
+
+    <div class="callout insight">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-body">AI sẽ <strong>thay thế</strong> những dev dùng AI để khỏi phải suy nghĩ. Nó sẽ <strong>khuếch đại</strong> những dev dùng AI để suy nghĩ ở tầm cao hơn. Khoảng cách giữa hai nhóm đang giãn ra mỗi ngày.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="section reveal" id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Kết luận</h2>
+    </div>
+    <p>Con chó trong thí nghiệm Seligman không nhảy ra khỏi lồng không phải vì rào quá cao — mà vì <strong>nó đã học rằng cố gắng là vô ích</strong>. Bất lực tập nhiễm phiên bản dev cũng vậy: không phải bạn <em>không thể</em> tự giải, mà là bạn đã <em>quen</em> với việc không cần tự giải.</p>
+    <p>Bí quyết phát triển trong thời đại AI không phải dùng AI ít đi hay nhiều hơn — mà là <strong>giữ vững quyền tự chủ tư duy</strong> trong khi để AI lo phần lao động lặp lại. Hãy để AI giải phóng thời gian, rồi <strong>đầu tư thời gian đó vào việc học những thứ AI chưa thay được</strong>.</p>
+    <div class="callout success">
+      <div class="callout-icon">🚀</div>
+      <div class="callout-body">Làm chủ công nghệ không phải đích đến, mà là một <strong>thói quen học hỏi không ngừng</strong>. Người làm chủ thời đại AI là người không bao giờ ngừng hỏi <em>"vì sao"</em> — kể cả khi máy đã đưa sẵn câu trả lời.</div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="section reveal" id="ref">
+    <div class="section-header">
+      <span class="section-num">📚</span>
+      <h2>Nguồn tham khảo</h2>
+    </div>
+    <div class="resource-grid">
+      <a class="resource-card" href="https://vietcetera.com/vn/learned-helplessness-su-bat-luc-tap-nhiem-giua-thoi-dai-ai" target="_blank" rel="noopener">
+        <div class="r-title">Vietcetera — Learned helplessness: Sự bất lực tập nhiễm giữa thời đại AI (bài gốc)</div>
+        <div class="r-url">vietcetera.com</div>
+      </a>
+      <a class="resource-card" href="https://www.media.mit.edu/projects/your-brain-on-chatgpt/overview/" target="_blank" rel="noopener">
+        <div class="r-title">MIT Media Lab — Your Brain on ChatGPT (cognitive debt, EEG)</div>
+        <div class="r-url">media.mit.edu</div>
+      </a>
+      <a class="resource-card" href="https://dl.acm.org/doi/full/10.1145/3706598.3713778" target="_blank" rel="noopener">
+        <div class="r-title">Microsoft &amp; CMU (CHI 2025) — GenAI &amp; Critical Thinking</div>
+        <div class="r-url">dl.acm.org</div>
+      </a>
+      <a class="resource-card" href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener">
+        <div class="r-title">METR (2025) — Impact of Early-2025 AI on Experienced Developer Productivity</div>
+        <div class="r-url">arxiv.org</div>
+      </a>
+      <a class="resource-card" href="https://www.allstacks.com/blog/ai-killed-the-stack-overflow-star-the-76-collapse-in-developer-qa" target="_blank" rel="noopener">
+        <div class="r-title">Allstacks — The 76% Collapse in Developer Q&amp;A</div>
+        <div class="r-url">allstacks.com</div>
+      </a>
+      <a class="resource-card" href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report" target="_blank" rel="noopener">
+        <div class="r-title">Google Cloud — Announcing the 2025 DORA Report</div>
+        <div class="r-url">cloud.google.com</div>
+      </a>
+      <a class="resource-card" href="https://thedecisionlab.com/biases/automation-bias" target="_blank" rel="noopener">
+        <div class="r-title">The Decision Lab — Automation Bias</div>
+        <div class="r-url">thedecisionlab.com</div>
+      </a>
+      <a class="resource-card" href="https://en.wikipedia.org/wiki/Learned_helplessness" target="_blank" rel="noopener">
+        <div class="r-title">Learned helplessness — Seligman &amp; Maier (1967)</div>
+        <div class="r-url">en.wikipedia.org</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="post-footer">
+    <p>Tổng hợp &amp; biên soạn bởi <a href="https://hungledn.com">Hưng 2x</a></p>
+    <div class="meta-row">
+      <span class="meta-tag">📅 Tháng 6/2026</span>
+      <span class="meta-tag">🔗 <a href="https://hungld10.github.io/share-everything-about-ai/" style="color:inherit">share-everything-about-ai</a></span>
+      <span class="meta-tag">🏷️ Mindset · AI · Career</span>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Ảnh AI: hiện placeholder khi chưa có file, tự thay bằng ảnh thật khi load OK
+  document.querySelectorAll('.img-fig').forEach(fig => {
+    const img = fig.querySelector('img');
+    if (!img) return;
+    const ok = () => { if (img.naturalWidth > 0) fig.classList.remove('missing'); };
+    if (img.complete) ok();
+    img.addEventListener('load', ok);
+    img.addEventListener('error', () => fig.classList.add('missing'));
+  });
+</script>
+
+</body>
+</html>
