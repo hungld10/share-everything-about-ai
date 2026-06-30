@@ -19,6 +19,9 @@ Thư mục này chứa các tài liệu hệ thống hoá về AI.
 ### 🔐 AI Agent Security
 - [AI đang chạy lệnh gì trên máy bạn? — Hướng dẫn đọc hiểu Bash Commands từ AI Agent](./ai-bash-commands-guide/ai-bash-commands-guide.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/ai-bash-commands-guide-visual.html) · [📥 Cheatsheet](https://hungld10.github.io/share-everything-about-ai/docs/ai-bash-commands-guide/cheatsheet/cheatsheet.html)
 
+### 🧭 Mindset & Sự nghiệp
+- [Sự Bất Lực Tập Nhiễm giữa thời đại AI — Dành cho lập trình viên](./learned-helplessness-ai-era/learned-helplessness-ai-era.md) · [🎨 Visual](https://hungld10.github.io/share-everything-about-ai/docs/learned-helplessness-ai-era/learned-helplessness-ai-era-visual.html)
+
 ---
 
 ## 🎯 Mục tiêu
